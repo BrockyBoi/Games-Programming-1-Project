@@ -7,15 +7,19 @@ public class ResourceController : MonoBehaviour {
     public Text text;
 
     int food;
+    float foodBoost;
     int foodCap;
 
     int logs;
+    float logBoost;
     int logCap;
 
     int rocks;
+    float rockBoost;
     int rockCap;
 
     int iron;
+    float ironBoost;
     int ironCap;
 
     int population;
@@ -156,4 +160,44 @@ public class ResourceController : MonoBehaviour {
     {
         return "Food: " + food + "\nWood: " + logs + "\nStone: " + rocks + "\nIron: " + iron + "\nPopulation: " + population;
     }
+
+    public void addResourceBoost(string s, float f)
+    {
+        if (s == "Wood")
+            logBoost += f;
+        else if (s == "Food")
+            foodBoost += f;
+        else if (s == "Iron")
+            ironBoost += f;
+        else
+            rockBoost += f;
+    }
+
+    public float getBoost(string s)
+    {
+        if (s == "Wood")
+            return logBoost;
+        else if (s == "Food")
+            return foodBoost;
+        else if (s == "Iron")
+            return ironBoost;
+        else
+            return rockBoost;
+    }
+
+    public bool meetsResourceNeeds(int f, int w, int i, int s)
+    {
+        if (food >= f && logs >= w && iron >= i && rocks >= s)
+            return true;
+        else return false;
+    }
+
+    public void subtractMultiple(int f, int w, int i, int s)
+    {
+        subtractFood(f);
+        subtractLogs(w);
+        subtractIron(i);
+        subtractRocks(s);
+    }
+        
 }

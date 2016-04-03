@@ -34,34 +34,46 @@ public class Producer : Building
         base.Update();
     }
 
+    protected override bool buildingPrereqs()
+    {
+        switch (level)
+        {
+            case 1:
+                return true;
+            case 2:
+                return true;
+            case 3:
+                if (buildingController.getTownHallLevel() == 2)
+                    return true;
+                else return false;
+            case 4:
+                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() == 4)
+                    return true;
+                else return false;
+                    default:
+                return false;
+        }
+    }
+
     void addResource()
     {
         if (farm)
-            controller.addFood(produceAmount);
+            controller.addFood(produceAmount + (int)(produceAmount * controller.getBoost("Food")));
         else if (forestry)
-            controller.addLogs(produceAmount);
+            controller.addLogs(produceAmount + (int)(produceAmount * controller.getBoost("Wood")));
         else if (smith)
-            controller.addIron(produceAmount);
+            controller.addIron(produceAmount + (int)(produceAmount * controller.getBoost("Iron")));
         else
-            controller.addRocks(produceAmount);
+            controller.addRocks(produceAmount + (int)(produceAmount * controller.getBoost("Stone")));
     }
-    public override void upgrade()
+
+    protected override void upgrade()
     {
-        if (controller.getFood() >= u.foodNeeded && 
-            controller.getIron() >= u.ironNeeded && 
-            controller.getLogs() >= u.logsNeeded && 
-            controller.getRocks() >= u.rocksNeeded && level < 5)
+        base.upgrade();
+        if (canUpgrade())
         {
-            level++;
-
-            controller.subtractFood(u.foodNeeded);
-            controller.subtractIron(u.ironNeeded);
-            controller.subtractLogs(u.logsNeeded);
-            controller.subtractRocks(u.rocksNeeded);
-
             produceLevel();
             setControllerCap();
-            upgradeParameters();
         }
     }
 
@@ -92,9 +104,6 @@ public class Producer : Building
             default:
                 break;
         }
-        if (level < 5)
-            production = "Current produce amount: " + produceAmount.ToString() + "\nNext produce amount: " + nextProduceAmount.ToString();
-        else production = "Current produce amount: " + produceAmount.ToString();
     }
 
     void getCap()
@@ -139,4 +148,12 @@ public class Producer : Building
         else
             controller.setFoodCap(controller.getFoodCap() + resourceCap - lastResourceCap);
     }
+
+    protected override void setProduction()
+    {
+        if (level < 5)
+            production = "Current production: " + (produceAmount * 20).ToString() + "\nNext production: " + (nextProduceAmount * 20).ToString();
+        else production = "Current produce amount: " + (produceAmount * 20).ToString();
+    }
+
 }

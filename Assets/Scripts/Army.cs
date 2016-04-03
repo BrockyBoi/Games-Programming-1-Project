@@ -5,12 +5,18 @@ using UnityEngine.UI;
 public class Army : MonoBehaviour {
     public Text text;
 
-    int totalStrength;
-    int farmerStrength;
-    int soldierStrength;
-    int archerStrength;
-    int cavalryStrength;
-    int catapultStrength;
+    protected int totalStrength;
+    protected int farmerStrength;
+    protected int soldierStrength;
+    protected int archerStrength;
+    protected int cavalryStrength;
+    protected int catapultStrength;
+
+    protected bool enemy;
+
+    int forgeStrength;
+
+    protected ResourceController controller;
     public struct needs
     {
         public int foodNeed;
@@ -58,7 +64,9 @@ public class Army : MonoBehaviour {
     public catapult cat;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
+        controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+
         f.strength = 1;
         f.hitChance = 65;
         f.need.foodNeed = 50;
@@ -95,9 +103,16 @@ public class Army : MonoBehaviour {
         text.text = displayArmy();
 	}
 
+    public void setForgeStrength(int num)
+    {
+        if (!enemy)
+            forgeStrength = num;
+        else forgeStrength = 0;
+    }
+
     public int getTotalStrength()
     {
-        totalStrength = farmerStrength + soldierStrength + archerStrength + cavalryStrength + catapultStrength;
+        totalStrength = getFarmerStrength() + getSoldierStrength() + getArcherStrength() + getCavalryStrength() + getCatapultStrength();
         return totalStrength;
     }
 
@@ -110,9 +125,10 @@ public class Army : MonoBehaviour {
     {
         return f;
     }
+
     public int getFarmerStrength()
     {
-        return farmerStrength;
+        return farmerStrength + forgeStrength;
     }
 
     public void setFarmerSize(int num)
@@ -131,6 +147,11 @@ public class Army : MonoBehaviour {
         return farmerStrength;
     }
 
+    public string farmerNeeds()
+    {
+        return "Food: " + f.need.foodNeed + "\nWood: " + f.need.woodNeed + "\nIron: " + f.need.ironNeed;
+    }
+
 
     public soldier getSoldier()
     {
@@ -138,7 +159,7 @@ public class Army : MonoBehaviour {
     }
     public int getSoldierStrength()
     {
-        return soldierStrength;
+        return soldierStrength + forgeStrength;
     }
 
     public void setSoldierSize(int num)
@@ -157,6 +178,12 @@ public class Army : MonoBehaviour {
         return soldierStrength / s.strength;
     }
 
+    public string soldierNeeds()
+    {
+        return "Food: " + s.need.foodNeed + 
+             "\nWood: " + s.need.woodNeed + 
+             "\nIron: " + s.need.ironNeed;
+    }
 
     public archer getArcher()
     {
@@ -164,7 +191,7 @@ public class Army : MonoBehaviour {
     }
     public int getArcherStrength()
     {
-        return archerStrength;
+        return archerStrength + forgeStrength;
     }
 
     public void setArcherSize(int num)
@@ -183,6 +210,12 @@ public class Army : MonoBehaviour {
         return archerStrength / a.strength;
     }
 
+    public string archerNeeds()
+    {
+        return "Food: " + a.need.foodNeed +
+             "\nWood: " + a.need.woodNeed +
+             "\nIron: " + a.need.ironNeed;
+    }
 
     public cavalry getCavalry()
     {
@@ -190,7 +223,7 @@ public class Army : MonoBehaviour {
     }
     public int getCavalryStrength()
     {
-        return cavalryStrength;
+        return cavalryStrength + forgeStrength;
     }
 
     public void setCavalrySize(int num)
@@ -209,6 +242,12 @@ public class Army : MonoBehaviour {
         return cavalryStrength / cav.strength;
     }
 
+    public string cavalryNeeds()
+    {
+        return "Food: " + cav.need.foodNeed +
+             "\nWood: " + cav.need.woodNeed +
+             "\nIron: " + cav.need.ironNeed;
+    }
 
     public catapult getCatapult()
     {
@@ -216,7 +255,7 @@ public class Army : MonoBehaviour {
     }
     public int getCatapultStrength()
     {
-        return catapultStrength;
+        return catapultStrength + forgeStrength;
     }
 
     public void setCatapultSize(int num)
@@ -235,18 +274,27 @@ public class Army : MonoBehaviour {
         return cavalryStrength / cat.strength;
     }
 
+    public string catapultNeeds()
+    {
+        return "Food: " + cat.need.foodNeed +
+             "\nWood: " + cat.need.woodNeed +
+             "\nIron: " + cat.need.ironNeed;
+    }
+
+
     public void setArmy(int farm, int sold, int arch, int caval, int catap)
     {
-        farmerStrength = farm;
-        soldierStrength = sold;
-        archerStrength = arch;
-        cavalryStrength = caval;
-        catapultStrength = catap;
+        setFarmerSize(farm);
+        setSoldierSize(sold);
+        setArcherSize(arch);
+        setCavalrySize(caval);
+        setCatapultSize(catap);
+
 
         totalStrength = farmerStrength + soldierStrength + archerStrength + cavalryStrength + catapultStrength;
     }
 
-    string displayArmy()
+    protected string displayArmy()
     {
         return "Farmers: " + farmerCount() + "\nSoldiers: " + soldierCount() + "\nArchers: " + archerCount() + "\nCavalry: " + cavalryCount() + "\nCatapults: " + catapultCount() + "\nTotal strength: " + totalStrength.ToString();
     }

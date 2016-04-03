@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BattleSystem : MonoBehaviour {
     //Setup variables
-    int totalStrength1, totalStrength2, fS1, fS2, sS1, sS2, aS1, aS2, cavS1, cavS2, catS1, catS2;
+    int fS1, fS2, sS1, sS2, aS1, aS2, cavS1, cavS2, catS1, catS2;
     //Percentages each part of the army makes up
     float fP1, fP2, sP1, sP2, aP1, aP2, cavP1, cavP2, catP1, catP2;
     //Hit chances
@@ -31,45 +31,95 @@ public class BattleSystem : MonoBehaviour {
         army1 = a1;
         army2 = a2;
 
-        fH = army1.getFarmer().hitChance;
-        sH = army1.getSoldier().hitChance;
-        aH = army1.getArcher().hitChance;
-        cavH = army1.getCavalry().hitChance;
-        catH = army1.getCatapult().hitChance;
+        fH = army1.getFarmer().hitChance / 100;
+        sH = army1.getSoldier().hitChance / 100;
+        aH = army1.getArcher().hitChance / 100;
+        cavH = army1.getCavalry().hitChance / 100;
+        catH = army1.getCatapult().hitChance / 100;
 
         //Calc each army's strength and how much each units makes up of the army
-        totalStrength1 = a1.getTotalStrength();
 
-        fS1 = a1.getFarmerStrength();
+        //fS1 = a1.getFarmerStrength();
+        for(int i = 0; i < a1.farmerCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (fH < num)
+                fS1 += a1.getFarmerStrength();
+        }
         fP1 = a1.farmerCount() / a1.armyCount();
 
-        sS1 = a1.getSoldierStrength();
+        for (int i = 0; i < a1.soldierCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (sH < num)
+                sS1 += a1.getSoldierStrength();
+        }
         sP1 = a1.soldierCount() / a1.armyCount();
 
-        aS1 = a1.getArcherStrength();
+        for (int i = 0; i < a1.archerCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (aH < num)
+                aS1 += a1.getArcherStrength();
+        }
         aP1 = a1.archerCount() / a1.armyCount();
 
-        cavS1 = a1.getCavalryStrength();
+        for (int i = 0; i < a1.cavalryCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (cavH < num)
+                cavS1 += a1.getCavalryStrength();
+        }
         cavP1 = a1.cavalryCount() / a1.armyCount();
 
-        catS2 = a1.getCatapultStrength();
+        for (int i = 0; i < a1.catapultCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (catH < num)
+                catS1 += a1.getCatapultStrength();
+        }
         catP1 = a1.catapultCount() / a1.armyCount();
 
-        totalStrength2 = a2.getTotalStrength();
 
-        fS2 = a2.getFarmerStrength();
+
+        for (int i = 0; i < a2.farmerCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (fH < num)
+                fS2 += a2.getFarmerStrength();
+        }
         fP2 = a2.farmerCount() / a2.armyCount();
-          
-        sS2 = a2.getSoldierStrength();
-        sP2 = a2.soldierCount() / a2.armyCount();
-          
-        aS2 = a2.getArcherStrength();
-        fP2 = a2.archerCount() / a2.armyCount();
 
-        cavS2 = a2.getCavalryStrength();
+        for (int i = 0; i < a2.soldierCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (sH < num)
+                sS2 += a2.getSoldierStrength();
+        }
+        sP2 = a2.soldierCount() / a2.armyCount();
+
+        for (int i = 0; i < a2.archerCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (aH < num)
+                aS2 += a2.getArcherStrength();
+        }
+        aP2 = a2.archerCount() / a2.armyCount();
+
+        for (int i = 0; i < a2.cavalryCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (fH < num)
+                cavS2 += a2.getCavalryStrength();
+        }
         cavP2 = a2.cavalryCount() / a2.armyCount();
 
-        catS2 = a2.getCatapultStrength();
+        for (int i = 0; i < a2.catapultCount(); i++)
+        {
+            int num = Random.Range(0, 1);
+            if (catH < num)
+                catS2 += a2.getCatapultStrength();
+        }
         catP2 = a2.catapultCount() / a2.armyCount();
 
         battle();
@@ -78,18 +128,18 @@ public class BattleSystem : MonoBehaviour {
     void battle()
     {
         //How much damage each army does
-        fD1 = fS1 * fH;
-        sD1 = sS1 * sH;
-        aD1 = aS1 * aH;
-        cavD1 = cavS1 * cavH;
-        catD1 = catS1 * catH;
+        fD1 = fS1;
+        sD1 = sS1;
+        aD1 = aS1;
+        cavD1 = cavS1;
+        catD1 = catS1;
         totalD1 = fD1 + sD1 + aD1 + cavD1 + catD1;
 
-        fD2 = fS2 * fH;
-        sD2 = sS2 * sH;
-        aD2 = aS2 * aH;
-        cavD2 = cavS2 * cavH;
-        catD2 = catS2 * catH;
+        fD2 = fS2;
+        sD2 = sS2;
+        aD2 = aS2;
+        cavD2 = cavS2;
+        catD2 = catS2;
         totalD2 = fD2 + sD2 + aD2 + cavD2 + catD2;
 
         //Casualites taken by each army

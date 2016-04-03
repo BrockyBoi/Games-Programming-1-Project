@@ -10,6 +10,7 @@ public class Blacksmith : Producer {
         base.Start();
 
         buildingName = "Mine";
+        description = "Mines are essential for building powerful armies and large structures";
     }
 
     // Update is called once per frame
@@ -17,6 +18,7 @@ public class Blacksmith : Producer {
     {
         base.Update();
     }
+
 
     protected override void upgradeParameters()
     {
@@ -31,10 +33,10 @@ public class Blacksmith : Producer {
                 setNeeds(3000, 3000, 4500, 2500);
                 break;
             case 3:
-                setNeeds(5500, 5500, 8000, 5000);
+                setNeeds(6500, 6000, 8000, 5000);
                 break;
             case 4:
-                setNeeds(15000, 15000, 22500, 14000);
+                setNeeds(17500, 15000, 22500, 14000);
                 break;
             default:
                 break;

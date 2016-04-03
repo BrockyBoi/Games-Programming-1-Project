@@ -60,23 +60,34 @@ public class Cottage : Building {
         production = "Population added: " + populationLevel.ToString();
     }
 
-    public override void upgrade()
+    protected override void upgrade()
     {
-        if (controller.getFood() >= u.foodNeeded && 
-            controller.getIron() >= u.ironNeeded && 
-            controller.getLogs() >= u.logsNeeded && 
-            controller.getRocks() >= u.rocksNeeded && level < 5)
+        base.upgrade();
+        if(canUpgrade())
         {
-            level++;
-
-            controller.subtractFood(u.foodNeeded);
-            controller.subtractIron(u.ironNeeded);
-            controller.subtractLogs(u.logsNeeded);
-            controller.subtractRocks(u.rocksNeeded);
-
             popLevel();
             setControllerPop();
-            upgradeParameters();
+        }
+    }
+
+    protected override bool buildingPrereqs()
+    {
+        switch (level)
+        {
+            case 1:
+                return true;
+            case 2:
+                return true;
+            case 3:
+                if (buildingController.getTownHallLevel() == 2)
+                    return true;
+                else return false;
+            case 4:
+                if (buildingController.getTownHallLevel() == 3)
+                    return true;
+                else return false;
+            default:
+                return false;
         }
     }
 

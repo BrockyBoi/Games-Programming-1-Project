@@ -10,6 +10,7 @@ public class Farm : Producer {
         base.Start();
 
         buildingName = "Farm";
+        description = "Farms provide food which are essential for workers and any successful army";
     }
 
     // Update is called once per frame

@@ -10,6 +10,7 @@ public class Quarry : Producer {
         base.Start();
 
         buildingName = "Quarry";
+        description = "Quarries are great ways for mining stones for various buildings";
     }
 
     // Update is called once per frame

@@ -27,10 +27,10 @@ public class Forestry : Producer {
                 setNeeds(3000, 4000, 3000, 2000);
                 break;
             case 3:
-                setNeeds(5500, 7500, 5500, 4500);
+                setNeeds(6500, 8000, 6000, 5000);
                 break;
             case 4:
-                setNeeds(15000, 20000, 15000, 12500);
+                setNeeds(17500, 23000, 17500, 15000);
                 break;
             default:
                 break;

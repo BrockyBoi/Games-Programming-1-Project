@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Barracks : Building {
     Canvas soldierList;
     Army armyController;
+
+    float trainingTime;
+    float trainingBoost;
+
     bool soldier;
     bool archer;
     bool cavalry;
@@ -12,21 +17,22 @@ public class Barracks : Building {
 	// Use this for initialization
 	new void Start () {
         base.Start();
+
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
         soldierList = GameObject.Find("BuySoldiersCanvas").GetComponent<Canvas>();
+
         soldierList.gameObject.SetActive(false);
         buildingName = "Barracks";
+        description = "Barracks allow you to enlist troops from your population and add them to the army";
+
+        setProduction();
 	}
+ 
 	
 	// Update is called once per frame
 	new void Update () {
         base.Update();
 	}
-
-   // new void OnMouseDown()
-   // {
-        //soldierList.gameObject.SetActive(true);
-   // }
 
     public void buyFarmer(int num)
     {
@@ -108,24 +114,16 @@ public class Barracks : Building {
         }
     }
 
-    public override void upgrade()
+    protected override void upgrade()
     {
-        if (controller.getFood() >= u.foodNeeded && 
-            controller.getIron() >= u.ironNeeded && 
-            controller.getLogs() >= u.logsNeeded && 
-            controller.getRocks() >= u.rocksNeeded && 
-            level < 5)
-        {
-            level++;
-
-            controller.subtractFood(u.foodNeeded);
-            controller.subtractIron(u.ironNeeded);
-            controller.subtractLogs(u.logsNeeded);
-            controller.subtractRocks(u.rocksNeeded);
-
+        base.upgrade();
+        if (canUpgrade())
             availableUnits();
-            upgradeParameters();
-        }
+    }
+
+    public void addBoost(float f)
+    {
+        trainingBoost += f;
     }
 
     void availableUnits()
@@ -155,6 +153,30 @@ public class Barracks : Building {
         }
     }
 
+    protected override void setProduction()
+    {
+        switch(level)
+        {
+            case 1:
+                production = "Troops: Farmer\nNext Troop: Soldier";
+                break;
+            case 2:
+                production = "Troops: Farmer, Soldier\nNext Troop: Archer";
+                break;
+            case 3:
+                production = "Troops: Farmer, Soldier, Archer\nNext Troop: Cavalry";
+                break;
+            case 4:
+                production = "Troops: Farmer, Soldier, Archer, Cavalry\nNext Troop: Catapult";
+                break;
+            case 5:
+                production = "Troops: Farmer, Soldier, Archer, Cavalry, Catapult";
+                break;
+            default:
+                break;
+        }
+    }
+
     protected override void upgradeParameters()
     {
         //Cap bases are 1500, 5000, 8000, 15000
@@ -162,21 +184,19 @@ public class Barracks : Building {
         switch (level)
         {
             case 1:
-                setNeeds(500, 400, 800, 800);
+                setNeeds(700, 600, 1000, 1000);
                 break;
             case 2:
                 setNeeds(3000, 2750, 4000, 4000);
                 break;
             case 3:
-                setNeeds(5500, 5000, 7500, 7500);
+                setNeeds(6500, 5500, 9000, 9000);
                 break;
             case 4:
-                setNeeds(15000, 13500, 20000, 20000);
+                setNeeds(17500, 15000, 22000, 22000);
                 break;
             default:
                 break;
         }
     }
-
-
 }
