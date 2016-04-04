@@ -3,9 +3,9 @@ public class Forestry : Producer {
 	// Use this for initialization
 	new void Start () {
         forestry = true;
+        buildingName = "Forestry";
         base.Start();
 
-        buildingName = "Forestry";
         description = "Forestries provide wood over time which is primarily used for buildings and some units.";
 	}
 	

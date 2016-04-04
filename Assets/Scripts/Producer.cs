@@ -18,8 +18,6 @@ public class Producer : Building
     // Use this for initialization
     protected new void Start()
     {
-
-
         base.Start();
         produceLevel();
         getCap();
@@ -28,7 +26,7 @@ public class Producer : Building
 
         // productionRate = 15;
 
-        InvokeRepeating("addResource", productionRate, productionRate);
+        controller.addResourceRate(buildingName, produceAmount + (int)(produceAmount * controller.getBoost(buildingName)));
     }
 
     // Update is called once per frame
@@ -58,23 +56,12 @@ public class Producer : Building
         }
     }
 
-    void addResource()
-    {
-        if (farm)
-            controller.addFood(produceAmount + (int)(produceAmount * controller.getBoost("Food")));
-        else if (forestry)
-            controller.addLogs(produceAmount + (int)(produceAmount * controller.getBoost("Wood")));
-        else if (smith)
-            controller.addIron(produceAmount + (int)(produceAmount * controller.getBoost("Iron")));
-        else
-            controller.addRocks(produceAmount + (int)(produceAmount * controller.getBoost("Stone")));
-    }
-
     protected override void upgrade()
     {
         base.upgrade();
         produceLevel();
         setControllerCap();
+        controller.addResourceRate(buildingName, produceAmount + (int)(produceAmount * controller.getBoost(buildingName)));
     }
 
     void produceLevel()

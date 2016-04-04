@@ -7,6 +7,8 @@ public class University : Building {
     float resourceBoost;
     float researchTime;
 
+    Barracks barracks;
+
     //Boosts that will go up by 10%
     int farmLevel, mineLevel, quarryLevel, forestryLevel, trainingLevel;
     //Boosts that will go up by 5%
@@ -14,6 +16,7 @@ public class University : Building {
     // Use this for initialization
     new void Start () {
         base.Start();
+        barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
 	}
 	
 	// Update is called once per frame
@@ -104,7 +107,11 @@ public class University : Building {
             controller.addResourceBoost(researchName, mineLevel * .1f);
         else if (researchName == "Forestry")
             controller.addResourceBoost(researchName, forestryLevel * .1f);
-        else if (researchName == "") ;
+        else if (researchName == "Training")
+            barracks.addBoost(trainingLevel * .1f);
+        else if(researchName == "Construction")
+
+            
 
     }
 }

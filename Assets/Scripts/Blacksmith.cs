@@ -7,9 +7,9 @@ public class Blacksmith : Producer {
     new void Start()
     {
         smith = true;
+        buildingName = "Mine";
         base.Start();
 
-        buildingName = "Mine";
         description = "Mines are essential for building powerful armies and large structures";
     }
 

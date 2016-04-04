@@ -7,6 +7,7 @@ public class Farm : Producer {
     new void Start()
     {
         farm = true;
+        buildingName = "Farm";
         base.Start();
 
         buildingName = "Farm";

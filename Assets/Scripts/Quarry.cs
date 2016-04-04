@@ -7,9 +7,9 @@ public class Quarry : Producer {
     new void Start()
     {
         quarry = true;
+        buildingName = "Quarry";
         base.Start();
 
-        buildingName = "Quarry";
         description = "Quarries are great ways for mining stones for various buildings";
     }
 

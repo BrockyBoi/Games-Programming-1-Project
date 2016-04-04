@@ -7,27 +7,34 @@ public class ResourceController : MonoBehaviour {
     public Text text;
 
     int food;
+    int foodRate;
     float foodBoost;
     int foodCap;
 
     int logs;
+    int logRate;
     float logBoost;
     int logCap;
 
     int rocks;
+    int rockRate;
     float rockBoost;
     int rockCap;
 
     int iron;
+    int ironRate;
     float ironBoost;
     int ironCap;
 
     int population;
     int populationCap;
 
+    public float productionRate;
+
 	// Use this for initialization
 	void Start () {
-
+        Invoke("incrementResources", productionRate);
+        InvokeRepeating("incrementResources", productionRate, productionRate);
 	}
 	
 	// Update is called once per frame
@@ -175,11 +182,11 @@ public class ResourceController : MonoBehaviour {
 
     public float getBoost(string s)
     {
-        if (s == "Wood")
+        if (s == "Forestry")
             return logBoost;
-        else if (s == "Food")
+        else if (s == "Farm")
             return foodBoost;
-        else if (s == "Iron")
+        else if (s == "Mine")
             return ironBoost;
         else
             return rockBoost;
@@ -199,5 +206,34 @@ public class ResourceController : MonoBehaviour {
         subtractIron(i);
         subtractRocks(s);
     }
+
+    public void addResourceRate(string s, int i)
+    {
+        if(s == "Farm")
+        {
+            foodRate = i;
+        }
+        else if(s == "Mine")
+        {
+            ironRate = i;
+        }
+        else if(s == "Forestry")
+        {
+            logRate = i;
+        }
+        else
+        {
+            rockRate = i;
+        }
+    }
+
+    void incrementResources()
+    {
+        addFood(foodRate);
+        addIron(ironRate);
+        addLogs(logRate);
+        addRocks(rockRate);
+    }
+
         
 }

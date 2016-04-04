@@ -87,7 +87,25 @@ public class Building : MonoBehaviour {
     {return false;}
 
     protected virtual void setBuildingTime()
-    {}
+    {
+        switch(level)
+        {
+            case 1:
+                upgradeTime = 30;
+                break;
+            case 2:
+                upgradeTime = 90;
+                break;
+            case 3:
+                upgradeTime = 300;
+                break;
+            case 4:
+                upgradeTime = 1500;
+                break;
+            default:
+                break;
+        }
+    }
 
     public string getTitleText()
     {
