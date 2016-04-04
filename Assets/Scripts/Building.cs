@@ -25,7 +25,8 @@ public class Building : MonoBehaviour {
     protected BuildingController buildingController;
 
     protected float upgradeTime;
-    protected bool isUpgading;
+    protected bool isUpgrading;
+
     // Use this for initialization
     protected void Start () {
         controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
@@ -37,6 +38,8 @@ public class Building : MonoBehaviour {
         setProduction();
 
         buildingController.setBuildingLevel(buildingName, level);
+
+        upgradeTime = 15;
     }
 	
 	// Update is called once per frame
@@ -51,28 +54,29 @@ public class Building : MonoBehaviour {
 
     public void pressUpgrade()
     {
-        Invoke("upgrade", upgradeTime);
-        isUpgading = true;
-    }
-
-    protected virtual void upgrade()
-    {
-        if(canUpgrade())
+        if (canUpgrade())
         {
-            isUpgading = false;
-
-            level++;
-
             controller.subtractFood(u.foodNeeded);
             controller.subtractIron(u.ironNeeded);
             controller.subtractLogs(u.logsNeeded);
             controller.subtractRocks(u.rocksNeeded);
-            buildingController.setBuildingLevel(buildingName, level);
 
-            upgradeParameters();
-            setProduction();
-            setBuildingTime();
+            Invoke("upgrade", upgradeTime);
+            isUpgrading = true;
         }
+    }
+
+    protected virtual void upgrade()
+    {
+        isUpgrading = false;
+
+        level++;
+
+        buildingController.setBuildingLevel(buildingName, level);
+
+        upgradeParameters();
+        setProduction();
+        setBuildingTime();
     }
 
     protected virtual void setProduction()
@@ -127,7 +131,7 @@ public class Building : MonoBehaviour {
     protected bool canUpgrade()
     {
         if (controller.meetsResourceNeeds(u.foodNeeded, u.logsNeeded, u.ironNeeded, u.rocksNeeded) &&
-            level < 5 && buildingPrereqs())
+            level < 5 && buildingPrereqs() && !isUpgrading)
         {
             return true;
         }

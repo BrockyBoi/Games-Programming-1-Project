@@ -18,10 +18,13 @@ public class Producer : Building
     // Use this for initialization
     protected new void Start()
     {
+
+
         base.Start();
         produceLevel();
         getCap();
         setControllerCap();
+        setProduction();
 
         // productionRate = 15;
 
@@ -70,11 +73,8 @@ public class Producer : Building
     protected override void upgrade()
     {
         base.upgrade();
-        if (canUpgrade())
-        {
-            produceLevel();
-            setControllerCap();
-        }
+        produceLevel();
+        setControllerCap();
     }
 
     void produceLevel()

@@ -117,8 +117,7 @@ public class Barracks : Building {
     protected override void upgrade()
     {
         base.upgrade();
-        if (canUpgrade())
-            availableUnits();
+        availableUnits();
     }
 
     public void addBoost(float f)
@@ -197,6 +196,27 @@ public class Barracks : Building {
                 break;
             default:
                 break;
+        }
+    }
+
+    protected override bool buildingPrereqs()
+    {
+        switch (level)
+        {
+            case 1:
+                return true;
+            case 2:
+                return true;
+            case 3:
+                if (buildingController.getTownHallLevel() == 2)
+                    return true;
+                else return false;
+            case 4:
+                if (buildingController.getForgeLevel() == 2 && buildingController.getTownHallLevel() == 3)
+                    return true;
+                else return false;
+            default:
+                return false;
         }
     }
 }

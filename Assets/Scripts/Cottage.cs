@@ -63,11 +63,9 @@ public class Cottage : Building {
     protected override void upgrade()
     {
         base.upgrade();
-        if(canUpgrade())
-        {
-            popLevel();
-            setControllerPop();
-        }
+
+        popLevel();
+        setControllerPop();
     }
 
     protected override bool buildingPrereqs()

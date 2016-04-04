@@ -45,6 +45,29 @@ public class University : Building {
         Invoke("addBoost", researchTime);
     }
 
+    protected override bool buildingPrereqs()
+    {
+        switch (level)
+        {
+            case 1:
+                return true;
+            case 2:
+                if (buildingController.getWorkshopLevel() == 2)
+                    return true;
+                else return false;
+            case 3:
+                if (buildingController.getTownHallLevel() == 2)
+                    return true;
+                else return false;
+            case 4:
+                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() == 3)
+                    return true;
+                else return false;
+            default:
+                return false;
+        }
+    }
+
     void checkResearchTime(int num)
     {
         switch(num)
@@ -71,17 +94,17 @@ public class University : Building {
 
     void addBoost()
     {
-        if(nameOfBuilding == "Farm")
+        if (researchName == "Farm")
         {
-            controller.addResourceBoost(nameOfBuilding, farmLevel * .1f);
+            controller.addResourceBoost(researchName, farmLevel * .1f);
         }
-        else if(nameOfBuilding == "Quarry")
-            controller.addResourceBoost(nameOfBuilding, quarryLevel * .1f);
-        else if(nameOfBuilding == "Mine")
-            controller.addResourceBoost(nameOfBuilding, mineLevel * .1f);
-        else if(nameOfBuilding == "Forestry")
-            controller.addResourceBoost(nameOfBuilding, forestryLevel * .1f);
-        else if(nameOfBuilding == "")
+        else if (researchName == "Quarry")
+            controller.addResourceBoost(researchName, quarryLevel * .1f);
+        else if (researchName == "Mine")
+            controller.addResourceBoost(researchName, mineLevel * .1f);
+        else if (researchName == "Forestry")
+            controller.addResourceBoost(researchName, forestryLevel * .1f);
+        else if (researchName == "") ;
 
     }
 }

@@ -19,6 +19,8 @@ public class Plot : MonoBehaviour {
     GameObject setBuilding;
     bool empty;
 
+    float buildTime;
+
     struct buildingNeeds
     {
         public int foodNeed;
@@ -72,51 +74,65 @@ public class Plot : MonoBehaviour {
             setBuilding = forestry;
             //Food, wood, iron, stone
             b.setNeeds(200, 150, 50, 150);
+            buildTime = 15;
         }
         if (s == "Farm")
         {
             setBuilding = farm;
             b.setNeeds(50, 200, 50, 150);
+            buildTime = 15;
         }    
         if (s == "Mine")
         {
             setBuilding = mine;
             b.setNeeds(100, 200, 100, 200);
+            buildTime = 15;
         }
         if (s == "Quarry")
         {
             setBuilding = quarry;
             b.setNeeds(100, 200, 100, 150);
+            buildTime = 15;
         }
         if (s == "University")
         {
             setBuilding = university;
             b.setNeeds(300, 250, 150, 250);
+            buildTime = 45;
         }
         if (s == "Workshop")
         {
             setBuilding = workshop;
             b.setNeeds(250, 250, 300, 300);
+            buildTime = 45;
         }
         if (s == "Cottage")
         {
             setBuilding = cottage;
             b.setNeeds(150, 150, 150, 150);
+            buildTime = 30;
         }
         if (s == "Forge")
         {
             setBuilding = forge;
             b.setNeeds(250, 200, 300, 300);
+            buildTime = 60;
         }
 
         if (controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed))
         {
-            empty = false;
-            Instantiate(setBuilding, transform.position, Quaternion.identity);
+            Invoke("startConstruction", buildTime);
 
             controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
 
             gameObject.SetActive(false);
         }
+    }
+
+    void startConstruction()
+    {
+        empty = false;
+        Instantiate(setBuilding, transform.position, Quaternion.identity);
+
     }
 }
