@@ -16,13 +16,13 @@ public class Barracks : Building {
 
 	// Use this for initialization
 	new void Start () {
+        buildingName = "Barracks";
         base.Start();
 
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
         soldierList = GameObject.Find("BuySoldiersCanvas").GetComponent<Canvas>();
 
         soldierList.gameObject.SetActive(false);
-        buildingName = "Barracks";
         description = "Barracks allow you to enlist troops from your population and add them to the army";
 
         setProduction();

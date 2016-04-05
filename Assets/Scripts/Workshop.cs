@@ -5,8 +5,8 @@ public class Workshop : Building {
 
 	// Use this for initialization
 	new void Start () {
-        base.Start();
         buildingName = "Workshop";
+        base.Start();
         description = "Workshops are designed to give the city tools for advanced buildings.  They have no requirements other than a hefty price.";
 	}
 	

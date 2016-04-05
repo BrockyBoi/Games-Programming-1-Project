@@ -8,6 +8,7 @@ public class Cottage : Building {
     float popRate;
 	// Use this for initialization
 	new void Start () {
+        buildingName = "Cottage";
         base.Start();
 
         popLevel();
@@ -17,7 +18,6 @@ public class Cottage : Building {
 
         InvokeRepeating("addPopulation", popRate, popRate);
 
-        buildingName = "Cottage";
         description = "Cottages not only add to your total population, but add to your population based on the level of the cottage.";
         production = "Population added: " + populationLevel.ToString();
     }

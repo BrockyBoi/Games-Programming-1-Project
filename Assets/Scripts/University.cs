@@ -2,12 +2,23 @@
 using System.Collections;
 
 public class University : Building {
+
     string researchName;
     string resourceType;
     float resourceBoost;
     float researchTime;
+    bool researching;
 
     Barracks barracks;
+
+    public struct researchNeed
+    {
+        public int foodNeed;
+        public int logNeed;
+        public int stoneNeed;
+        public int ironNeed;
+    }
+    public researchNeed r;
 
     //Boosts that will go up by 10%
     int farmLevel, mineLevel, quarryLevel, forestryLevel, trainingLevel;
@@ -15,6 +26,7 @@ public class University : Building {
     int accuracyLevel, constructionLevel;
     // Use this for initialization
     new void Start () {
+        buildingName = "University";
         base.Start();
         barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
 	}
@@ -29,9 +41,7 @@ public class University : Building {
         researchName = s;
 
         if (s == "Farm")
-        {
             checkResearchTime(farmLevel);
-        }
         else if (s == "Mine")
             checkResearchTime(mineLevel);
         else if (s == "Quarry")
@@ -45,7 +55,43 @@ public class University : Building {
         else if (s == "Construction")
             checkResearchTime(constructionLevel);
 
-        Invoke("addBoost", researchTime);
+
+        if (controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching)
+        {
+            researching = true;
+            controller.subtractMultiple(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed);
+            Invoke("addBoost", researchTime);
+        }
+    }
+    
+    void researchNeeds(int f, int l, int s, int i)
+    {
+        r.foodNeed = f;
+        r.logNeed = l;
+        r.stoneNeed = s;
+        r.ironNeed = i;
+    }
+
+    void setResearchNeed()
+    {
+        switch (level)
+        {
+            case 1:
+                researchNeeds(700, 700, 700, 700);
+                break;
+            case 2:
+                researchNeeds(1500, 1500, 1500, 1500);
+                break;
+            case 3:
+                researchNeeds(3200, 3200, 3200, 3200);
+                break;
+            case 4:
+                researchNeeds(8000, 8000, 8000, 8000);
+                break;
+            default:
+                break;
+
+        }
     }
 
     protected override bool buildingPrereqs()
@@ -109,9 +155,9 @@ public class University : Building {
             controller.addResourceBoost(researchName, forestryLevel * .1f);
         else if (researchName == "Training")
             barracks.addBoost(trainingLevel * .1f);
-        else if(researchName == "Construction")
+        else if (researchName == "Construction")
+            buildingController.setUpgradeBoost(.05f);
 
-            
-
+        researching = false;
     }
 }

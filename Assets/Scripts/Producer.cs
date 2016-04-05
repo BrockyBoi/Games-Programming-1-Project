@@ -4,9 +4,8 @@ using UnityEngine.UI;
 
 public class Producer : Building
 {
-    public float productionRate;
-    protected int produceAmount;
-    protected int nextProduceAmount;
+    protected float produceAmount;
+    protected float nextProduceAmount;
     protected int lastResourceCap;
     protected int resourceCap;
 
@@ -18,15 +17,14 @@ public class Producer : Building
     // Use this for initialization
     protected new void Start()
     {
+        Debug.Log((1250.0f / 20.0f));
         base.Start();
         produceLevel();
         getCap();
         setControllerCap();
         setProduction();
 
-        // productionRate = 15;
-
-        controller.addResourceRate(buildingName, produceAmount + (int)(produceAmount * controller.getBoost(buildingName)));
+        controller.addResourceRate(buildingName, produceAmount + (produceAmount * controller.getBoost(buildingName)));
     }
 
     // Update is called once per frame
@@ -48,7 +46,7 @@ public class Producer : Building
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() == 4)
+                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() ==  3)
                     return true;
                 else return false;
                     default:
@@ -61,7 +59,7 @@ public class Producer : Building
         base.upgrade();
         produceLevel();
         setControllerCap();
-        controller.addResourceRate(buildingName, produceAmount + (int)(produceAmount * controller.getBoost(buildingName)));
+        controller.addResourceRate(buildingName, produceAmount + (produceAmount * controller.getBoost(buildingName)));
     }
 
     void produceLevel()
@@ -70,23 +68,23 @@ public class Producer : Building
         switch (level)
         {
             case 1:
-                produceAmount = 500 / 20;
-                nextProduceAmount = 1250 / 20;
+                produceAmount = 500.0f / 20.0f;
+                nextProduceAmount = 1250.0f / 20.0f;
                 break;
             case 2:
-                produceAmount = 1250 / 20;
-                nextProduceAmount = 2500 / 20;
+                produceAmount = 1250.0f / 20.0f;
+                nextProduceAmount = 2500.0f / 20.0f;
                 break;
             case 3:
-                produceAmount = 2500 / 20;
-                nextProduceAmount = 5000 / 20;
+                produceAmount = 2500.0f / 20.0f;
+                nextProduceAmount = 5000.0f / 20.0f;
                 break;
             case 4:
-                produceAmount = 5000 / 20;
-                nextProduceAmount = 10000 / 20;
+                produceAmount = 5000.0f / 20.0f;
+                nextProduceAmount = 10000.0f / 20.0f;
                 break;
             case 5:
-                produceAmount = 10000 / 20;
+                produceAmount = 10000.0f / 20.0f;
                 break;
             default:
                 break;

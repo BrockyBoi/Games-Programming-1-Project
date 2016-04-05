@@ -15,6 +15,7 @@ public class Army : MonoBehaviour {
     protected bool enemy;
 
     int forgeStrength;
+    float accuracyBoost;
 
     protected ResourceController controller;
     public struct needs
@@ -68,31 +69,31 @@ public class Army : MonoBehaviour {
         controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
 
         f.strength = 1;
-        f.hitChance = 65;
+        f.hitChance = 65 + (int)(65 * accuracyBoost);
         f.need.foodNeed = 50;
         f.need.woodNeed = 50;
         f.need.ironNeed = 15;
 
         s.strength = 5;
-        s.hitChance = 80;
+        s.hitChance = 80 + (int)(80 * accuracyBoost);
         s.need.foodNeed = 150;
         s.need.woodNeed = 25;
         s.need.ironNeed = 150;
 
         a.strength = 3;
-        a.hitChance = 90;
+        a.hitChance = 90 + (int)(90 * accuracyBoost);
         a.need.foodNeed = 150;
         a.need.woodNeed = 250;
         a.need.ironNeed = 50;
 
         cav.strength = 10;
-        cav.hitChance = 75;
+        cav.hitChance = 75 + (int)(75 * accuracyBoost);
         cav.need.foodNeed = 750;
         cav.need.woodNeed = 500;
         cav.need.ironNeed = 750;
 
         cat.strength = 50;
-        cat.hitChance = 55;
+        cat.hitChance = 55 + (int)(55 * accuracyBoost);
         cat.need.foodNeed = 500;
         cat.need.woodNeed = 2000;
         cat.need.ironNeed = 2000;
@@ -101,7 +102,18 @@ public class Army : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         text.text = displayArmy();
-	}
+
+        f.hitChance = 65 + (int)(65 * accuracyBoost);
+        s.hitChance = 80 + (int)(80 * accuracyBoost);
+        a.hitChance = 90 + (int)(90 * accuracyBoost);
+        cav.hitChance = 75 + (int)(75 * accuracyBoost);
+        cat.hitChance = 55 + (int)(55 * accuracyBoost);
+    }
+
+    public void setAccuracyBoost(float f)
+    {
+        accuracyBoost += f;
+    }
 
     public void setForgeStrength(int num)
     {

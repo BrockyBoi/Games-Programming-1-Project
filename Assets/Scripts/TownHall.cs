@@ -5,8 +5,8 @@ public class TownHall : Building {
 
 	// Use this for initialization
 	new void Start () {
-        base.Start();
         buildingName = "Town Hall";
+        base.Start();
         description = "A town hall is the most vital building of the city.  The only way to get the best structures is a fully leveled Town Hall";
         production = "";
 	}

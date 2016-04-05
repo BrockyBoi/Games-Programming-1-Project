@@ -5,9 +5,9 @@ public class Forge : Building {
     Army armyController;
 	// Use this for initialization
 	new void Start () {
+        buildingName = "Forge";
         base.Start();
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
-        buildingName = "Forge";
         description = "Forges are great for leveling up your army and making your troops do more damage";
 	}
 	
@@ -19,10 +19,7 @@ public class Forge : Building {
     protected override void upgrade()
     {
         base.upgrade();
-        if(canUpgrade())
-        {
-            setForgeStrength();
-        }
+        setForgeStrength();
     }
 
     protected override bool buildingPrereqs()

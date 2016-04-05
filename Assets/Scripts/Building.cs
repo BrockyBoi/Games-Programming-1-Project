@@ -25,6 +25,7 @@ public class Building : MonoBehaviour {
     protected BuildingController buildingController;
 
     protected float upgradeTime;
+    protected float upgradeBoost;
     protected bool isUpgrading;
 
     // Use this for initialization
@@ -91,21 +92,22 @@ public class Building : MonoBehaviour {
         switch(level)
         {
             case 1:
-                upgradeTime = 30;
+                upgradeTime = 30 * (1 - buildingController.getUpgradeBoost());
                 break;
             case 2:
-                upgradeTime = 90;
+                upgradeTime = 90 * (1 - buildingController.getUpgradeBoost());
                 break;
             case 3:
-                upgradeTime = 300;
+                upgradeTime = 300 * (1 - buildingController.getUpgradeBoost());
                 break;
             case 4:
-                upgradeTime = 1500;
+                upgradeTime = 1500 * (1 - buildingController.getUpgradeBoost());
                 break;
             default:
                 break;
         }
     }
+
 
     public string getTitleText()
     {

@@ -4,6 +4,7 @@ using System.Collections;
 public class BuildingController : MonoBehaviour {
     int farmLevel, quarryLevel, smithLevel, lumberyardLevel;
     int townHallLevel, cottageLevel, barracksLevel, forgeLevel, workShopLevel, universityLevel;
+    float upgradeBoost;
 
     // Use this for initialization
     void Start() {
@@ -35,6 +36,16 @@ public class BuildingController : MonoBehaviour {
             setWorkshopLevel(num);
         if (s == "Town Hall")
             setTownHallLevel(num);
+    }
+
+    public void setUpgradeBoost(float f)
+    {
+        upgradeBoost += f;
+    }
+
+    public float getUpgradeBoost()
+    {
+        return upgradeBoost;
     }
 
     void setFarmLevel(int num)

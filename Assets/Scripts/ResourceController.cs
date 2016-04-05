@@ -7,22 +7,22 @@ public class ResourceController : MonoBehaviour {
     public Text text;
 
     int food;
-    int foodRate;
+    float foodRate;
     float foodBoost;
     int foodCap;
 
     int logs;
-    int logRate;
+    float logRate;
     float logBoost;
     int logCap;
 
     int rocks;
-    int rockRate;
+    float rockRate;
     float rockBoost;
     int rockCap;
 
     int iron;
-    int ironRate;
+    float ironRate;
     float ironBoost;
     int ironCap;
 
@@ -42,10 +42,10 @@ public class ResourceController : MonoBehaviour {
         text.text = displayResources();
 	}
 
-    public void addFood(int num)
+    public void addFood(float num)
     {
         if(food + num < foodCap)
-            food += num;
+            food += (int)num;
     }
 
     public void subtractFood(int num)
@@ -68,11 +68,11 @@ public class ResourceController : MonoBehaviour {
         foodCap = num;
     }
 
-    public void addLogs(int num)
+    public void addLogs(float num)
     {
         if (logs + num < logCap)
         {
-            logs += num;
+            logs += (int)num;
         }
     }
 
@@ -96,10 +96,10 @@ public class ResourceController : MonoBehaviour {
         logCap = num;
     }
 
-    public void addRocks(int num)
+    public void addRocks(float num)
     {
         if(rocks + num < rockCap)
-            rocks += num;
+            rocks += (int)num;
     }
 
     public void subtractRocks(int num)
@@ -122,10 +122,10 @@ public class ResourceController : MonoBehaviour {
         rockCap = num;
     }
 
-    public void addIron(int num)
+    public void addIron(float num)
     {
         if(iron + num < ironCap)
-            iron += num;
+            iron += (int)num;
     }
 
     public void subtractIron(int num)
@@ -207,7 +207,7 @@ public class ResourceController : MonoBehaviour {
         subtractRocks(s);
     }
 
-    public void addResourceRate(string s, int i)
+    public void addResourceRate(string s, float i)
     {
         if(s == "Farm")
         {
