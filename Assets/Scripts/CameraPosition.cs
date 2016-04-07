@@ -10,6 +10,7 @@ public class CameraPosition : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         camera = GetComponent<Camera>();
+        town = true;
 	}
 	
 	// Update is called once per frame
@@ -47,15 +48,28 @@ public class CameraPosition : MonoBehaviour {
     {
         if (town)
         {
-            camera.fieldOfView = 130;
+            camera.transform.position = new Vector3(0, 1, -18);
+            camera.fieldOfView = 120;
         }
         else if (city)
         {
-            camera.fieldOfView = 165;
+            camera.transform.position = new Vector3(-42, -16f, -18);
+            camera.fieldOfView = 140;
         }
         else
         {
             camera.fieldOfView = 175;
         }
+    }
+
+    public string getPosition()
+    {
+        if (town)
+            return "Town";
+        if (city)
+            return "City";
+        if (world)
+            return "World";
+        return "";
     }
 }

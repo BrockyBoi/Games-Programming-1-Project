@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Plot : MonoBehaviour {
+    CameraPosition camera;
     ResourceController controller;
     public Canvas buildingList;
 
@@ -15,6 +16,9 @@ public class Plot : MonoBehaviour {
     public GameObject workshop;
     public GameObject cottage;
     public GameObject university;
+
+    bool town;
+    bool city;
 
     GameObject setBuilding;
     bool empty;
@@ -41,6 +45,7 @@ public class Plot : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
+        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
         empty = true;
         buildingList.gameObject.SetActive(false);
 	}
@@ -66,57 +71,76 @@ public class Plot : MonoBehaviour {
         empty = b;
     }
 
+    void getPosition()
+    {
+        if (camera.getPosition() == "Town")
+        {
+            town = true;
+            city = false;
+        }
+        else
+        {
+            town = false;
+            city = true;
+        }
+    }
 
     public void build(string s)
     {
-        if(s == "Forestry")
+        if (city)
         {
-            setBuilding = forestry;
-            //Food, wood, iron, stone
-            b.setNeeds(200, 150, 50, 150);
-            buildTime = 15;
+            if (s == "Forestry")
+            {
+                setBuilding = forestry;
+                //Food, wood, iron, stone
+                b.setNeeds(200, 150, 50, 150);
+                buildTime = 15;
+            }
+            if (s == "Farm")
+            {
+                setBuilding = farm;
+                b.setNeeds(50, 200, 50, 150);
+                buildTime = 15;
+            }
+            if (s == "Mine")
+            {
+                setBuilding = mine;
+                b.setNeeds(100, 200, 100, 200);
+                buildTime = 15;
+            }
+            if (s == "Quarry")
+            {
+                setBuilding = quarry;
+                b.setNeeds(100, 200, 100, 150);
+                buildTime = 15;
+            }
         }
-        if (s == "Farm")
+        else
         {
-            setBuilding = farm;
-            b.setNeeds(50, 200, 50, 150);
-            buildTime = 15;
-        }    
-        if (s == "Mine")
-        {
-            setBuilding = mine;
-            b.setNeeds(100, 200, 100, 200);
-            buildTime = 15;
-        }
-        if (s == "Quarry")
-        {
-            setBuilding = quarry;
-            b.setNeeds(100, 200, 100, 150);
-            buildTime = 15;
-        }
-        if (s == "University")
-        {
-            setBuilding = university;
-            b.setNeeds(300, 250, 150, 250);
-            buildTime = 45;
-        }
-        if (s == "Workshop")
-        {
-            setBuilding = workshop;
-            b.setNeeds(250, 250, 300, 300);
-            buildTime = 45;
-        }
-        if (s == "Cottage")
-        {
-            setBuilding = cottage;
-            b.setNeeds(150, 150, 150, 150);
-            buildTime = 30;
-        }
-        if (s == "Forge")
-        {
-            setBuilding = forge;
-            b.setNeeds(250, 200, 300, 300);
-            buildTime = 60;
+            if (s == "University")
+            {
+                setBuilding = university;
+                b.setNeeds(300, 250, 150, 250);
+                buildTime = 45;
+            }
+            if (s == "Workshop")
+            {
+                setBuilding = workshop;
+                b.setNeeds(250, 250, 300, 300);
+                buildTime = 45;
+            }
+            if (s == "Cottage")
+            {
+                setBuilding = cottage;
+                b.setNeeds(150, 150, 150, 150);
+                buildTime = 30;
+            }
+            if (s == "Forge")
+            {
+                setBuilding = forge;
+                b.setNeeds(250, 200, 300, 300);
+                buildTime = 60;
+            }
         }
 
         if (controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed))
@@ -133,6 +157,5 @@ public class Plot : MonoBehaviour {
     {
         empty = false;
         Instantiate(setBuilding, transform.position, Quaternion.identity);
-
     }
 }

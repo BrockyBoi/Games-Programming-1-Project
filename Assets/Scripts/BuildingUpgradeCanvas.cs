@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
+    CameraPosition camera;
     Building currentBuilding;
     Barracks barracksScript;
     Army armyController;
@@ -19,9 +20,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     Text catNeeds;
 
     bool running;
+    float upgradeBoost;
 
 	// Use this for initialization
 	void Start () {
+        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
         upgradeCanvas = GameObject.Find("BuildingDescriptionCanvas").GetComponent<Canvas>();
         barracksCanvas = GameObject.Find("BarracksCanvas");
@@ -74,6 +77,16 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             barracksScript = b.GetComponent<Barracks>();
     }
 
+    public void setUpgradeBoost(float f)
+    {
+        upgradeBoost += f;
+    }
+
+    public float getUpgradeBoost()
+    {
+        return upgradeBoost;
+    }
+
     public void buyFarmer(int num)
     {
         barracksScript.buyFarmer(num);
@@ -104,5 +117,15 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     {
         running = false;
         currentBuilding = null;
+    }
+
+    public void pressTown()
+    {
+        camera.setCurrentCam("Town");
+    }
+
+    public void pressCity()
+    {
+        camera.setCurrentCam("City");
     }
 }

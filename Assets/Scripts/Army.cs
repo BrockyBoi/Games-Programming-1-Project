@@ -29,6 +29,7 @@ public class Army : MonoBehaviour {
         public int strength;
         public int hitChance;
         public needs need;
+        public float recruitTime;
     }
     public farmer f;
 
@@ -37,6 +38,7 @@ public class Army : MonoBehaviour {
         public int strength;
         public int hitChance;
         public needs need;
+        public float recruitTime;
     }
     public soldier s;
 
@@ -45,6 +47,7 @@ public class Army : MonoBehaviour {
         public int strength;
         public int hitChance;
         public needs need;
+        public float recruitTime;
     }
     public archer a;
 
@@ -53,6 +56,7 @@ public class Army : MonoBehaviour {
         public int strength;
         public int hitChance;
         public needs need;
+        public float recruitTime;
     }
     public cavalry cav;
 
@@ -61,6 +65,7 @@ public class Army : MonoBehaviour {
         public int strength;
         public int hitChance;
         public needs need;
+        public float recruitTime;
     }
     public catapult cat;
 
@@ -73,30 +78,35 @@ public class Army : MonoBehaviour {
         f.need.foodNeed = 50;
         f.need.woodNeed = 50;
         f.need.ironNeed = 15;
+        f.recruitTime = 2;
 
         s.strength = 5;
         s.hitChance = 80 + (int)(80 * accuracyBoost);
         s.need.foodNeed = 150;
         s.need.woodNeed = 25;
         s.need.ironNeed = 150;
+        s.recruitTime = 10;
 
         a.strength = 3;
         a.hitChance = 90 + (int)(90 * accuracyBoost);
         a.need.foodNeed = 150;
         a.need.woodNeed = 250;
         a.need.ironNeed = 50;
+        a.recruitTime = 15;
 
         cav.strength = 10;
         cav.hitChance = 75 + (int)(75 * accuracyBoost);
         cav.need.foodNeed = 750;
         cav.need.woodNeed = 500;
         cav.need.ironNeed = 750;
+        cav.recruitTime = 30;
 
         cat.strength = 50;
         cat.hitChance = 55 + (int)(55 * accuracyBoost);
         cat.need.foodNeed = 500;
         cat.need.woodNeed = 2000;
         cat.need.ironNeed = 2000;
+        cat.recruitTime = 60;
     }
 	
 	// Update is called once per frame

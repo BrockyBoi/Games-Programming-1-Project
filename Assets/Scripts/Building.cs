@@ -25,7 +25,6 @@ public class Building : MonoBehaviour {
     protected BuildingController buildingController;
 
     protected float upgradeTime;
-    protected float upgradeBoost;
     protected bool isUpgrading;
 
     // Use this for initialization
@@ -62,8 +61,29 @@ public class Building : MonoBehaviour {
             controller.subtractLogs(u.logsNeeded);
             controller.subtractRocks(u.rocksNeeded);
 
+            setUpdateTime();
             Invoke("upgrade", upgradeTime);
             isUpgrading = true;
+        }
+    }
+
+
+    protected virtual void setUpdateTime()
+    {
+        switch(level)
+        {
+            case 1:
+                upgradeTime = 15 - (15 * buildingController.getUpgradeBoost());
+                break;
+            case 2:
+                upgradeTime = 45 - (45 * buildingController.getUpgradeBoost()); ;
+                break;
+            case 3:
+                upgradeTime = 120 - (120 * buildingController.getUpgradeBoost()); ;
+                break;
+            case 4:
+                upgradeTime = 300 - (300 * buildingController.getUpgradeBoost()); ;
+                break;
         }
     }
 

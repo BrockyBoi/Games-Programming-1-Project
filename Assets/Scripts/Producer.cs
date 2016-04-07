@@ -17,7 +17,6 @@ public class Producer : Building
     // Use this for initialization
     protected new void Start()
     {
-        Debug.Log((1250.0f / 20.0f));
         base.Start();
         produceLevel();
         getCap();

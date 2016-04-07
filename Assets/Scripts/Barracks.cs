@@ -14,6 +14,32 @@ public class Barracks : Building {
     bool cavalry;
     bool catapult;
 
+
+    bool boughtFarmer;
+    float currentFarmerTime;
+    float farmerTime;
+    int farmerNum;
+
+    bool boughtSoldier;
+    float currentSoldierTime;
+    float soldierTime;
+    int soldierNum;
+
+    bool boughtArcher;
+    float currentArcherTime;
+    float archerTime;
+    int archerNum;
+
+    bool boughtCavalry;
+    float currentCavalryTime;
+    float cavalryTime;
+    int cavalryNum;
+
+    bool boughtCatapult;
+    float currentCatapultTime;
+    float catapultTime;
+    int catapultNum;
+
 	// Use this for initialization
 	new void Start () {
         buildingName = "Barracks";
@@ -24,29 +50,55 @@ public class Barracks : Building {
 
         soldierList.gameObject.SetActive(false);
         description = "Barracks allow you to enlist troops from your population and add them to the army";
-
-        setProduction();
 	}
  
 	
 	// Update is called once per frame
 	new void Update () {
         base.Update();
+
+        checkFarmer();
+        checkSoldier();
+        checkArcher();
+        checkCavalry();
+        checkCatapult(); 
 	}
 
     public void buyFarmer(int num)
     {
-        if(    controller.getFood() >= armyController.f.need.foodNeed * num
-            && controller.getLogs() >= armyController.f.need.woodNeed * num
-            && controller.getIron() >= armyController.f.need.ironNeed * num
+        if(controller.meetsResourceNeeds(armyController.f.need.foodNeed * num, 
+                                         armyController.f.need.woodNeed * num, 
+                                         armyController.f.need.ironNeed * num, 0)
             && controller.getPopulation() > 0)
         {
-            armyController.addFarmer(num);
-
             controller.subtractPopulation(num);
             controller.subtractFood(armyController.f.need.foodNeed * num);
             controller.subtractIron(armyController.f.need.ironNeed * num);
             controller.subtractLogs(armyController.f.need.woodNeed * num);
+
+            farmerNum++;
+            farmerTime += armyController.f.recruitTime;
+
+            if (boughtFarmer == false)
+            {
+                currentFarmerTime = Time.time;
+                boughtFarmer = true; 
+                farmerTime += currentFarmerTime;
+            }
+        }
+    }
+
+    void checkFarmer()
+    {
+        if (boughtFarmer == true)
+        {
+            if (Time.time >= farmerTime)
+            {
+                armyController.addFarmer(farmerNum);
+                boughtFarmer = false;
+                farmerNum = 0;
+                farmerTime = 0;
+            }
         }
     }
 
@@ -57,12 +109,36 @@ public class Barracks : Building {
             &&         controller.getIron() >= armyController.s.need.ironNeed * num
             && controller.getPopulation() > 0)
         {
-            armyController.addSoldier(num);
+            //armyController.addSoldier(num);
 
             controller.subtractPopulation(num);
             controller.subtractFood(armyController.s.need.foodNeed * num);
             controller.subtractIron(armyController.s.need.ironNeed * num);
             controller.subtractLogs(armyController.s.need.woodNeed * num);
+
+            soldierNum++;
+            soldierTime += armyController.s.recruitTime;
+
+            if (boughtSoldier == false)
+            {
+                currentSoldierTime = Time.time;
+                boughtSoldier = true;
+                soldierTime += currentSoldierTime;
+            }
+        }
+    }
+
+    void checkSoldier()
+    {
+        if (boughtSoldier == true)
+        {
+            if (Time.time >= soldierTime)
+            {
+                armyController.addSoldier(soldierNum);
+                boughtSoldier = false;
+                soldierNum = 0;
+                soldierTime = 0;
+            }
         }
     }
 
@@ -73,12 +149,36 @@ public class Barracks : Building {
             &&        controller.getIron() >= armyController.a.need.ironNeed * num
             && controller.getPopulation() > 0)
         {
-            armyController.addArcher(num);
+            //armyController.addArcher(num);
 
             controller.subtractPopulation(num);
             controller.subtractFood(armyController.a.need.foodNeed * num);
             controller.subtractIron(armyController.a.need.ironNeed * num);
             controller.subtractLogs(armyController.a.need.woodNeed * num);
+
+            archerNum++;
+            archerTime += armyController.a.recruitTime;
+
+            if (boughtArcher == false)
+            {
+                currentArcherTime = Time.time;
+                boughtArcher = true;
+                archerTime += currentArcherTime;
+            }
+        }
+    }
+
+    void checkArcher()
+    {
+        if (boughtArcher == true)
+        {
+            if (Time.time >= archerTime)
+            {
+                armyController.addArcher(archerNum);
+                boughtArcher = false;
+                archerNum = 0;
+                archerTime = 0;
+            }
         }
     }
 
@@ -89,12 +189,36 @@ public class Barracks : Building {
             &&         controller.getIron() >= armyController.cav.need.ironNeed * num
             && controller.getPopulation() > 0)
         {
-            armyController.addCavalry(num);
+            //armyController.addCavalry(num);
 
             controller.subtractPopulation(num);
             controller.subtractFood(armyController.cav.need.foodNeed * num);
             controller.subtractIron(armyController.cav.need.ironNeed * num);
             controller.subtractLogs(armyController.cav.need.woodNeed * num);
+
+            cavalryNum++;
+            cavalryTime += armyController.cav.recruitTime;
+
+            if (boughtCavalry == false)
+            {
+                cavalryTime = Time.time;
+                boughtCavalry = true;
+                cavalryTime += currentCavalryTime;
+            }
+        }
+    }
+
+    void checkCavalry()
+    {
+        if (boughtCavalry == true)
+        {
+            if (Time.time >= cavalryTime)
+            {
+                armyController.addCavalry(cavalryNum);
+                boughtCavalry = false;
+                cavalryNum = 0;
+                cavalryTime = 0;
+            }
         }
     }
 
@@ -105,12 +229,36 @@ public class Barracks : Building {
             &&          controller.getIron() >= armyController.cat.need.ironNeed * num
             && controller.getPopulation() > 0)
         {
-            armyController.addCatapult(num);
+            //armyController.addCatapult(num);
 
             controller.subtractPopulation(num);
             controller.subtractFood(armyController.cat.need.foodNeed * num);
             controller.subtractIron(armyController.cat.need.ironNeed * num);
             controller.subtractLogs(armyController.cat.need.woodNeed * num);
+
+            catapultNum++;
+            catapultTime += armyController.cat.recruitTime;
+
+            if (boughtCatapult == false)
+            {
+                currentCatapultTime = Time.time;
+                boughtCatapult = true;
+                catapultTime += currentCatapultTime;
+            }
+        }
+    }
+
+    void checkCatapult()
+    {
+        if (boughtCatapult == true)
+        {
+            if (Time.time >= catapultTime)
+            {
+                armyController.addCatapult(catapultNum);
+                boughtCatapult = false;
+                catapultNum = 0;
+                catapultTime = 0;
+            }
         }
     }
 

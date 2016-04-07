@@ -10,6 +10,7 @@ public class University : Building {
     bool researching;
 
     Barracks barracks;
+    Army armyController;
 
     public struct researchNeed
     {
@@ -29,6 +30,8 @@ public class University : Building {
         buildingName = "University";
         base.Start();
         barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
+        armyController = GameObject.Find("Army Controller").GetComponent<Army>();
+
 	}
 	
 	// Update is called once per frame
@@ -157,6 +160,8 @@ public class University : Building {
             barracks.addBoost(trainingLevel * .1f);
         else if (researchName == "Construction")
             buildingController.setUpgradeBoost(.05f);
+        else if (researchName == "Accuracy")
+            armyController.setAccuracyBoost(.05f);
 
         researching = false;
     }
