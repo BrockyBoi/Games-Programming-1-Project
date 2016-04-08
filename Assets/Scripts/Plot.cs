@@ -48,6 +48,7 @@ public class Plot : MonoBehaviour {
         camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
         empty = true;
         buildingList.gameObject.SetActive(false);
+        getPosition();
 	}
 	
 	// Update is called once per frame
@@ -134,6 +135,7 @@ public class Plot : MonoBehaviour {
                 setBuilding = cottage;
                 b.setNeeds(150, 150, 150, 150);
                 buildTime = 30;
+                Debug.Log("HI");
             }
             if (s == "Forge")
             {
@@ -146,15 +148,21 @@ public class Plot : MonoBehaviour {
         if (controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed))
         {
             Invoke("startConstruction", buildTime);
-
+            Debug.Log("Should be building");
             controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
 
             gameObject.SetActive(false);
         }
     }
 
+    public void closeCanvas()
+    {
+        buildingList.gameObject.SetActive(false);
+    }
+
     void startConstruction()
     {
+        Debug.Log("Building");
         empty = false;
         Instantiate(setBuilding, transform.position, Quaternion.identity);
     }

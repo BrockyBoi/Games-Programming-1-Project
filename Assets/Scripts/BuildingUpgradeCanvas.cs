@@ -4,6 +4,7 @@ using System.Collections;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
     CameraPosition camera;
+
     Building currentBuilding;
     Barracks barracksScript;
     Army armyController;
@@ -67,6 +68,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         {
             upgradeCanvas.gameObject.SetActive(false);
         }
+    }
+
+    public void buyBuilding(string s)
+    {
+
     }
 
     public void setBuilding(Building b)

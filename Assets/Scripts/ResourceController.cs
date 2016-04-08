@@ -35,6 +35,10 @@ public class ResourceController : MonoBehaviour {
 	void Start () {
         Invoke("incrementResources", productionRate);
         InvokeRepeating("incrementResources", productionRate, productionRate);
+        food = 5000;
+        logs = 5000;
+        rocks = 5000;
+        iron = 5000;
 	}
 	
 	// Update is called once per frame
