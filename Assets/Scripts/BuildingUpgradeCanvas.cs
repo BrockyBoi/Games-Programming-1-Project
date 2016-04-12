@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
+    Plot selectedPlot;
     CameraPosition camera;
 
     Building currentBuilding;
@@ -70,9 +71,14 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         }
     }
 
-    public void buyBuilding(string s)
+    public void setPlot(Plot p)
     {
+        selectedPlot = p;
+    }
 
+    public void build(string s)
+    {
+        selectedPlot.build(s);
     }
 
     public void setBuilding(Building b)

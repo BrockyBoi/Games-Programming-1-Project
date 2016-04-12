@@ -28,6 +28,7 @@ public class University : Building {
     // Use this for initialization
     new void Start () {
         buildingName = "University";
+        description = "Universities allows you to research new technologies to speed up productions";
         base.Start();
         barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
@@ -73,6 +74,29 @@ public class University : Building {
         r.logNeed = l;
         r.stoneNeed = s;
         r.ironNeed = i;
+    }
+
+    protected override void upgradeParameters()
+    {
+        //Cap bases are 1500, 5000, 8000, 15000
+        //Food, wood, iron, stone
+        switch (level)
+        {
+            case 1:
+                setNeeds(800, 1000, 1200, 1200);
+                break;
+            case 2:
+                setNeeds(3500, 4500, 4500, 4500);
+                break;
+            case 3:
+                setNeeds(6500, 8250, 9500, 9500);
+                break;
+            case 4:
+                setNeeds(17500, 25000, 28000, 28000);
+                break;
+            default:
+                break;
+        }
     }
 
     void setResearchNeed()
