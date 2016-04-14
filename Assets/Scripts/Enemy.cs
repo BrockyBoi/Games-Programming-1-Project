@@ -23,7 +23,8 @@ public class Enemy : Army {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	new void Update () {
+        base.Update();
         if (getTotalStrength() < 1)
         {
             controller.addResourceBoost(resourceType, resourceBoost);

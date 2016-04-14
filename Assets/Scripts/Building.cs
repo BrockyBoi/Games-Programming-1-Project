@@ -21,14 +21,18 @@ public class Building : MonoBehaviour {
     protected NextUpgrade u;
     protected Text needsText;
 
+    protected CameraPosition camera;
     protected ResourceController controller;
     protected BuildingController buildingController;
 
     protected float upgradeTime;
     protected bool isUpgrading;
 
+    protected bool townBuilding;
+
     // Use this for initialization
     protected void Start () {
+        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
         controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
         upgradeCanvas = GameObject.Find("Canvases").GetComponent<BuildingUpgradeCanvas>();
         buildingController = GameObject.Find("Building Controller").GetComponent<BuildingController>();
@@ -39,7 +43,7 @@ public class Building : MonoBehaviour {
 
         buildingController.setBuildingLevel(buildingName, level);
 
-        upgradeTime = 15;
+        setUpdateTime();
     }
 	
 	// Update is called once per frame
@@ -49,7 +53,12 @@ public class Building : MonoBehaviour {
 
     protected void OnMouseDown()
     {
-        upgradeCanvas.setBuilding(this);
+        townBuilding = checkBuildingType();
+        if(townBuilding && camera.getPosition() == "Town")
+            upgradeCanvas.setBuilding(this);
+        else if(!townBuilding && camera.getPosition() == "City")
+            upgradeCanvas.setBuilding(this);
+
     }
 
     public void pressUpgrade()
@@ -85,6 +94,15 @@ public class Building : MonoBehaviour {
                 upgradeTime = 300 - (300 * buildingController.getUpgradeBoost()); ;
                 break;
         }
+    }
+
+    bool checkBuildingType()
+    {
+        if (buildingName == "Town Hall" || buildingName == "University" || buildingName == "Barracks" || buildingName == "Cottage" || buildingName == "Workshop")
+        {
+            return true;
+        }
+        else return false;
     }
 
     protected virtual void upgrade()
@@ -144,6 +162,11 @@ public class Building : MonoBehaviour {
         return production;
     }
 
+    public string getUpgradeTimeText()
+    {
+        return "Upgrade Time: " + upgradeTime.ToString();
+    }
+
     protected void setNeeds(int food, int logs, int rocks, int iron)
     {
         u.foodNeeded = food;
@@ -155,7 +178,8 @@ public class Building : MonoBehaviour {
     public string createNeedString()
     {
         return "Food needed : " + u.foodNeeded + "\nWood needed: " + u.logsNeeded +
-            "\nStone needed: " + u.rocksNeeded + "\nIron needed: " + u.ironNeeded;
+            "\nStone needed: " + u.rocksNeeded + "\nIron needed: " + u.ironNeeded +
+            "\nBuildings: " + preReq;
     }
 
     public string makeNeedString(string s, int l)

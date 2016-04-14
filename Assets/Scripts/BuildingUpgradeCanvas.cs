@@ -15,6 +15,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     Text description;
     Text needs;
     Text production;
+    Text upgradeTime;
     Text fNeeds;
     Text sNeeds;
     Text aNeeds;
@@ -34,6 +35,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         description = GameObject.Find("BuildingDescription").GetComponent<Text>();
         production = GameObject.Find("ProductionRates").GetComponent<Text>();
         needs = GameObject.Find("NeedsText").GetComponent<Text>();
+        upgradeTime = GameObject.Find("Upgrade Time").GetComponent<Text>();
 
         fNeeds = GameObject.Find("Farmer Text").GetComponent<Text>();
         sNeeds = GameObject.Find("Soldier Text").GetComponent<Text>();
@@ -64,6 +66,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             description.text = currentBuilding.getDescriptionText();
             production.text = currentBuilding.getProductionText();
             needs.text = currentBuilding.createNeedString();
+            upgradeTime.text = currentBuilding.getUpgradeTimeText();
         }
         else
         {

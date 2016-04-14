@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Barracks : Building {
-    Canvas soldierList;
     Army armyController;
 
     float trainingTime;
@@ -46,8 +45,6 @@ public class Barracks : Building {
         base.Start();
 
         armyController = GameObject.Find("Army Controller").GetComponent<Army>();
-
-        soldierList.gameObject.SetActive(false);
         description = "Barracks allow you to enlist troops from your population and add them to the army";
 	}
  
