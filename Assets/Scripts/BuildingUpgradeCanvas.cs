@@ -3,67 +3,57 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
+    public Camera cam;
+    Vector3 mousePos, worldPoint;
+    public static BuildingUpgradeCanvas controller;
+
     Plot selectedPlot;
-    CameraPosition camera;
 
     Building currentBuilding;
     Barracks barracksScript;
-    Army armyController;
-    Canvas upgradeCanvas;
-    GameObject barracksCanvas;
-    Text title;
-    Text description;
-    Text needs;
-    Text production;
-    Text upgradeTime;
-    Text fNeeds;
-    Text sNeeds;
-    Text aNeeds;
-    Text cavNeeds;
-    Text catNeeds;
+
+    public Canvas upgradeCanvas;
+    public GameObject barracksCanvas;
+    SpriteRenderer barracksCanvasSprite;
+    public Text title;
+    public Text description;
+    public Text needs;
+    public Text production;
+    public Text upgradeTime;
+    public Text fNeeds;
+    public Text sNeeds;
+    public Text aNeeds;
+    public Text cavNeeds;
+    public Text catNeeds;
 
     bool running;
     float upgradeBoost;
 
+    void Awake()
+    {
+        controller = this;
+    }
+
 	// Use this for initialization
 	void Start () {
-        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
-        armyController = GameObject.Find("Army Controller").GetComponent<Army>();
-        upgradeCanvas = GameObject.Find("BuildingDescriptionCanvas").GetComponent<Canvas>();
-        barracksCanvas = GameObject.Find("BarracksCanvas");
-        title = GameObject.Find("BuildingTitle").GetComponent<Text>();
-        description = GameObject.Find("BuildingDescription").GetComponent<Text>();
-        production = GameObject.Find("ProductionRates").GetComponent<Text>();
-        needs = GameObject.Find("NeedsText").GetComponent<Text>();
-        upgradeTime = GameObject.Find("Upgrade Time").GetComponent<Text>();
 
-        fNeeds = GameObject.Find("Farmer Text").GetComponent<Text>();
-        sNeeds = GameObject.Find("Soldier Text").GetComponent<Text>();
-        aNeeds = GameObject.Find("Archer Text").GetComponent<Text>();
-        cavNeeds = GameObject.Find("Cavalry Text").GetComponent<Text>();
-        catNeeds = GameObject.Find("Catapult Text").GetComponent<Text>();
+        fNeeds.text = Army.controller.farmerNeeds();
+        sNeeds.text = Army.controller.soldierNeeds();
+        aNeeds.text = Army.controller.archerNeeds();
+        cavNeeds.text = Army.controller.cavalryNeeds();
+        catNeeds.text = Army.controller.catapultNeeds();
+
+        barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update () {
+        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+        worldPoint = new Vector3(mousePos.x, mousePos.y, 0);
 
         if (running)
         {
-            if (currentBuilding.tag == "Barracks")
-            {
-                barracksCanvas.gameObject.SetActive(true);
-
-                fNeeds.text = armyController.farmerNeeds();
-                sNeeds.text = armyController.soldierNeeds();
-                aNeeds.text = armyController.archerNeeds();
-                cavNeeds.text = armyController.cavalryNeeds();
-                catNeeds.text = armyController.catapultNeeds();
-            }
-            else barracksCanvas.gameObject.SetActive(false);
-
-            upgradeCanvas.gameObject.SetActive(true);
             title.text = currentBuilding.getTitleText();
-            description.text = currentBuilding.getDescriptionText();
             production.text = currentBuilding.getProductionText();
             needs.text = currentBuilding.createNeedString();
             upgradeTime.text = currentBuilding.getUpgradeTimeText();
@@ -71,6 +61,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         else
         {
             upgradeCanvas.gameObject.SetActive(false);
+            barracksCanvas.gameObject.SetActive(true);
         }
     }
 
@@ -87,9 +78,21 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public void setBuilding(Building b)
     {
         currentBuilding = b;
+
+        description.text = currentBuilding.getDescriptionText();
+
         running = true;
+
         if (b.tag == "Barracks")
+        {
             barracksScript = b.GetComponent<Barracks>();
+            barracksCanvas.gameObject.SetActive(true);
+        }
+        else
+        {
+            upgradeCanvas.gameObject.SetActive(true);
+            barracksCanvas.gameObject.SetActive(false);
+        }
     }
 
     public void setUpgradeBoost(float f)
@@ -136,11 +139,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     public void pressTown()
     {
-        camera.setCurrentCam("Town");
+        CameraPosition.controller.setCurrentCam("Town");
     }
 
     public void pressCity()
     {
-        camera.setCurrentCam("City");
+        CameraPosition.controller.setCurrentCam("City");
     }
 }

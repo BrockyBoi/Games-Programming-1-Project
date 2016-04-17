@@ -27,7 +27,7 @@ public class Enemy : Army {
         base.Update();
         if (getTotalStrength() < 1)
         {
-            controller.addResourceBoost(resourceType, resourceBoost);
+            ResourceController.controller.addResourceBoost(resourceType, resourceBoost);
             Destroy(gameObject);
         }
 

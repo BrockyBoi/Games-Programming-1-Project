@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class BattleSystem : MonoBehaviour {
+    public static BattleSystem controller;
+
     //Setup variables
     int fS1, fS2, sS1, sS2, aS1, aS2, cavS1, cavS2, catS1, catS2;
     //Percentages each part of the army makes up
@@ -16,6 +18,10 @@ public class BattleSystem : MonoBehaviour {
     Army army1, army2;
     public Army a1, a2;
 
+    void Awake()
+    {
+        controller = this;
+    }
 
     // Use this for initialization
     void Start () {

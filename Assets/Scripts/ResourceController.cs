@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class ResourceController : MonoBehaviour {
     public Text text;
 
+    public static ResourceController controller;
+
     int food;
     float foodRate;
     float foodBoost;
@@ -31,9 +33,13 @@ public class ResourceController : MonoBehaviour {
 
     public float productionRate;
 
+    void Awake()
+    {
+        controller = this;
+    }
+
 	// Use this for initialization
 	void Start () {
-        Invoke("incrementResources", productionRate);
         InvokeRepeating("incrementResources", productionRate, productionRate);
         food = 5000;
         logs = 5000;

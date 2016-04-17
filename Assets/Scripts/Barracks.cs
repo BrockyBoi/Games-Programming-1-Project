@@ -2,9 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Barracks : Building {
-    Army armyController;
-
+public class Barracks : Building { 
     float trainingTime;
     float trainingBoost;
 
@@ -12,7 +10,6 @@ public class Barracks : Building {
     bool archer;
     bool cavalry;
     bool catapult;
-
 
     bool boughtFarmer;
     float currentFarmerTime;
@@ -44,7 +41,6 @@ public class Barracks : Building {
         buildingName = "Barracks";
         base.Start();
 
-        armyController = GameObject.Find("Army Controller").GetComponent<Army>();
         description = "Barracks allow you to enlist troops from your population and add them to the army";
 	}
  
@@ -62,18 +58,18 @@ public class Barracks : Building {
 
     public void buyFarmer(int num)
     {
-        if(controller.meetsResourceNeeds(armyController.f.need.foodNeed * num, 
-                                         armyController.f.need.woodNeed * num, 
-                                         armyController.f.need.ironNeed * num, 0)
-            && controller.getPopulation() > 0)
+        if(ResourceController.controller.meetsResourceNeeds(Army.controller.f.need.foodNeed * num,
+                                         Army.controller.f.need.woodNeed * num,
+                                         Army.controller.f.need.ironNeed * num, 0)
+            && ResourceController.controller.getPopulation() > 0)
         {
-            controller.subtractPopulation(num);
-            controller.subtractFood(armyController.f.need.foodNeed * num);
-            controller.subtractIron(armyController.f.need.ironNeed * num);
-            controller.subtractLogs(armyController.f.need.woodNeed * num);
+            ResourceController.controller.subtractPopulation(num);
+            ResourceController.controller.subtractFood(Army.controller.f.need.foodNeed * num);
+            ResourceController.controller.subtractIron(Army.controller.f.need.ironNeed * num);
+            ResourceController.controller.subtractLogs(Army.controller.f.need.woodNeed * num);
 
-            farmerNum++;
-            farmerTime += armyController.f.recruitTime;
+            farmerNum += num;
+            farmerTime += Army.controller.f.recruitTime;
 
             if (boughtFarmer == false)
             {
@@ -90,7 +86,7 @@ public class Barracks : Building {
         {
             if (Time.time >= farmerTime)
             {
-                armyController.addFarmer(farmerNum);
+                Army.controller.addFarmer(farmerNum);
                 boughtFarmer = false;
                 farmerNum = 0;
                 farmerTime = 0;
@@ -100,20 +96,18 @@ public class Barracks : Building {
 
     public void buySoldier(int num)
     {
-        if (soldier && controller.getFood() >= armyController.s.need.foodNeed * num
-            &&         controller.getLogs() >= armyController.s.need.woodNeed * num
-            &&         controller.getIron() >= armyController.s.need.ironNeed * num
-            && controller.getPopulation() > 0)
+        if (soldier && ResourceController.controller.getFood() >= Army.controller.s.need.foodNeed * num
+            &&         ResourceController.controller.getLogs() >= Army.controller.s.need.woodNeed * num
+            &&         ResourceController.controller.getIron() >= Army.controller.s.need.ironNeed * num
+            &&         ResourceController.controller.getPopulation() > 0)
         {
-            //armyController.addSoldier(num);
+            ResourceController.controller.subtractPopulation(num);
+            ResourceController.controller.subtractFood(Army.controller.s.need.foodNeed * num);
+            ResourceController.controller.subtractIron(Army.controller.s.need.ironNeed * num);
+            ResourceController.controller.subtractLogs(Army.controller.s.need.woodNeed * num);
 
-            controller.subtractPopulation(num);
-            controller.subtractFood(armyController.s.need.foodNeed * num);
-            controller.subtractIron(armyController.s.need.ironNeed * num);
-            controller.subtractLogs(armyController.s.need.woodNeed * num);
-
-            soldierNum++;
-            soldierTime += armyController.s.recruitTime;
+            soldierNum += num;
+            soldierTime += Army.controller.s.recruitTime;
 
             if (boughtSoldier == false)
             {
@@ -130,7 +124,7 @@ public class Barracks : Building {
         {
             if (Time.time >= soldierTime)
             {
-                armyController.addSoldier(soldierNum);
+                Army.controller.addSoldier(soldierNum);
                 boughtSoldier = false;
                 soldierNum = 0;
                 soldierTime = 0;
@@ -140,20 +134,20 @@ public class Barracks : Building {
 
     public void buyArcher(int num)
     {
-        if (archer && controller.getFood() >= armyController.a.need.foodNeed * num
-            &&        controller.getLogs() >= armyController.a.need.woodNeed * num
-            &&        controller.getIron() >= armyController.a.need.ironNeed * num
-            && controller.getPopulation() > 0)
+        if (archer && ResourceController.controller.getFood() >= Army.controller.a.need.foodNeed * num
+            &&        ResourceController.controller.getLogs() >= Army.controller.a.need.woodNeed * num
+            &&        ResourceController.controller.getIron() >= Army.controller.a.need.ironNeed * num
+            &&        ResourceController.controller.getPopulation() > 0)
         {
             //armyController.addArcher(num);
 
-            controller.subtractPopulation(num);
-            controller.subtractFood(armyController.a.need.foodNeed * num);
-            controller.subtractIron(armyController.a.need.ironNeed * num);
-            controller.subtractLogs(armyController.a.need.woodNeed * num);
+            ResourceController.controller.subtractPopulation(num);
+            ResourceController.controller.subtractFood(Army.controller.a.need.foodNeed * num);
+            ResourceController.controller.subtractIron(Army.controller.a.need.ironNeed * num);
+            ResourceController.controller.subtractLogs(Army.controller.a.need.woodNeed * num);
 
-            archerNum++;
-            archerTime += armyController.a.recruitTime;
+            archerNum += num;
+            archerTime += Army.controller.a.recruitTime;
 
             if (boughtArcher == false)
             {
@@ -170,7 +164,7 @@ public class Barracks : Building {
         {
             if (Time.time >= archerTime)
             {
-                armyController.addArcher(archerNum);
+                Army.controller.addArcher(archerNum);
                 boughtArcher = false;
                 archerNum = 0;
                 archerTime = 0;
@@ -180,20 +174,20 @@ public class Barracks : Building {
 
     public void buyCavalry(int num)
     {
-        if (cavalry && controller.getFood() >= armyController.cav.need.foodNeed * num
-            &&         controller.getLogs() >= armyController.cav.need.woodNeed * num
-            &&         controller.getIron() >= armyController.cav.need.ironNeed * num
-            && controller.getPopulation() > 0)
+        if (cavalry && ResourceController.controller.getFood() >= Army.controller.cav.need.foodNeed * num
+            &&         ResourceController.controller.getLogs() >= Army.controller.cav.need.woodNeed * num
+            &&         ResourceController.controller.getIron() >= Army.controller.cav.need.ironNeed * num
+            &&         ResourceController.controller.getPopulation() > 0)
         {
             //armyController.addCavalry(num);
 
-            controller.subtractPopulation(num);
-            controller.subtractFood(armyController.cav.need.foodNeed * num);
-            controller.subtractIron(armyController.cav.need.ironNeed * num);
-            controller.subtractLogs(armyController.cav.need.woodNeed * num);
+            ResourceController.controller.subtractPopulation(num);
+            ResourceController.controller.subtractFood(Army.controller.cav.need.foodNeed * num);
+            ResourceController.controller.subtractIron(Army.controller.cav.need.ironNeed * num);
+            ResourceController.controller.subtractLogs(Army.controller.cav.need.woodNeed * num);
 
-            cavalryNum++;
-            cavalryTime += armyController.cav.recruitTime;
+            cavalryNum += num;
+            cavalryTime += Army.controller.cav.recruitTime;
 
             if (boughtCavalry == false)
             {
@@ -210,7 +204,7 @@ public class Barracks : Building {
         {
             if (Time.time >= cavalryTime)
             {
-                armyController.addCavalry(cavalryNum);
+                Army.controller.addCavalry(cavalryNum);
                 boughtCavalry = false;
                 cavalryNum = 0;
                 cavalryTime = 0;
@@ -220,20 +214,20 @@ public class Barracks : Building {
 
     public void buyCatapult(int num)
     {
-        if (catapult && controller.getFood() >= armyController.cat.need.foodNeed * num
-            &&          controller.getLogs() >= armyController.cat.need.woodNeed * num
-            &&          controller.getIron() >= armyController.cat.need.ironNeed * num
-            && controller.getPopulation() > 0)
+        if (catapult && ResourceController.controller.getFood() >= Army.controller.cat.need.foodNeed * num
+            &&          ResourceController.controller.getLogs() >= Army.controller.cat.need.woodNeed * num
+            &&          ResourceController.controller.getIron() >= Army.controller.cat.need.ironNeed * num
+            &&          ResourceController.controller.getPopulation() > 0)
         {
             //armyController.addCatapult(num);
 
-            controller.subtractPopulation(num);
-            controller.subtractFood(armyController.cat.need.foodNeed * num);
-            controller.subtractIron(armyController.cat.need.ironNeed * num);
-            controller.subtractLogs(armyController.cat.need.woodNeed * num);
+            ResourceController.controller.subtractPopulation(num);
+            ResourceController.controller.subtractFood(Army.controller.cat.need.foodNeed * num);
+            ResourceController.controller.subtractIron(Army.controller.cat.need.ironNeed * num);
+            ResourceController.controller.subtractLogs(Army.controller.cat.need.woodNeed * num);
 
-            catapultNum++;
-            catapultTime += armyController.cat.recruitTime;
+            catapultNum += num;
+            catapultTime += Army.controller.cat.recruitTime;
 
             if (boughtCatapult == false)
             {
@@ -250,7 +244,7 @@ public class Barracks : Building {
         {
             if (Time.time >= catapultTime)
             {
-                armyController.addCatapult(catapultNum);
+                Army.controller.addCatapult(catapultNum);
                 boughtCatapult = false;
                 catapultNum = 0;
                 catapultTime = 0;
@@ -352,11 +346,11 @@ public class Barracks : Building {
             case 2:
                 return true;
             case 3:
-                if (buildingController.getTownHallLevel() == 2)
+                if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getForgeLevel() == 2 && buildingController.getTownHallLevel() == 3)
+                if (BuildingController.controller.getForgeLevel() == 2 && BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;
             default:

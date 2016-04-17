@@ -9,7 +9,6 @@ public class Building : MonoBehaviour {
     protected string production;
     protected string preReq;
 
-    protected BuildingUpgradeCanvas upgradeCanvas;
     protected SpriteRenderer backgroundSprite;
     protected int level;
     protected struct NextUpgrade
@@ -20,11 +19,6 @@ public class Building : MonoBehaviour {
         public int foodNeeded;
     }
     protected NextUpgrade u;
-    protected Text needsText;
-
-    protected CameraPosition camera;
-    protected ResourceController controller;
-    protected BuildingController buildingController;
 
     protected float upgradeTime;
     protected bool isUpgrading;
@@ -33,16 +27,12 @@ public class Building : MonoBehaviour {
 
     // Use this for initialization
     protected void Start () {
-        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
-        controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-        upgradeCanvas = GameObject.Find("Canvases").GetComponent<BuildingUpgradeCanvas>();
-        buildingController = GameObject.Find("Building Controller").GetComponent<BuildingController>();
 
         level = 1;
         upgradeParameters();
         setProduction();
 
-        buildingController.setBuildingLevel(buildingName, level);
+        BuildingController.controller.setBuildingLevel(buildingName, level);
 
         setUpdateTime();
     }
@@ -55,21 +45,20 @@ public class Building : MonoBehaviour {
     protected void OnMouseDown()
     {
         townBuilding = checkBuildingType();
-        if(townBuilding && camera.getPosition() == "Town")
-            upgradeCanvas.setBuilding(this);
-        else if(!townBuilding && camera.getPosition() == "City")
-            upgradeCanvas.setBuilding(this);
-
+        if(townBuilding && CameraPosition.controller.getPosition() == "Town")
+            BuildingUpgradeCanvas.controller.setBuilding(this);
+        else if(!townBuilding && CameraPosition.controller.getPosition() == "City")
+            BuildingUpgradeCanvas.controller.setBuilding(this);
     }
 
     public void pressUpgrade()
     {
         if (canUpgrade())
         {
-            controller.subtractFood(u.foodNeeded);
-            controller.subtractIron(u.ironNeeded);
-            controller.subtractLogs(u.logsNeeded);
-            controller.subtractRocks(u.rocksNeeded);
+            ResourceController.controller.subtractFood(u.foodNeeded);
+            ResourceController.controller.subtractIron(u.ironNeeded);
+            ResourceController.controller.subtractLogs(u.logsNeeded);
+            ResourceController.controller.subtractRocks(u.rocksNeeded);
 
             setUpdateTime();
             Invoke("upgrade", upgradeTime);
@@ -80,19 +69,19 @@ public class Building : MonoBehaviour {
 
     protected virtual void setUpdateTime()
     {
-        switch(level)
+        switch (level)
         {
             case 1:
-                upgradeTime = 15 - (15 * buildingController.getUpgradeBoost());
+                upgradeTime = 15 - (15 * BuildingController.controller.getUpgradeBoost());
                 break;
             case 2:
-                upgradeTime = 45 - (45 * buildingController.getUpgradeBoost()); ;
+                upgradeTime = 45 - (45 * BuildingController.controller.getUpgradeBoost()); ;
                 break;
             case 3:
-                upgradeTime = 120 - (120 * buildingController.getUpgradeBoost()); ;
+                upgradeTime = 120 - (120 * BuildingController.controller.getUpgradeBoost()); ;
                 break;
             case 4:
-                upgradeTime = 300 - (300 * buildingController.getUpgradeBoost()); ;
+                upgradeTime = 300 - (300 * BuildingController.controller.getUpgradeBoost()); ;
                 break;
         }
     }
@@ -112,7 +101,7 @@ public class Building : MonoBehaviour {
 
         level++;
 
-        buildingController.setBuildingLevel(buildingName, level);
+        BuildingController.controller.setBuildingLevel(buildingName, level);
 
         upgradeParameters();
         setProduction();
@@ -131,16 +120,16 @@ public class Building : MonoBehaviour {
         switch(level)
         {
             case 1:
-                upgradeTime = 30 * (1 - buildingController.getUpgradeBoost());
+                upgradeTime = 30 * (1 - BuildingController.controller.getUpgradeBoost());
                 break;
             case 2:
-                upgradeTime = 90 * (1 - buildingController.getUpgradeBoost());
+                upgradeTime = 90 * (1 - BuildingController.controller.getUpgradeBoost());
                 break;
             case 3:
-                upgradeTime = 300 * (1 - buildingController.getUpgradeBoost());
+                upgradeTime = 300 * (1 - BuildingController.controller.getUpgradeBoost());
                 break;
             case 4:
-                upgradeTime = 1500 * (1 - buildingController.getUpgradeBoost());
+                upgradeTime = 1500 * (1 - BuildingController.controller.getUpgradeBoost());
                 break;
             default:
                 break;
@@ -195,7 +184,7 @@ public class Building : MonoBehaviour {
 
     protected bool canUpgrade()
     {
-        if (controller.meetsResourceNeeds(u.foodNeeded, u.logsNeeded, u.ironNeeded, u.rocksNeeded) &&
+        if (ResourceController.controller.meetsResourceNeeds(u.foodNeeded, u.logsNeeded, u.ironNeeded, u.rocksNeeded) &&
             level < 5 && buildingPrereqs() && !isUpgrading)
         {
             return true;

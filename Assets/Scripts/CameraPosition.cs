@@ -4,6 +4,8 @@ using System.Collections;
 public class CameraPosition : MonoBehaviour {
     Camera camera;
 
+    public static CameraPosition controller;
+
     bool town;
     bool city;
     bool world;
@@ -11,6 +13,7 @@ public class CameraPosition : MonoBehaviour {
 	void Start () {
         camera = GetComponent<Camera>();
         town = true;
+        controller = this;
 	}
 	
 	// Update is called once per frame

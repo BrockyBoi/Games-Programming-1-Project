@@ -10,7 +10,6 @@ public class University : Building {
     bool researching;
 
     Barracks barracks;
-    Army armyController;
 
     public struct researchNeed
     {
@@ -31,7 +30,7 @@ public class University : Building {
         description = "Universities allows you to research new technologies to speed up productions";
         base.Start();
         barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
-        armyController = GameObject.Find("Army Controller").GetComponent<Army>();
+        setResearchNeed();
 
 	}
 	
@@ -39,6 +38,12 @@ public class University : Building {
 	new void Update () {
         base.Update();
 	}
+
+    protected override void upgrade()
+    {
+        base.upgrade();
+        setResearchNeed();
+    }
 
     public void setResearch(string s)
     {
@@ -59,11 +64,10 @@ public class University : Building {
         else if (s == "Construction")
             checkResearchTime(constructionLevel);
 
-
-        if (controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching)
+        if (ResourceController.controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching)
         {
             researching = true;
-            controller.subtractMultiple(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed);
+            ResourceController.controller.subtractMultiple(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed);
             Invoke("addBoost", researchTime);
         }
     }
@@ -104,13 +108,13 @@ public class University : Building {
         switch (level)
         {
             case 1:
-                researchNeeds(700, 700, 700, 700);
+                researchNeeds(1000, 1000, 1000, 1000);
                 break;
             case 2:
-                researchNeeds(1500, 1500, 1500, 1500);
+                researchNeeds(2000, 2000, 2000, 2000);
                 break;
             case 3:
-                researchNeeds(3200, 3200, 3200, 3200);
+                researchNeeds(3500, 3500, 3500, 3500);
                 break;
             case 4:
                 researchNeeds(8000, 8000, 8000, 8000);
@@ -126,17 +130,20 @@ public class University : Building {
         switch (level)
         {
             case 1:
-                return true;
+
+                if (BuildingController.controller.getBarracksLevel() == 1)
+                    return true;
+                else return false;
             case 2:
-                if (buildingController.getWorkshopLevel() == 2)
+                if (BuildingController.controller.getWorkshopLevel() == 2)
                     return true;
                 else return false;
             case 3:
-                if (buildingController.getTownHallLevel() == 2)
+                if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() == 3)
+                if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;
             default:
@@ -152,7 +159,7 @@ public class University : Building {
                 researchTime = 90;
                 break;
             case 1:
-                researchTime = 300;
+                researchTime = 240;
                 break;
             case 2:
                 researchTime = 600;
@@ -170,22 +177,14 @@ public class University : Building {
 
     void addBoost()
     {
-        if (researchName == "Farm")
-        {
-            controller.addResourceBoost(researchName, farmLevel * .1f);
-        }
-        else if (researchName == "Quarry")
-            controller.addResourceBoost(researchName, quarryLevel * .1f);
-        else if (researchName == "Mine")
-            controller.addResourceBoost(researchName, mineLevel * .1f);
-        else if (researchName == "Forestry")
-            controller.addResourceBoost(researchName, forestryLevel * .1f);
+        if (researchName == "Farm" || researchName == "Quarry" || researchName == "Mine" || researchName == "Forestry")
+            ResourceController.controller.addResourceBoost(researchName, .1f);
         else if (researchName == "Training")
-            barracks.addBoost(trainingLevel * .1f);
+            barracks.addBoost(.1f);
         else if (researchName == "Construction")
-            buildingController.setUpgradeBoost(.05f);
+            BuildingController.controller.addUpgradeBoost(.05f);
         else if (researchName == "Accuracy")
-            armyController.setAccuracyBoost(.05f);
+            Army.controller.addAccuracyBoost(.05f);
 
         researching = false;
     }

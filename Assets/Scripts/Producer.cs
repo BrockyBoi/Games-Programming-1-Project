@@ -23,7 +23,7 @@ public class Producer : Building
         setControllerCap();
         setProduction();
 
-        controller.addResourceRate(buildingName, produceAmount + (produceAmount * controller.getBoost(buildingName)));
+        ResourceController.controller.addResourceRate(buildingName, produceAmount + (produceAmount * ResourceController.controller.getBoost(buildingName)));
     }
 
     // Update is called once per frame
@@ -41,11 +41,11 @@ public class Producer : Building
             case 2:
                 return true;
             case 3:
-                if (buildingController.getTownHallLevel() == 2)
+                if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getWorkshopLevel() == 3 && buildingController.getTownHallLevel() ==  3)
+                if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getTownHallLevel() ==  3)
                     return true;
                 else return false;
                     default:
@@ -58,7 +58,7 @@ public class Producer : Building
         base.upgrade();
         produceLevel();
         setControllerCap();
-        controller.addResourceRate(buildingName, produceAmount + (produceAmount * controller.getBoost(buildingName)));
+        ResourceController.controller.addResourceRate(buildingName, produceAmount + (produceAmount * ResourceController.controller.getBoost(buildingName)));
     }
 
     void produceLevel()
@@ -124,13 +124,13 @@ public class Producer : Building
         getCap();
 
         if (forestry)
-            controller.setLogCap(controller.getLogCap() + resourceCap - lastResourceCap);
+            ResourceController.controller.setLogCap(ResourceController.controller.getLogCap() + resourceCap - lastResourceCap);
         else if (smith)
-            controller.setIronCap(controller.getIronCap() + resourceCap - lastResourceCap);
+            ResourceController.controller.setIronCap(ResourceController.controller.getIronCap() + resourceCap - lastResourceCap);
         else if (quarry)
-            controller.setRockCap(controller.getRockCap() + resourceCap - lastResourceCap);
+            ResourceController.controller.setRockCap(ResourceController.controller.getRockCap() + resourceCap - lastResourceCap);
         else
-            controller.setFoodCap(controller.getFoodCap() + resourceCap - lastResourceCap);
+            ResourceController.controller.setFoodCap(ResourceController.controller.getFoodCap() + resourceCap - lastResourceCap);
     }
 
     protected override void setProduction()

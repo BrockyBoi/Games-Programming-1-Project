@@ -29,7 +29,7 @@ public class Cottage : Building {
 
     void addPopulation()
     {
-        controller.addPopulation(level);
+        ResourceController.controller.addPopulation(level);
     }
     void popLevel()
     {
@@ -77,11 +77,11 @@ public class Cottage : Building {
             case 2:
                 return true;
             case 3:
-                if (buildingController.getTownHallLevel() == 2)
+                if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getTownHallLevel() == 3)
+                if (BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;
             default:
@@ -114,6 +114,6 @@ public class Cottage : Building {
 
     void setControllerPop()
     {
-        controller.addPopulation(populationLevel - lastPopulationLevel);
+        ResourceController.controller.addPopulation(populationLevel - lastPopulationLevel);
     }
 }

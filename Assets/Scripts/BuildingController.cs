@@ -2,13 +2,21 @@
 using System.Collections;
 
 public class BuildingController : MonoBehaviour {
+
+    public static BuildingController controller;
+
     int farmLevel, quarryLevel, smithLevel, lumberyardLevel;
     int townHallLevel, cottageLevel, barracksLevel, forgeLevel, workShopLevel, universityLevel;
     float upgradeBoost;
 
+    void Awake()
+    {
+        controller = this;
+    }
+
     // Use this for initialization
     void Start() {
-
+        
     }
 
     // Update is called once per frame
@@ -38,7 +46,7 @@ public class BuildingController : MonoBehaviour {
             setTownHallLevel(num);
     }
 
-    public void setUpgradeBoost(float f)
+    public void addUpgradeBoost(float f)
     {
         upgradeBoost += f;
     }

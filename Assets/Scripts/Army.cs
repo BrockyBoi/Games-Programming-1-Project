@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Army : MonoBehaviour {
     public Text text;
 
+    public static Army controller;
 
     protected int[] troopStrength;
     protected int[] hitChance;
@@ -21,7 +22,6 @@ public class Army : MonoBehaviour {
     int forgeStrength;
     float accuracyBoost;
 
-    protected ResourceController controller;
     public struct needs
     {
         public int foodNeed;
@@ -63,9 +63,13 @@ public class Army : MonoBehaviour {
     }
     public catapult cat;
 
+    void Awake()
+    {
+        controller = this;
+    }
+
 	// Use this for initialization
 	protected void Start () {
-        controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
         troopStrength = new int[5]{1,5,3,10,50};
         hitChance = new int[5] { 65 + (int)(65 * accuracyBoost),
                                  80 + (int)(80 * accuracyBoost),
@@ -102,18 +106,18 @@ public class Army : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected void Update () {
-        text.text = displayArmy();
 
-        hitChance[0]  = 65 + (int)(65 * accuracyBoost);
+    }
+
+    public void addAccuracyBoost(float f)
+    {
+        accuracyBoost += f;
+
+        hitChance[0] = 65 + (int)(65 * accuracyBoost);
         hitChance[1] = 80 + (int)(80 * accuracyBoost);
         hitChance[2] = 90 + (int)(90 * accuracyBoost);
         hitChance[3] = 75 + (int)(75 * accuracyBoost);
         hitChance[4] = 55 + (int)(55 * accuracyBoost);
-    }
-
-    public void setAccuracyBoost(float f)
-    {
-        accuracyBoost += f;
     }
 
     public void setForgeStrength(int num)
@@ -155,6 +159,7 @@ public class Army : MonoBehaviour {
         if (farmerStrength < 0)
             farmerStrength = 0;
         getTotalStrength();
+        text.text = displayArmy();
     }
 
     public int farmerCount()
@@ -188,6 +193,7 @@ public class Army : MonoBehaviour {
         if (soldierStrength < 0)
             soldierStrength = 0;
         getTotalStrength();
+        text.text = displayArmy();
     }
 
     public int soldierCount()
@@ -222,6 +228,7 @@ public class Army : MonoBehaviour {
         if (archerStrength < 0)
             archerStrength = 0;
         getTotalStrength();
+        text.text = displayArmy();
     }
 
     public int archerCount()
@@ -256,6 +263,7 @@ public class Army : MonoBehaviour {
         if (cavalryStrength < 0)
             cavalryStrength = 0;
         getTotalStrength();
+        text.text = displayArmy();
     }
 
     public int cavalryCount()
@@ -290,6 +298,7 @@ public class Army : MonoBehaviour {
         if (catapultStrength < 0)
             catapultStrength = 0;
         getTotalStrength();
+        text.text = displayArmy();
     }
 
     public int catapultCount()
@@ -315,6 +324,7 @@ public class Army : MonoBehaviour {
 
 
         totalStrength = farmerStrength + soldierStrength + archerStrength + cavalryStrength + catapultStrength;
+        text.text = displayArmy();
     }
 
     public int getHitChance(int num)

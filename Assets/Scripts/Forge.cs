@@ -27,19 +27,19 @@ public class Forge : Building {
         switch(level)
         {
             case 1:
-                if (buildingController.getQuarryLevel() == 2 && buildingController.getSmithLevel() == 2)
+                if (BuildingController.controller.getQuarryLevel() == 2 && BuildingController.controller.getSmithLevel() == 2)
                     return true;
                 else return false;
             case 2:
-                if (buildingController.getWorkshopLevel() == 2 && buildingController.getTownHallLevel() == 2)
+                if (BuildingController.controller.getWorkshopLevel() == 2 && BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 3:
-                if (buildingController.getTownHallLevel() == 3 && buildingController.getWorkshopLevel() == 3)
+                if (BuildingController.controller.getTownHallLevel() == 3 && BuildingController.controller.getWorkshopLevel() == 3)
                     return true;
                 else return false;
             case 4:
-                if (buildingController.getTownHallLevel() == 5 && buildingController.getWorkshopLevel() == 5)
+                if (BuildingController.controller.getTownHallLevel() == 5 && BuildingController.controller.getWorkshopLevel() == 5)
                     return true;
                 else return false;
             default:

@@ -4,11 +4,6 @@ using System.Collections;
 
 public class Plot : MonoBehaviour {
 
-    BuildingUpgradeCanvas buyBuildingCanvas;
-
-    CameraPosition camera;
-    ResourceController controller;
-
     public Canvas buildingListTown;
     public Canvas buildingListCity;
 
@@ -51,13 +46,9 @@ public class Plot : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        buyBuildingCanvas = GameObject.Find("Canvases").GetComponent<BuildingUpgradeCanvas>();
-        controller = GameObject.Find("Resource Controller").GetComponent<ResourceController>();
-        camera = GameObject.Find("Main Camera").GetComponent<CameraPosition>();
         empty = true;
         buildingListTown.gameObject.SetActive(false);
         buildingListCity.gameObject.SetActive(false);
-        getPosition();
         setBuilding = null;
 	}
 	
@@ -70,7 +61,7 @@ public class Plot : MonoBehaviour {
     {
         if (empty)
         {
-            if (camera.getPosition() == "Town")
+            if (CameraPosition.controller.getPosition() == "Town")
             {
                 if (tag == "Town Plot")
                     buildingListTown.gameObject.SetActive(true);
@@ -81,7 +72,7 @@ public class Plot : MonoBehaviour {
                     buildingListCity.gameObject.SetActive(true);
             }
 
-            buyBuildingCanvas.setPlot(this);
+            BuildingUpgradeCanvas.controller.setPlot(this);
         }
     }
 
@@ -95,25 +86,8 @@ public class Plot : MonoBehaviour {
         empty = b;
     }
 
-    void getPosition()
-    {
-        if (camera.getPosition() == "Town")
-        {
-            town = true;
-            city = false;
-        }
-        else
-        {
-            town = false;
-            city = true;
-        }
-    }
-
     public void build(string s)
     {
-        getPosition();
-        Debug.Log("Build: " + s);
-
         if (s == "Forestry")
         {
             setBuilding = forestry;
@@ -139,7 +113,6 @@ public class Plot : MonoBehaviour {
             b.setNeeds(100, 200, 100, 150);
             buildTime = 15;
         }
-
         else if (s == "Barracks")
         {
             setBuilding = barracks;
@@ -171,13 +144,12 @@ public class Plot : MonoBehaviour {
             buildTime = 60;
         }
 
-        if (controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed) && empty)
+        if (ResourceController.controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed) && empty)
         {
-            Debug.Log("Started building");
             empty = false;
 
             Invoke("startConstruction", buildTime);
-            controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
+            ResourceController.controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
 
             gameObject.SetActive(false);
         }
