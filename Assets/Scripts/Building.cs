@@ -10,6 +10,7 @@ public class Building : MonoBehaviour {
     protected string preReq;
 
     protected BuildingUpgradeCanvas upgradeCanvas;
+    protected SpriteRenderer backgroundSprite;
     protected int level;
     protected struct NextUpgrade
     {
@@ -98,7 +99,7 @@ public class Building : MonoBehaviour {
 
     bool checkBuildingType()
     {
-        if (buildingName == "Town Hall" || buildingName == "University" || buildingName == "Barracks" || buildingName == "Cottage" || buildingName == "Workshop")
+        if (buildingName == "Town Hall" || buildingName == "University" || buildingName == "Barracks" || buildingName == "Cottage" || buildingName == "Workshop" || buildingName == "Forge")
         {
             return true;
         }
