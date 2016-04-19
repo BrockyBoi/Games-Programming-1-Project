@@ -14,6 +14,8 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     public Canvas upgradeCanvas;
     public GameObject barracksCanvas;
+    public Canvas buildingListTown;
+    public Canvas buildingListCity;
     SpriteRenderer barracksCanvasSprite;
     public Text title;
     public Text description;
@@ -36,6 +38,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        closeCanvas();
 
         fNeeds.text = Army.controller.farmerNeeds();
         sNeeds.text = Army.controller.soldierNeeds();
@@ -49,7 +52,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        worldPoint = new Vector3(mousePos.x, mousePos.y, 0);
+        worldPoint = new Vector3(mousePos.x, mousePos.y, 81.8f);
 
         if (running)
         {
@@ -67,7 +70,25 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     public void setPlot(Plot p)
     {
-        selectedPlot = p;
+        if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
+             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.enabled) == false
+            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.enabled) == false ||
+            (upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false)
+        {
+            selectedPlot = p;
+
+            if (CameraPosition.controller.getPosition() == "Town")
+            {
+                if (p.tag == "Town Plot")
+                    buildingListTown.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (p.tag == "City Plot")
+                    buildingListCity.gameObject.SetActive(true);
+            }
+        }
+        
     }
 
     public void build(string s)
@@ -93,6 +114,12 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             upgradeCanvas.gameObject.SetActive(true);
             barracksCanvas.gameObject.SetActive(false);
         }
+    }
+
+    public void closeCanvas()
+    {
+        buildingListTown.gameObject.SetActive(false);
+        buildingListCity.gameObject.SetActive(false);
     }
 
     public void setUpgradeBoost(float f)

@@ -9,7 +9,6 @@ public class Building : MonoBehaviour {
     protected string production;
     protected string preReq;
 
-    protected SpriteRenderer backgroundSprite;
     protected int level;
     protected struct NextUpgrade
     {

@@ -4,9 +4,6 @@ using System.Collections;
 
 public class Plot : MonoBehaviour {
 
-    public Canvas buildingListTown;
-    public Canvas buildingListCity;
-
     public GameObject farm;
     public GameObject forestry;
     public GameObject mine;
@@ -47,8 +44,6 @@ public class Plot : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         empty = true;
-        buildingListTown.gameObject.SetActive(false);
-        buildingListCity.gameObject.SetActive(false);
         setBuilding = null;
 	}
 	
@@ -61,17 +56,6 @@ public class Plot : MonoBehaviour {
     {
         if (empty)
         {
-            if (CameraPosition.controller.getPosition() == "Town")
-            {
-                if (tag == "Town Plot")
-                    buildingListTown.gameObject.SetActive(true);
-            }
-            else
-            {
-                if(tag == "City Plot")
-                    buildingListCity.gameObject.SetActive(true);
-            }
-
             BuildingUpgradeCanvas.controller.setPlot(this);
         }
     }
@@ -155,11 +139,6 @@ public class Plot : MonoBehaviour {
         }
     }
 
-    public void closeCanvas()
-    {
-        buildingListTown.gameObject.SetActive(false);
-        buildingListCity.gameObject.SetActive(false);
-    }
 
     void startConstruction()
     {
