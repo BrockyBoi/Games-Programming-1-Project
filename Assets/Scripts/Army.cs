@@ -9,6 +9,7 @@ public class Army : MonoBehaviour {
 
     protected int[] troopStrength;
     protected int[] hitChance;
+    protected float[] recruitTime;
 
     protected int totalStrength;
     protected int farmerStrength;
@@ -21,87 +22,57 @@ public class Army : MonoBehaviour {
 
     int forgeStrength;
     float accuracyBoost;
+    float trainingBoost;
 
     public struct needs
     {
+        public needs(int f, int w, int i)
+        {
+            foodNeed = f;
+            woodNeed = w;
+            ironNeed = i;
+        }
         public int foodNeed;
         public int woodNeed;
         public int ironNeed;
+        public void setNeeds(int f, int w, int i)
+        {
+            foodNeed = f;
+            woodNeed = w;
+            ironNeed = i;
+        }
+        public bool meetsNeeds(int f, int w, int i)
+        {
+            if (ResourceController.controller.getFood() >= f && ResourceController.controller.getLogs() >= w && ResourceController.controller.getIron() >= i)
+                return true;
+            else return false;
+        }
     }
-    public struct farmer
-    {
-        public needs need;
-        public float recruitTime;
-    }
-    public farmer f;
+    needs f, s, a, cav, cat;
 
-    public struct soldier
-    {
-        public needs need;
-        public float recruitTime;
-    }
-    public soldier s;
-
-    public struct archer
-    {
-        public needs need;
-        public float recruitTime;
-    }
-    public archer a;
-
-    public struct cavalry
-    {
-        public needs need;
-        public float recruitTime;
-    }
-    public cavalry cav;
-
-    public struct catapult
-    {
-        public needs need;
-        public float recruitTime;
-    }
-    public catapult cat;
+    protected needs[] troopNeeds;
 
     void Awake()
     {
         controller = this;
     }
 
-	// Use this for initialization
-	protected void Start () {
-        troopStrength = new int[5]{1,5,3,10,50};
-        hitChance = new int[5] { 65 + (int)(65 * accuracyBoost),
-                                 80 + (int)(80 * accuracyBoost),
-                                 90 + (int)(90 * accuracyBoost),
-                                 75 + (int)(75 * accuracyBoost),
-                                 55 + (int)(55 * accuracyBoost)};
+    // Use this for initialization
+    protected void Start()
+    {
+        troopStrength = new int[5] { 1, 5, 3, 10, 50 };
+        hitChance = new int[5] { 65, 80, 90, 75, 55 };
+        recruitTime = new float[5] { 2, 10, 15, 30, 60 };
 
+        f =  new needs(50, 50, 15);
+        s = new needs(150,25,150);
+        a = new needs(150,250,50);
+        cav = new needs(750,500,750);
+        cat = new needs(500,200,200);
+        troopNeeds = new needs[5] { f,s,a,cav,cat};
 
-        f.need.foodNeed = 50;
-        f.need.woodNeed = 50;
-        f.need.ironNeed = 15;
-        f.recruitTime = 2;
-
-        s.need.foodNeed = 150;
-        s.need.woodNeed = 25;
-        s.need.ironNeed = 150;
-        s.recruitTime = 10;
-
-        a.need.foodNeed = 150;
-        a.need.woodNeed = 250;
-        a.need.ironNeed = 50;
-        a.recruitTime = 15;
-
-        cav.need.foodNeed = 750;
-        cav.need.woodNeed = 500;
-        cav.need.ironNeed = 750;
-        cav.recruitTime = 30;
-
-        cat.need.foodNeed = 500;
-        cat.need.woodNeed = 2000;
-        cat.need.ironNeed = 2000;
-        cat.recruitTime = 60;
+        for(int i = 0; i < 5; i++)
+            Debug.Log(troopNeeds[i].foodNeed);
     }
 	
 	// Update is called once per frame
@@ -120,11 +91,35 @@ public class Army : MonoBehaviour {
         hitChance[4] = 55 + (int)(55 * accuracyBoost);
     }
 
+    public void addTrainingBoost(float f)
+    {
+        trainingBoost += f;
+
+        recruitTime[0] -= recruitTime[0] * trainingBoost;
+        recruitTime[1] -= recruitTime[1] * trainingBoost;
+        recruitTime[2] -= recruitTime[2] * trainingBoost;
+        recruitTime[3] -= recruitTime[3] * trainingBoost;
+        recruitTime[4] -= recruitTime[4] * trainingBoost;
+    }
+
+
     public void setForgeStrength(int num)
     {
+        int oldForgeStrength = forgeStrength;
         if (!enemy)
             forgeStrength = num;
         else forgeStrength = 0;
+
+        troopStrength[0] += (forgeStrength - oldForgeStrength);
+        troopStrength[1] += (forgeStrength - oldForgeStrength);
+        troopStrength[2] += (forgeStrength - oldForgeStrength);
+        troopStrength[3] += (forgeStrength - oldForgeStrength);
+        troopStrength[4] += (forgeStrength - oldForgeStrength);
+    }
+
+    public int getForgeStrength()
+    {
+        return forgeStrength;
     }
 
     public int getTotalStrength()
@@ -138,14 +133,24 @@ public class Army : MonoBehaviour {
         return farmerCount() + soldierCount() + archerCount() + cavalryCount() + catapultCount();
     }
 
-    public farmer getFarmer()
+    public int getTroopStrength(int num)
     {
-        return f;
+        return troopStrength[num];
     }
 
-    public int getFarmerStrength()
+    public needs getTroopNeeds(int num)
     {
-        return troopStrength[0] + forgeStrength;
+        return troopNeeds[num];
+    }
+
+    public float getTroopTime(int num)
+    {
+        return recruitTime[num];
+    }
+
+    public void setTroopSize(int num)
+    {
+
     }
 
     public void setFarmerSize(int num)
@@ -155,7 +160,7 @@ public class Army : MonoBehaviour {
 
     public void addFarmer(int num)
     {
-        farmerStrength += (getFarmerStrength() * num);
+        farmerStrength += (getTroopStrength(0) * num);
         if (farmerStrength < 0)
             farmerStrength = 0;
         getTotalStrength();
@@ -167,21 +172,6 @@ public class Army : MonoBehaviour {
         return farmerStrength;
     }
 
-    public string farmerNeeds()
-    {
-        return "Food: " + f.need.foodNeed + "\nWood: " + f.need.woodNeed + "\nIron: " + f.need.ironNeed;
-    }
-
-
-    public soldier getSoldier()
-    {
-        return s;
-    }
-    public int getSoldierStrength()
-    {
-        return troopStrength[1] + forgeStrength;
-    }
-
     public void setSoldierSize(int num)
     {
         soldierStrength = troopStrength[1] * num;
@@ -189,7 +179,7 @@ public class Army : MonoBehaviour {
 
     public void addSoldier(int num)
     {
-        soldierStrength += (getSoldierStrength() * num);
+        soldierStrength += (getTroopStrength(1) * num);
         if (soldierStrength < 0)
             soldierStrength = 0;
         getTotalStrength();
@@ -201,21 +191,6 @@ public class Army : MonoBehaviour {
         return soldierStrength / troopStrength[1];
     }
 
-    public string soldierNeeds()
-    {
-        return "Food: " + s.need.foodNeed + 
-             "\nWood: " + s.need.woodNeed + 
-             "\nIron: " + s.need.ironNeed;
-    }
-
-    public archer getArcher()
-    {
-        return a;
-    }
-    public int getArcherStrength()
-    {
-        return troopStrength[2] + forgeStrength;
-    }
 
     public void setArcherSize(int num)
     {
@@ -224,7 +199,7 @@ public class Army : MonoBehaviour {
 
     public void addArcher(int num)
     {
-        archerStrength += (getArcherStrength() * num);
+        archerStrength += (getTroopStrength(2) * num);
         if (archerStrength < 0)
             archerStrength = 0;
         getTotalStrength();
@@ -236,21 +211,6 @@ public class Army : MonoBehaviour {
         return archerStrength / troopStrength[2];
     }
 
-    public string archerNeeds()
-    {
-        return "Food: " + a.need.foodNeed +
-             "\nWood: " + a.need.woodNeed +
-             "\nIron: " + a.need.ironNeed;
-    }
-
-    public cavalry getCavalry()
-    {
-        return cav;
-    }
-    public int getCavalryStrength()
-    {
-        return troopStrength[3] + forgeStrength;
-    }
 
     public void setCavalrySize(int num)
     {
@@ -259,7 +219,7 @@ public class Army : MonoBehaviour {
 
     public void addCavalry(int num)
     {
-        cavalryStrength += (getCavalryStrength() * num);
+        cavalryStrength += (getTroopStrength(3) * num);
         if (cavalryStrength < 0)
             cavalryStrength = 0;
         getTotalStrength();
@@ -271,21 +231,6 @@ public class Army : MonoBehaviour {
         return cavalryStrength / troopStrength[3];
     }
 
-    public string cavalryNeeds()
-    {
-        return "Food: " + cav.need.foodNeed +
-             "\nWood: " + cav.need.woodNeed +
-             "\nIron: " + cav.need.ironNeed;
-    }
-
-    public catapult getCatapult()
-    {
-        return cat;
-    }
-    public int getCatapultStrength()
-    {
-        return troopStrength[4] + forgeStrength;
-    }
 
     public void setCatapultSize(int num)
     {
@@ -294,7 +239,7 @@ public class Army : MonoBehaviour {
 
     public void addCatapult(int num)
     {
-        catapultStrength += (getCatapultStrength() * num);
+        catapultStrength += (getTroopStrength(4) * num);
         if (catapultStrength < 0)
             catapultStrength = 0;
         getTotalStrength();
@@ -306,13 +251,13 @@ public class Army : MonoBehaviour {
         return catapultStrength / troopStrength[4];
     }
 
-    public string catapultNeeds()
+     public string getNeedsString(int num)
     {
-        return "Food: " + cat.need.foodNeed +
-             "\nWood: " + cat.need.woodNeed +
-             "\nIron: " + cat.need.ironNeed;
+     return "Food: "   + troopNeeds[num].foodNeed.ToString() +
+            "\nWood: " + troopNeeds[num].woodNeed.ToString() +
+            "\nIron: " + troopNeeds[num].ironNeed.ToString();
     }
-
+   
 
     public void setArmy(int farm, int sold, int arch, int caval, int catap)
     {

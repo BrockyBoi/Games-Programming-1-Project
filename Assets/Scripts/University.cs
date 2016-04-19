@@ -9,8 +9,6 @@ public class University : Building {
     float researchTime;
     bool researching;
 
-    Barracks barracks;
-
     public struct researchNeed
     {
         public int foodNeed;
@@ -29,7 +27,6 @@ public class University : Building {
         buildingName = "University";
         description = "Universities allows you to research new technologies to speed up productions";
         base.Start();
-        barracks = GameObject.Find("Barracks").GetComponent<Barracks>();
         setResearchNeed();
 
 	}
@@ -180,7 +177,7 @@ public class University : Building {
         if (researchName == "Farm" || researchName == "Quarry" || researchName == "Mine" || researchName == "Forestry")
             ResourceController.controller.addResourceBoost(researchName, .1f);
         else if (researchName == "Training")
-            barracks.addBoost(.1f);
+            Army.controller.addTrainingBoost(.1f);
         else if (researchName == "Construction")
             BuildingController.controller.addUpgradeBoost(.05f);
         else if (researchName == "Accuracy")

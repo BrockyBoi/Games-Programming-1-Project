@@ -36,16 +36,10 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         controller = this;
     }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         closeCanvas();
-
-        fNeeds.text = Army.controller.farmerNeeds();
-        sNeeds.text = Army.controller.soldierNeeds();
-        aNeeds.text = Army.controller.archerNeeds();
-        cavNeeds.text = Army.controller.cavalryNeeds();
-        catNeeds.text = Army.controller.catapultNeeds();
-
         barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
     }
 
@@ -108,6 +102,13 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         {
             barracksScript = b.GetComponent<Barracks>();
             barracksCanvas.gameObject.SetActive(true);
+
+            fNeeds.text = Army.controller.getNeedsString(0);
+            sNeeds.text = Army.controller.getNeedsString(1);
+            aNeeds.text = Army.controller.getNeedsString(2);
+            cavNeeds.text = Army.controller.getNeedsString(3);
+            catNeeds.text = Army.controller.getNeedsString(4);
+
         }
         else
         {

@@ -63,7 +63,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (fH < num)
-                fS1 += a1.getFarmerStrength();
+                fS1 += Army.controller.getTroopStrength(0);
         }
         fP1 = (float)a1.farmerCount() / a1.armyCount();
 
@@ -71,7 +71,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (sH < num)
-                sS1 += a1.getSoldierStrength();
+                sS1 += Army.controller.getTroopStrength(1);
         }
         sP1 = (float)a1.soldierCount() / a1.armyCount();
 
@@ -79,7 +79,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (aH < num)
-                aS1 += a1.getArcherStrength();
+                aS1 += Army.controller.getTroopStrength(2);
         }
         aP1 = (float)a1.archerCount() / a1.armyCount();
 
@@ -87,7 +87,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (cavH < num)
-                cavS1 += a1.getCavalryStrength();
+                cavS1 += Army.controller.getTroopStrength(3);
         }
         cavP1 = (float)a1.cavalryCount() / a1.armyCount();
 
@@ -95,7 +95,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (catH < num)
-                catS1 += a1.getCatapultStrength();
+                catS1 += Army.controller.getTroopStrength(4);
         }
         catP1 = (float)a1.catapultCount() / a1.armyCount();
 
@@ -105,7 +105,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (fH < num)
-                fS2 += a2.getFarmerStrength();
+                fS2 += Army.controller.getTroopStrength(0) - Army.controller.getForgeStrength();
         }
         fP2 = (float)a2.farmerCount() / a2.armyCount();
 
@@ -113,7 +113,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (sH < num)
-                sS2 += a2.getSoldierStrength();
+                sS2 += Army.controller.getTroopStrength(1) - Army.controller.getForgeStrength();
         }
         sP2 = (float)a2.soldierCount() / a2.armyCount();
 
@@ -121,7 +121,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (aH < num)
-                aS2 += a2.getArcherStrength();
+                aS2 += Army.controller.getTroopStrength(2) - Army.controller.getForgeStrength();
         }
         aP2 = (float)a2.archerCount() / a2.armyCount();
 
@@ -129,7 +129,7 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (fH < num)
-                cavS2 += a2.getCavalryStrength();
+                cavS2 += Army.controller.getTroopStrength(3) - Army.controller.getForgeStrength();
         }
         cavP2 = (float)a2.cavalryCount() / a2.armyCount();
 
@@ -137,8 +137,8 @@ public class BattleSystem : MonoBehaviour {
         {
             float num = Random.Range(0, 100);
             if (catH < num)
-                catS2 += a2.getCatapultStrength();
-        }
+                catS2 += Army.controller.getTroopStrength(4) - Army.controller.getForgeStrength();
+    }
         catP2 = (float)a2.catapultCount() / a2.armyCount();
 
         battle();
@@ -162,11 +162,11 @@ public class BattleSystem : MonoBehaviour {
         totalD2 = fD2 + sD2 + aD2 + cavD2 + catD2;
 
         //Casualites taken by each army
-        fC1 = (int)(totalD2 * fP1);
-        sC1 = (int)((totalD2 * sP1) / army1.getSoldierStrength());
-        aC1 = (int)((totalD2 * aP1) / army1.getArcherStrength());
-        cavC1 = (int)((totalD2 * cavP1) / army1.getCavalryStrength());
-        catC1 = (int)((totalD2 * catP1) / army1.getCatapultStrength());
+        fC1 = (int)((totalD2 * fP1) / Army.controller.getTroopStrength(0));
+        sC1 = (int)((totalD2 * sP1) /     Army.controller.getTroopStrength(1));
+        aC1 = (int)((totalD2 * aP1) /     Army.controller.getTroopStrength(2));
+        cavC1 = (int)((totalD2 * cavP1) / Army.controller.getTroopStrength(3));
+        catC1 = (int)((totalD2 * catP1) / Army.controller.getTroopStrength(4));
 
         army1.addFarmer(-fC1);
         army1.addSoldier(-sC1);
@@ -175,10 +175,10 @@ public class BattleSystem : MonoBehaviour {
         army1.addCatapult(-catC1);
 
         fC2 = (int)(totalD1 * fP2);
-        sC2 = (int)((totalD1 * sP2) / army2.getSoldierStrength());
-        aC2 = (int)((totalD1 * aP2) / army2.getArcherStrength());
-        cavC2 = (int)((totalD1 * cavP2) / army2.getCavalryStrength());
-        catC2 = (int)((totalD1 * catP2) / army2.getCatapultStrength());
+        sC2 = (int)((totalD1 * sP2) /     Army.controller.getTroopStrength(1)) - Army.controller.getForgeStrength();
+        aC2 = (int)((totalD1 * aP2) /     Army.controller.getTroopStrength(2)) - Army.controller.getForgeStrength();
+        cavC2 = (int)((totalD1 * cavP2) / Army.controller.getTroopStrength(3)) - Army.controller.getForgeStrength();
+        catC2 = (int)((totalD1 * catP2) / Army.controller.getTroopStrength(4)) - Army.controller.getForgeStrength();
 
         army2.addFarmer(-fC2);
         army2.addSoldier(-sC2);
