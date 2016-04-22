@@ -4,7 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ResourceController : MonoBehaviour {
-    public Text text;
+    public Text foodText;
+    public Text woodText;
+    public Text stoneText;
+    public Text ironText;
+    public Text populationText;
 
     public static ResourceController controller;
 
@@ -45,11 +49,13 @@ public class ResourceController : MonoBehaviour {
         logs = 5000;
         rocks = 5000;
         iron = 5000;
+        population = 10;
+        updateResourceText();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = displayResources();
+        
 	}
 
     public void addFood(float num)
@@ -173,11 +179,6 @@ public class ResourceController : MonoBehaviour {
         population -= num;
     }
 
-    string displayResources()
-    {
-        return "Food: " + food + "\nWood: " + logs + "\nStone: " + rocks + "\nIron: " + iron + "\nPopulation: " + population;
-    }
-
     public void addResourceBoost(string s, float f)
     {
         if (s == "Wood")
@@ -243,7 +244,18 @@ public class ResourceController : MonoBehaviour {
         addIron(ironRate);
         addLogs(logRate);
         addRocks(rockRate);
+
+        updateResourceText();
     }
 
-        
+    public void updateResourceText()
+    {
+        foodText.text = food.ToString();
+        woodText.text = logs.ToString();
+        stoneText.text = rocks.ToString();
+        ironText.text = iron.ToString();
+        populationText.text = population.ToString();
+    }
+
+
 }
