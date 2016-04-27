@@ -65,10 +65,10 @@ public class Barracks : Building {
             && ResourceController.controller.getPopulation() > 0)
         {
             ResourceController.controller.subtractPopulation(num);
-            ResourceController.controller.subtractMultiple(              Army.controller.getTroopNeeds(0).foodNeed,
-                                                                         Army.controller.getTroopNeeds(0).woodNeed,
-                                                                         Army.controller.getTroopNeeds(0).ironNeed,
-                                                                         0);
+            ResourceController.controller.subtractMultiple(Army.controller.getTroopNeeds(0).foodNeed,
+                                                           Army.controller.getTroopNeeds(0).woodNeed,
+                                                           Army.controller.getTroopNeeds(0).ironNeed,
+                                                           0);
 
             farmerNum += num;
             farmerTime += Army.controller.getTroopTime(0);
@@ -105,10 +105,10 @@ public class Barracks : Building {
             &&         ResourceController.controller.getPopulation() > 0)
         {
             ResourceController.controller.subtractPopulation(num);
-            ResourceController.controller.subtractMultiple(              Army.controller.getTroopNeeds(1).foodNeed,
-                                                                         Army.controller.getTroopNeeds(1).woodNeed,
-                                                                         Army.controller.getTroopNeeds(1).ironNeed,
-                                                                         0);
+            ResourceController.controller.subtractMultiple(Army.controller.getTroopNeeds(1).foodNeed,
+                                                           Army.controller.getTroopNeeds(1).woodNeed,
+                                                           Army.controller.getTroopNeeds(1).ironNeed,
+                                                           0);
 
             soldierNum += num;
             soldierTime += Army.controller.getTroopTime(1);
@@ -147,10 +147,10 @@ public class Barracks : Building {
             //armyController.addArcher(num);
 
             ResourceController.controller.subtractPopulation(num);
-            ResourceController.controller.subtractMultiple(              Army.controller.getTroopNeeds(2).foodNeed,
-                                                                         Army.controller.getTroopNeeds(2).woodNeed,
-                                                                         Army.controller.getTroopNeeds(2).ironNeed,
-                                                                         0);
+            ResourceController.controller.subtractMultiple(Army.controller.getTroopNeeds(2).foodNeed,
+                                                           Army.controller.getTroopNeeds(2).woodNeed,
+                                                           Army.controller.getTroopNeeds(2).ironNeed,
+                                                           0);
 
             archerNum += num;
             archerTime += Army.controller.getTroopTime(2);
@@ -189,10 +189,10 @@ public class Barracks : Building {
             //armyController.addCavalry(num);
 
             ResourceController.controller.subtractPopulation(num);
-            ResourceController.controller.subtractMultiple(              Army.controller.getTroopNeeds(3).foodNeed,
-                                                                         Army.controller.getTroopNeeds(3).woodNeed,
-                                                                         Army.controller.getTroopNeeds(3).ironNeed,
-                                                                         0);
+            ResourceController.controller.subtractMultiple(Army.controller.getTroopNeeds(3).foodNeed,
+                                                           Army.controller.getTroopNeeds(3).woodNeed,
+                                                           Army.controller.getTroopNeeds(3).ironNeed,
+                                                           0);
 
             cavalryNum += num;
             cavalryTime += Army.controller.getTroopTime(3);
@@ -229,10 +229,10 @@ public class Barracks : Building {
             &&          ResourceController.controller.getPopulation() > 0)
         {
             ResourceController.controller.subtractPopulation(num);
-            ResourceController.controller.subtractMultiple(              Army.controller.getTroopNeeds(4).foodNeed,
-                                                                         Army.controller.getTroopNeeds(4).woodNeed,
-                                                                         Army.controller.getTroopNeeds(4).ironNeed,
-                                                                         0);
+            ResourceController.controller.subtractMultiple(Army.controller.getTroopNeeds(4).foodNeed,
+                                                           Army.controller.getTroopNeeds(4).woodNeed,
+                                                           Army.controller.getTroopNeeds(4).ironNeed,
+                                                           0);
 
             catapultNum += num;
             catapultTime += Army.controller.getTroopTime(4);

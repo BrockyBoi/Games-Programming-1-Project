@@ -12,7 +12,7 @@ public class CameraPosition : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         camera = GetComponent<Camera>();
-        town = true;
+        setCurrentCam("Town");
         controller = this;
 	}
 	
@@ -51,13 +51,13 @@ public class CameraPosition : MonoBehaviour {
     {
         if (town)
         {
-            camera.transform.position = new Vector3(0, 1, -18);
-            camera.fieldOfView = 120;
+            camera.transform.position = new Vector3(-10.95f, -3.53f, -18);
+            camera.fieldOfView = 136;
         }
         else if (city)
         {
-            camera.transform.position = new Vector3(-42, -16f, -18);
-            camera.fieldOfView = 140;
+            camera.transform.position = new Vector3(-35.54f, -19.4f, -18);
+            camera.fieldOfView = 159.8f;
         }
         else
         {

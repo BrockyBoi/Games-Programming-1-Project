@@ -4,7 +4,7 @@ using System.Collections;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
     public Camera cam;
-    Vector3 mousePos, worldPoint;
+    Vector3 worldPoint, mousePos;
     public static BuildingUpgradeCanvas controller;
 
     Plot selectedPlot;
@@ -64,10 +64,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     public void setPlot(Plot p)
     {
-        if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
-             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.enabled) == false
-            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.enabled) == false ||
-            (upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false)
+        if (canClick())
         {
             selectedPlot = p;
 
@@ -85,6 +82,18 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         
     }
 
+    public bool canClick()
+    {
+        if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
+             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.enabled) == false
+            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.enabled) == false ||
+            (upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false)
+        {
+            return true;
+        }
+        else return false;
+    }
+
     public void build(string s)
     {
         selectedPlot.build(s);
@@ -98,9 +107,12 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
         running = true;
 
+        upgradeCanvas.gameObject.SetActive(true);
+
         if (b.tag == "Barracks")
         {
             barracksScript = b.GetComponent<Barracks>();
+
             barracksCanvas.gameObject.SetActive(true);
 
             fNeeds.text = Army.controller.getNeedsString(0);
@@ -108,11 +120,9 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             aNeeds.text = Army.controller.getNeedsString(2);
             cavNeeds.text = Army.controller.getNeedsString(3);
             catNeeds.text = Army.controller.getNeedsString(4);
-
         }
         else
         {
-            upgradeCanvas.gameObject.SetActive(true);
             barracksCanvas.gameObject.SetActive(false);
         }
     }

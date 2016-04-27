@@ -171,7 +171,8 @@ public class ResourceController : MonoBehaviour {
 
     public void addPopulation(int num)
     {
-        population += num;
+        if(population + num < populationCap)
+            population += num;
     }
 
     public void subtractPopulation(int num)

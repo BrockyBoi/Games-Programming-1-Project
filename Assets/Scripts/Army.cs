@@ -167,7 +167,7 @@ public class Army : MonoBehaviour {
         if (farmerStrength < 0)
             farmerStrength = 0;
         getTotalStrength();
-        farmerText.text = farmerCount().ToString();
+        updateArmyStrings();
     }
 
     public int farmerCount()
@@ -186,7 +186,7 @@ public class Army : MonoBehaviour {
         if (soldierStrength < 0)
             soldierStrength = 0;
         getTotalStrength();
-        soldierText.text = soldierCount().ToString();
+        updateArmyStrings();
     }
 
     public int soldierCount()
@@ -206,7 +206,7 @@ public class Army : MonoBehaviour {
         if (archerStrength < 0)
             archerStrength = 0;
         getTotalStrength();
-        archerText.text = archerCount().ToString();
+        updateArmyStrings();
     }
 
     public int archerCount()
@@ -226,7 +226,7 @@ public class Army : MonoBehaviour {
         if (cavalryStrength < 0)
             cavalryStrength = 0;
         getTotalStrength();
-        cavalryText.text = cavalryCount().ToString();
+        updateArmyStrings();
     }
 
     public int cavalryCount()
@@ -246,7 +246,7 @@ public class Army : MonoBehaviour {
         if (catapultStrength < 0)
             catapultStrength = 0;
         getTotalStrength();
-        catapultText.text = catapultCount().ToString();
+        updateArmyStrings();
     }
 
     public int catapultCount()
@@ -280,7 +280,7 @@ public class Army : MonoBehaviour {
         return hitChance[num];
     }
 
-   protected void updateArmyStrings()
+    protected void updateArmyStrings()
     {
         farmerText.text = farmerCount().ToString();
         soldierText.text = soldierCount().ToString();

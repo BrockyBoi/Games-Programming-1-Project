@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Building : MonoBehaviour {
+
     protected string buildingName;
     protected string titleText;
     protected string description;
@@ -23,6 +24,9 @@ public class Building : MonoBehaviour {
     protected bool isUpgrading;
 
     protected bool townBuilding;
+    protected void Awake()
+    {
+    }
 
     // Use this for initialization
     protected void Start () {
@@ -43,11 +47,14 @@ public class Building : MonoBehaviour {
 
     protected void OnMouseDown()
     {
-        townBuilding = checkBuildingType();
-        if(townBuilding && CameraPosition.controller.getPosition() == "Town")
-            BuildingUpgradeCanvas.controller.setBuilding(this);
-        else if(!townBuilding && CameraPosition.controller.getPosition() == "City")
-            BuildingUpgradeCanvas.controller.setBuilding(this);
+        if (BuildingUpgradeCanvas.controller.canClick())
+        {
+            townBuilding = checkBuildingType();
+            if (townBuilding && CameraPosition.controller.getPosition() == "Town")
+                BuildingUpgradeCanvas.controller.setBuilding(this);
+            else if (!townBuilding && CameraPosition.controller.getPosition() == "City")
+                BuildingUpgradeCanvas.controller.setBuilding(this);
+        }
     }
 
     public void pressUpgrade()

@@ -101,7 +101,7 @@ public class Plot : MonoBehaviour {
         {
             setBuilding = barracks;
             b.setNeeds(250, 250, 250, 250);
-            buildTime = 30;
+            buildTime = 1;
         }
         else if (s == "University")
         {
