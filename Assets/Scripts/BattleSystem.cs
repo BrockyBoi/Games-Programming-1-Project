@@ -15,8 +15,9 @@ public class BattleSystem : MonoBehaviour {
     //Number of casualities
     int fC1, fC2, sC1, sC2, aC1, aC2, cavC1, cavC2, catC1, catC2;
     //Scripts
-    Army army1, army2;
-    public Army a1, a2;
+    Army army1;
+    Army a1;
+    Enemy army2, a2;
 
     void Awake()
     {
@@ -25,13 +26,18 @@ public class BattleSystem : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        a1 = Army.controller;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void setEnemy(Enemy e)
+    {
+        a2 = e;
+    }
 
     public void fight()
     {
@@ -186,7 +192,15 @@ public class BattleSystem : MonoBehaviour {
         army2.addCavalry(-cavC2);
         army2.addCatapult(-catC2);
 
+        BuildingUpgradeCanvas.controller.updateEnemyStrings();
+
         if (army1.getTotalStrength() > 1 && army2.getTotalStrength() > 1)
-            battle();   
+            battle();
+
+        if (army2.getTotalStrength() < 1)
+        {
+            ResourceController.controller.addResourceBoost(army2.getResourceType(), army2.getResourceBoost());
+            enabled = false;
+        }
     }
 }

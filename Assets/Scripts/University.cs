@@ -184,5 +184,7 @@ public class University : Building {
             Army.controller.addAccuracyBoost(.05f);
 
         researching = false;
+
+        Debug.Log(researchName + " " + ResourceController.controller.getBoost("Farm"));
     }
 }

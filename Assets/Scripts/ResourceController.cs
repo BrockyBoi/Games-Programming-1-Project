@@ -35,11 +35,19 @@ public class ResourceController : MonoBehaviour {
     int population;
     int populationCap;
 
+    int[] limits;
+    int[] currentLevels;
+
     public float productionRate;
 
     void Awake()
     {
         controller = this;
+
+
+        limits = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+        setLimits(4, 4, 3, 3, 3, 3, 1);
+        currentLevels = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
     }
 
 	// Use this for initialization
@@ -51,12 +59,40 @@ public class ResourceController : MonoBehaviour {
         iron = 5000;
         population = 10;
         updateResourceText();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
         
 	}
+
+    void setLimits(int o, int tw, int th, int fo, int fi, int si, int se)
+    {
+        limits[1] = o;
+        limits[2] = tw;
+        limits[3] = th;
+        limits[4] = fo;
+        limits[5] = fi;
+        limits[6] = si;
+        limits[7] = se;
+    }
+
+    public void addedLevel(int num)
+    {
+        currentLevels[num]++;
+    }
+
+    public int getNum(int n)
+    {
+        return currentLevels[n];
+    }
+
+    public bool checkIfCanSet(int num)
+    {
+        if (currentLevels[num] < limits[num])
+            return true;
+        else return false;
+    }
 
     public void addFood(float num)
     {

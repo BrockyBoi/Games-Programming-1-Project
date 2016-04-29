@@ -76,6 +76,8 @@ public class Army : MonoBehaviour {
         troopNeeds = new needs[5] { f,s,a,cav,cat};
 
         updateArmyStrings();
+
+        setArmy(100, 100, 100, 0, 0);
     }
 	
 	// Update is called once per frame
@@ -282,11 +284,14 @@ public class Army : MonoBehaviour {
 
     protected void updateArmyStrings()
     {
-        farmerText.text = farmerCount().ToString();
-        soldierText.text = soldierCount().ToString();
-        archerText.text = archerCount().ToString();
-        cavalryText.text = cavalryCount().ToString();
-        catapultText.text = catapultCount().ToString();
+        if (tag != "Enemy")
+        {
+            farmerText.text = farmerCount().ToString();
+            soldierText.text = soldierCount().ToString();
+            archerText.text = archerCount().ToString();
+            cavalryText.text = cavalryCount().ToString();
+            catapultText.text = catapultCount().ToString();
+        }
     }
 
 

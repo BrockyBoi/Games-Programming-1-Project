@@ -16,6 +16,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public GameObject barracksCanvas;
     public Canvas buildingListTown;
     public Canvas buildingListCity;
+    public Canvas enemyCanvas;
     SpriteRenderer barracksCanvasSprite;
     public Text title;
     public Text description;
@@ -28,8 +29,19 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text cavNeeds;
     public Text catNeeds;
 
+    public Text enemyFarmers;
+    public Text enemySoldiers;
+    public Text enemyArchers;
+    public Text enemyCavalry;
+    public Text enemyCatapults;
+    public Text enemyLevel;
+    public Text enemyBonus;
+
+
     bool running;
     float upgradeBoost;
+
+    Enemy selectedEnemy;
 
     void Awake()
     {
@@ -85,8 +97,9 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public bool canClick()
     {
         if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
-             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.enabled) == false
-            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.enabled) == false ||
+             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false
+            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.isActiveAndEnabled) == false
+            && (enemyCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false ||
             (upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false)
         {
             return true;
@@ -131,6 +144,9 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     {
         buildingListTown.gameObject.SetActive(false);
         buildingListCity.gameObject.SetActive(false);
+        enemyCanvas.gameObject.SetActive(false);
+        barracksCanvas.gameObject.SetActive(false);
+        upgradeCanvas.gameObject.SetActive(false);
     }
 
     public void setUpgradeBoost(float f)
@@ -183,5 +199,35 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public void pressCity()
     {
         CameraPosition.controller.setCurrentCam("City");
+    }
+
+    public void pressWorld()
+    {
+        CameraPosition.controller.setCurrentCam("World");
+    }
+
+    public void setEnemy(Enemy e)
+    {
+        if (canClick())
+        {
+            enemyCanvas.gameObject.SetActive(true);
+            BattleSystem.controller.setEnemy(e);
+
+            selectedEnemy = e;
+
+            updateEnemyStrings();
+        }
+    }
+
+    public void updateEnemyStrings()
+    {
+
+        enemyFarmers.text = "Farmers: " + selectedEnemy.farmerCount().ToString();
+        enemySoldiers.text = "Soldiers: " + selectedEnemy.soldierCount().ToString();
+        enemyArchers.text = "Archers: " + selectedEnemy.archerCount().ToString();
+        enemyCavalry.text = "Cavalry: " + selectedEnemy.cavalryCount().ToString();
+        enemyCatapults.text = "Catapult: " + selectedEnemy.catapultCount().ToString();
+        enemyLevel.text = "Level: " + selectedEnemy.getLevel();
+        enemyBonus.text = "Resource Boost: " + (selectedEnemy.getResourceBoost() * 100).ToString() + "% " + selectedEnemy.getResourceType();
     }
 }
