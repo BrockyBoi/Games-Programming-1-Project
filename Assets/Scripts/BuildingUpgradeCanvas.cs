@@ -18,11 +18,14 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Canvas buildingListCity;
     public Canvas enemyCanvas;
     SpriteRenderer barracksCanvasSprite;
+
     public Text title;
     public Text description;
     public Text needs;
     public Text production;
     public Text upgradeTime;
+    public Text upgradingTime;
+
     public Text fNeeds;
     public Text sNeeds;
     public Text aNeeds;
@@ -36,6 +39,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text enemyCatapults;
     public Text enemyLevel;
     public Text enemyBonus;
+
 
 
     bool running;
@@ -53,6 +57,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     {
         closeCanvas();
         barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
+        stoppingUpgrade();
     }
 
     // Update is called once per frame
@@ -149,6 +154,17 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         upgradeCanvas.gameObject.SetActive(false);
     }
 
+    public void upgrading(float num)
+    {
+        upgradingTime.gameObject.SetActive(true);
+        upgradingTime.text = num.ToString("F0");
+    }
+
+    public void stoppingUpgrade()
+    {
+        upgradingTime.gameObject.SetActive(false);
+    }
+
     public void setUpgradeBoost(float f)
     {
         upgradeBoost += f;
@@ -228,6 +244,8 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         enemyCavalry.text = "Cavalry: " + selectedEnemy.cavalryCount().ToString();
         enemyCatapults.text = "Catapult: " + selectedEnemy.catapultCount().ToString();
         enemyLevel.text = "Level: " + selectedEnemy.getLevel();
-        enemyBonus.text = "Resource Boost: " + (selectedEnemy.getResourceBoost() * 100).ToString() + "% " + selectedEnemy.getResourceType();
+        if (selectedEnemy.getTotalStrength() > 0)
+            enemyBonus.text = "Resource Boost: " + (selectedEnemy.getResourceBoost() * 100).ToString() + "% " + selectedEnemy.getResourceType();
+        else enemyBonus.text = "Received Bonus: " + (selectedEnemy.getResourceBoost() * 100).ToString() + "% " + selectedEnemy.getResourceType();
     }
 }

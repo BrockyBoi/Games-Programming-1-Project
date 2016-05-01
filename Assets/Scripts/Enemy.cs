@@ -95,6 +95,7 @@ public class Enemy : Army {
         base.Update();
         if (getTotalStrength() < 1)
         {
+            BuildingUpgradeCanvas.controller.updateEnemyStrings();
             ResourceController.controller.addResourceBoost(resourceType, resourceBoost);
             enabled = false; 
         }

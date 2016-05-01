@@ -21,6 +21,7 @@ public class Building : MonoBehaviour {
     protected NextUpgrade u;
 
     protected float upgradeTime;
+    protected float upgradeTimeLeft;
     protected bool isUpgrading;
 
     protected bool townBuilding;
@@ -38,11 +39,20 @@ public class Building : MonoBehaviour {
         BuildingController.controller.setBuildingLevel(buildingName, level);
 
         setUpdateTime();
+        buildingPrereqs();
     }
 	
 	// Update is called once per frame
 	protected void Update () {
-	
+        if (isUpgrading)
+        {
+            upgradeTimeLeft -= Time.deltaTime;
+            BuildingUpgradeCanvas.controller.upgrading(upgradeTimeLeft);
+        }
+        else if(upgradeTimeLeft <= 0)
+        {
+            BuildingUpgradeCanvas.controller.stoppingUpgrade();
+        }
 	}
 
     protected void OnMouseDown()
@@ -79,15 +89,19 @@ public class Building : MonoBehaviour {
         {
             case 1:
                 upgradeTime = 15 - (15 * BuildingController.controller.getUpgradeBoost());
+                upgradeTimeLeft = upgradeTime;
                 break;
             case 2:
-                upgradeTime = 45 - (45 * BuildingController.controller.getUpgradeBoost()); ;
+                upgradeTime = 45 - (45 * BuildingController.controller.getUpgradeBoost());
+                upgradeTimeLeft = upgradeTime;
                 break;
             case 3:
-                upgradeTime = 120 - (120 * BuildingController.controller.getUpgradeBoost()); ;
+                upgradeTime = 120 - (120 * BuildingController.controller.getUpgradeBoost());
+                upgradeTimeLeft = upgradeTime;
                 break;
             case 4:
-                upgradeTime = 300 - (300 * BuildingController.controller.getUpgradeBoost()); ;
+                upgradeTime = 300 - (300 * BuildingController.controller.getUpgradeBoost());
+                upgradeTimeLeft = upgradeTime;
                 break;
         }
     }
@@ -112,6 +126,7 @@ public class Building : MonoBehaviour {
         upgradeParameters();
         setProduction();
         setBuildingTime();
+        buildingPrereqs();
     }
 
     protected virtual void setProduction()
@@ -180,7 +195,7 @@ public class Building : MonoBehaviour {
 
     public string makeNeedString(string s, int l)
     {
-        return "s " + "lvl. " + l;
+        return s + "lvl. " + l;
     }
 
     public string makeNeedString(string s, int l, string s2, int l2)

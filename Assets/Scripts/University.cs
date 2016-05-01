@@ -127,19 +127,22 @@ public class University : Building {
         switch (level)
         {
             case 1:
-
+                preReq = makeNeedString("Barracks", 1);
                 if (BuildingController.controller.getBarracksLevel() == 1)
                     return true;
                 else return false;
             case 2:
+                preReq = makeNeedString("Workshop", 2);
                 if (BuildingController.controller.getWorkshopLevel() == 2)
                     return true;
                 else return false;
             case 3:
+                preReq = makeNeedString("Town Hall", 2);
                 if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
+                preReq = makeNeedString("Workshop", 3, "Town Hall", 3);
                 if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;

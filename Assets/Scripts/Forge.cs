@@ -27,18 +27,22 @@ public class Forge : Building {
         switch(level)
         {
             case 1:
+                preReq = makeNeedString("Quarry", 2, "Smith", 2);
                 if (BuildingController.controller.getQuarryLevel() == 2 && BuildingController.controller.getSmithLevel() == 2)
                     return true;
                 else return false;
             case 2:
+                preReq = makeNeedString("Workshop", 2, "Town Hall", 2);
                 if (BuildingController.controller.getWorkshopLevel() == 2 && BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 3:
+                preReq = makeNeedString("Town Hall", 3, "Workshop", 3);
                 if (BuildingController.controller.getTownHallLevel() == 3 && BuildingController.controller.getWorkshopLevel() == 3)
                     return true;
                 else return false;
             case 4:
+                preReq = makeNeedString("Town Hall", 5, "Workshop", 5);
                 if (BuildingController.controller.getTownHallLevel() == 5 && BuildingController.controller.getWorkshopLevel() == 5)
                     return true;
                 else return false;

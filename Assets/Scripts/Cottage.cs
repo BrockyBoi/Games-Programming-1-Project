@@ -77,10 +77,12 @@ public class Cottage : Building {
             case 2:
                 return true;
             case 3:
+                preReq = makeNeedString("Town Hall", 2);
                 if (BuildingController.controller.getTownHallLevel() == 2)
                     return true;
                 else return false;
             case 4:
+                preReq = makeNeedString("Town Hall", 3);
                 if (BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;
