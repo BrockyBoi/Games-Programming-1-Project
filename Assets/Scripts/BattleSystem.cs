@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class BattleSystem : MonoBehaviour {
     public static BattleSystem controller;
@@ -19,6 +20,11 @@ public class BattleSystem : MonoBehaviour {
     Army a1;
     Enemy army2, a2;
 
+    float marchTime;
+    float marchBoost;
+    Slider slider;
+    Text marchText;
+
     void Awake()
     {
         controller = this;
@@ -27,20 +33,75 @@ public class BattleSystem : MonoBehaviour {
     // Use this for initialization
     void Start () {
         a1 = Army.controller;
-	}
+
+        slider = BuildingUpgradeCanvas.controller.accessSlider();
+        marchText = slider.GetComponentInChildren<Text>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
+    public void addMarchingBoost(float f)
+    {
+        marchBoost += f;
+    }
+
     public void setEnemy(Enemy e)
     {
         a2 = e;
     }
 
-    public void fight()
+    public void pressFightButton()
     {
+        switch(a2.distance)
+        {
+            case (1):
+                marchTime = 30 - (30 * marchBoost);
+                break;
+            case (2):
+                marchTime = 60 - (60 * marchBoost);
+                break;
+            case (3):
+                marchTime = 150 - (150 * marchBoost);
+                break;
+            default:
+                break;
+        }
+
+        StartCoroutine(fight(marchTime));
+
+        StartCoroutine(marchTimer());
+    }
+
+    IEnumerator marchTimer()
+    {
+        slider.gameObject.SetActive(true);
+
+        float time = 0;
+        slider.maxValue = marchTime;
+        while(time < marchTime -.05f)
+        {
+            time += Time.deltaTime;
+            slider.value = time;
+            marchText.text = "Arrival Time: " + (marchTime - time).ToString("F0");
+            yield return null;
+        }
+
+        slider.gameObject.SetActive(false);
+
+    }
+
+    public float getMarchTime()
+    {
+        return marchTime;
+    }
+
+    IEnumerator fight(float time)
+    {
+        yield return new WaitForSeconds(time);
+
         fS1 = 0;
         sS1 = 0;
         aS1 = 0;

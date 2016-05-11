@@ -107,6 +107,11 @@ public class Army : MonoBehaviour {
         recruitTime[4] -= recruitTime[4] * trainingBoost;
     }
 
+    public void addAlarmBoost(float f)
+    {
+
+    }
+
 
     public void setForgeStrength(int num)
     {

@@ -19,9 +19,13 @@ public class University : Building {
     public researchNeed r;
 
     //Boosts that will go up by 10%
-    int farmLevel, mineLevel, quarryLevel, forestryLevel, trainingLevel;
+    int farmLevel, mineLevel, quarryLevel, forestryLevel, trainingLevel, marchLevel;
     //Boosts that will go up by 5%
     int accuracyLevel, constructionLevel;
+
+    //Boosts that will only go up by 1
+    int alarmLevel;
+
     // Use this for initialization
     new void Start () {
         buildingName = "University";
@@ -60,6 +64,10 @@ public class University : Building {
             checkResearchTime(trainingLevel);
         else if (s == "Construction")
             checkResearchTime(constructionLevel);
+        else if (s == "Marching")
+            checkResearchTime(marchLevel);
+        else if (s == "Alarm")
+            checkResearchTime(alarmLevel);
 
         if (ResourceController.controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching)
         {
@@ -108,13 +116,13 @@ public class University : Building {
                 researchNeeds(1000, 1000, 1000, 1000);
                 break;
             case 2:
-                researchNeeds(2000, 2000, 2000, 2000);
+                researchNeeds(2500, 2500, 2500, 2500);
                 break;
             case 3:
-                researchNeeds(3500, 3500, 3500, 3500);
+                researchNeeds(6000, 6000, 6000, 6000);
                 break;
             case 4:
-                researchNeeds(8000, 8000, 8000, 8000);
+                researchNeeds(12000, 12000, 12000, 12000);
                 break;
             default:
                 break;
@@ -127,8 +135,8 @@ public class University : Building {
         switch (level)
         {
             case 1:
-                preReq = makeNeedString("Barracks", 1);
-                if (BuildingController.controller.getBarracksLevel() == 1)
+                preReq = makeNeedString("Barracks", 2);
+                if (BuildingController.controller.getBarracksLevel() == 2)
                     return true;
                 else return false;
             case 2:
@@ -137,13 +145,13 @@ public class University : Building {
                     return true;
                 else return false;
             case 3:
-                preReq = makeNeedString("Town Hall", 2);
-                if (BuildingController.controller.getTownHallLevel() == 2)
+                preReq = makeNeedString("Town Hall", 3);
+                if (BuildingController.controller.getTownHallLevel() == 3)
                     return true;
                 else return false;
             case 4:
-                preReq = makeNeedString("Workshop", 3, "Town Hall", 3);
-                if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getTownHallLevel() == 3)
+                preReq = makeNeedString("Workshop", 4, "Town Hall", 4);
+                if (BuildingController.controller.getWorkshopLevel() == 4 && BuildingController.controller.getTownHallLevel() == 4)
                     return true;
                 else return false;
             default:
@@ -185,6 +193,10 @@ public class University : Building {
             BuildingController.controller.addUpgradeBoost(.05f);
         else if (researchName == "Accuracy")
             Army.controller.addAccuracyBoost(.05f);
+        else if (researchName == "Marching")
+            BattleSystem.controller.addMarchingBoost(.1f);
+        else if (researchName == "Alarm")
+            Army.controller.addAlarmBoost(1);
 
         researching = false;
 

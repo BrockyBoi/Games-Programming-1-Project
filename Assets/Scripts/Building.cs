@@ -25,6 +25,10 @@ public class Building : MonoBehaviour {
     protected bool isUpgrading;
 
     protected bool townBuilding;
+
+    Canvas personalCanvas;
+    Slider slider;
+    //Text sliderText;
     protected void Awake()
     {
     }
@@ -40,20 +44,42 @@ public class Building : MonoBehaviour {
 
         setUpdateTime();
         buildingPrereqs();
+
+        personalCanvas = GetComponentInChildren<Canvas>();
+        slider = GetComponentInChildren<Slider>();
+        //sliderText = slider.GetComponentInChildren<Text>();
+
+        personalCanvas.gameObject.SetActive(false);
     }
 	
 	// Update is called once per frame
 	protected void Update () {
-        if (isUpgrading)
+        //if (isUpgrading)
+        //{
+        //    upgradeTimeLeft -= Time.deltaTime;
+        //    BuildingUpgradeCanvas.controller.upgrading(upgradeTimeLeft);
+        //}
+        //else if(upgradeTimeLeft <= 0)
+        //{
+        //    BuildingUpgradeCanvas.controller.stoppingUpgrade();
+        //}
+
+        //slider.value = upgradeTimeLeft;
+    }
+
+    IEnumerator upgradeTimer()
+    {
+        activateSlider();
+        float time = 0;
+        while(time < upgradeTime - .05f)
         {
-            upgradeTimeLeft -= Time.deltaTime;
-            BuildingUpgradeCanvas.controller.upgrading(upgradeTimeLeft);
+            time += Time.deltaTime;
+            slider.value = time;
+            yield return null;
         }
-        else if(upgradeTimeLeft <= 0)
-        {
-            BuildingUpgradeCanvas.controller.stoppingUpgrade();
-        }
-	}
+
+        personalCanvas.gameObject.SetActive(false);
+    }
 
     protected void OnMouseDown()
     {
@@ -77,9 +103,18 @@ public class Building : MonoBehaviour {
             ResourceController.controller.subtractRocks(u.rocksNeeded);
 
             setUpdateTime();
+
             Invoke("upgrade", upgradeTime);
+
+            StartCoroutine(upgradeTimer());
             isUpgrading = true;
         }
+    }
+
+    void activateSlider()
+    {
+        personalCanvas.gameObject.SetActive(true);
+        slider.maxValue = upgradeTime;
     }
 
 

@@ -41,7 +41,7 @@ public class TownHall : Building {
                     return true;
                 else return false;
             default:
-                return false;
+                return true;
         }
     }
 

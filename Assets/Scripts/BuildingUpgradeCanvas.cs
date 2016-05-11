@@ -11,9 +11,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     Building currentBuilding;
     Barracks barracksScript;
+    University universityScript;
 
     public Canvas upgradeCanvas;
     public GameObject barracksCanvas;
+    public GameObject universityCanvas;
     public Canvas buildingListTown;
     public Canvas buildingListCity;
     public Canvas enemyCanvas;
@@ -24,7 +26,6 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text needs;
     public Text production;
     public Text upgradeTime;
-    public Text upgradingTime;
 
     public Text fNeeds;
     public Text sNeeds;
@@ -40,13 +41,22 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text enemyLevel;
     public Text enemyBonus;
 
-
+    public Text farmNeeds;
+    public Text forestryNeeds;
+    public Text mineNeeds;
+    public Text quarryNeeds;
+    public Text forgeNeeds;
+    public Text workshopNeeds;
+    public Text universityNeeds;
+    public Text barracksNeeds;
+    public Text cottageNeeds;
 
     bool running;
     float upgradeBoost;
 
     Enemy selectedEnemy;
 
+    public Slider marchSlider;
     void Awake()
     {
         controller = this;
@@ -57,7 +67,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     {
         closeCanvas();
         barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
-        stoppingUpgrade();
+        marchSlider.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -99,6 +109,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         
     }
 
+    public Slider accessSlider()
+    {
+        return marchSlider;
+    }
+
     public bool canClick()
     {
         if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
@@ -129,6 +144,8 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
         if (b.tag == "Barracks")
         {
+
+            universityCanvas.gameObject.SetActive(false);
             barracksScript = b.GetComponent<Barracks>();
 
             barracksCanvas.gameObject.SetActive(true);
@@ -139,9 +156,16 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             cavNeeds.text = Army.controller.getNeedsString(3);
             catNeeds.text = Army.controller.getNeedsString(4);
         }
+        else if(b.tag == "University")
+        {
+            barracksCanvas.gameObject.SetActive(false);
+            universityScript = b.GetComponent<University>();
+            universityCanvas.gameObject.SetActive(true);
+        }
         else
         {
             barracksCanvas.gameObject.SetActive(false);
+            universityCanvas.gameObject.SetActive(false);
         }
     }
 
@@ -152,17 +176,12 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         enemyCanvas.gameObject.SetActive(false);
         barracksCanvas.gameObject.SetActive(false);
         upgradeCanvas.gameObject.SetActive(false);
+        universityCanvas.gameObject.SetActive(false);
     }
 
-    public void upgrading(float num)
+    public void setResearchButton(string s)
     {
-        upgradingTime.gameObject.SetActive(true);
-        upgradingTime.text = num.ToString("F0");
-    }
-
-    public void stoppingUpgrade()
-    {
-        upgradingTime.gameObject.SetActive(false);
+        universityScript.setResearch(s);
     }
 
     public void setUpgradeBoost(float f)

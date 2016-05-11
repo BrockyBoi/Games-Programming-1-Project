@@ -12,27 +12,22 @@ public class Barracks : Building {
     bool catapult;
 
     bool boughtFarmer;
-    float currentFarmerTime;
     float farmerTime;
     int farmerNum;
 
     bool boughtSoldier;
-    float currentSoldierTime;
     float soldierTime;
     int soldierNum;
 
     bool boughtArcher;
-    float currentArcherTime;
     float archerTime;
     int archerNum;
 
     bool boughtCavalry;
-    float currentCavalryTime;
     float cavalryTime;
     int cavalryNum;
 
     bool boughtCatapult;
-    float currentCatapultTime;
     float catapultTime;
     int catapultNum;
 
@@ -49,11 +44,6 @@ public class Barracks : Building {
 	new void Update () {
         base.Update();
 
-        checkFarmer();
-        checkSoldier();
-        checkArcher();
-        checkCavalry();
-        checkCatapult(); 
 	}
 
     public void buyFarmer(int num)
@@ -73,27 +63,27 @@ public class Barracks : Building {
             farmerNum += num;
             farmerTime += Army.controller.getTroopTime(0);
 
-            if (boughtFarmer == false)
+            if (!boughtFarmer)
             {
-                currentFarmerTime = Time.time;
-                boughtFarmer = true; 
-                farmerTime += currentFarmerTime;
+                StartCoroutine(farmerTimer());
+                boughtFarmer = true;
             }
         }
     }
 
-    void checkFarmer()
+    IEnumerator farmerTimer()
     {
-        if (boughtFarmer == true)
+        float time = 0;
+        while(time < farmerTime)
         {
-            if (Time.time >= farmerTime)
-            {
-                Army.controller.addFarmer(farmerNum);
-                boughtFarmer = false;
-                farmerNum = 0;
-                farmerTime = 0;
-            }
+            time += Time.deltaTime;
+            yield return null;
         }
+
+        Army.controller.addFarmer(farmerNum);
+        boughtFarmer = false;
+        farmerNum = 0;
+        farmerTime = 0;
     }
 
     public void buySoldier(int num)
@@ -113,27 +103,27 @@ public class Barracks : Building {
             soldierNum += num;
             soldierTime += Army.controller.getTroopTime(1);
 
-            if (boughtSoldier == false)
+            if (!boughtSoldier)
             {
-                currentSoldierTime = Time.time;
-                boughtSoldier = true;
-                soldierTime += currentSoldierTime;
+                StartCoroutine(soldierTimer());
+                boughtSoldier = true;   
             }
         }
     }
 
-    void checkSoldier()
+    IEnumerator soldierTimer()
     {
-        if (boughtSoldier == true)
+        float time = 0;
+        while (time < soldierTime)
         {
-            if (Time.time >= soldierTime)
-            {
-                Army.controller.addSoldier(soldierNum);
-                boughtSoldier = false;
-                soldierNum = 0;
-                soldierTime = 0;
-            }
+            time += Time.deltaTime;
+            yield return null;
         }
+
+        Army.controller.addFarmer(soldierNum);
+        boughtSoldier = false;
+        soldierNum = 0;
+        soldierTime = 0;
     }
 
     public void buyArcher(int num)
@@ -155,27 +145,27 @@ public class Barracks : Building {
             archerNum += num;
             archerTime += Army.controller.getTroopTime(2);
 
-            if (boughtArcher == false)
+            if (!boughtArcher)
             {
-                currentArcherTime = Time.time;
+                StartCoroutine(archerTimer());
                 boughtArcher = true;
-                archerTime += currentArcherTime;
             }
         }
     }
 
-    void checkArcher()
+    IEnumerator archerTimer()
     {
-        if (boughtArcher == true)
+        float time = 0;
+        while (time < archerTime)
         {
-            if (Time.time >= archerTime)
-            {
-                Army.controller.addArcher(archerNum);
-                boughtArcher = false;
-                archerNum = 0;
-                archerTime = 0;
-            }
+            time += Time.deltaTime;
+            yield return null;
         }
+
+        Army.controller.addFarmer(archerNum);
+        boughtArcher = false;
+        archerNum = 0;
+        archerTime = 0;
     }
 
     public void buyCavalry(int num)
@@ -197,27 +187,27 @@ public class Barracks : Building {
             cavalryNum += num;
             cavalryTime += Army.controller.getTroopTime(3);
 
-            if (boughtCavalry == false)
+            if (!boughtCavalry)
             {
-                cavalryTime = Time.time;
+                StartCoroutine(cavalryTimer());
                 boughtCavalry = true;
-                cavalryTime += currentCavalryTime;
             }
         }
     }
 
-    void checkCavalry()
+    IEnumerator cavalryTimer()
     {
-        if (boughtCavalry == true)
+        float time = 0;
+        while (time < cavalryTime)
         {
-            if (Time.time >= cavalryTime)
-            {
-                Army.controller.addCavalry(cavalryNum);
-                boughtCavalry = false;
-                cavalryNum = 0;
-                cavalryTime = 0;
-            }
+            time += Time.deltaTime;
+            yield return null;
         }
+
+        Army.controller.addFarmer(cavalryNum);
+        boughtCavalry = false;
+        cavalryNum = 0;
+        cavalryTime = 0;
     }
 
     public void buyCatapult(int num)
@@ -237,27 +227,27 @@ public class Barracks : Building {
             catapultNum += num;
             catapultTime += Army.controller.getTroopTime(4);
 
-            if (boughtCatapult == false)
+            if (!boughtCatapult)
             {
-                currentCatapultTime = Time.time;
+                StartCoroutine(catapultTimer());
                 boughtCatapult = true;
-                catapultTime += currentCatapultTime;
             }
         }
     }
 
-    void checkCatapult()
+    IEnumerator catapultTimer()
     {
-        if (boughtCatapult == true)
+        float time = 0;
+        while (time < catapultTime)
         {
-            if (Time.time >= catapultTime)
-            {
-                Army.controller.addCatapult(catapultNum);
-                boughtCatapult = false;
-                catapultNum = 0;
-                catapultTime = 0;
-            }
+            time += Time.deltaTime;
+            yield return null;
         }
+
+        Army.controller.addFarmer(catapultNum);
+        boughtCatapult = false;
+        catapultNum = 0;
+        catapultTime = 0;
     }
 
     protected override void upgrade()

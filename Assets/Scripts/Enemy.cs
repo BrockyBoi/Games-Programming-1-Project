@@ -13,6 +13,8 @@ public class Enemy : Army {
     //String should be either "Wood", "Food", "Iron", or "Stone"
     string resourceType;
     float resourceBoost;
+
+    public int distance;
 	// Use this for initialization
 	new void Start () {
         enemy = true;
