@@ -51,17 +51,18 @@ public class CameraPosition : MonoBehaviour {
     {
         if (town)
         {
-            camera.transform.position = new Vector3(-10.95f, -3.53f, -18);
-            camera.fieldOfView = 136;
+            camera.transform.position = new Vector3(-10f, 5.15f, -50);
+            camera.orthographicSize = 55;
         }
         else if (city)
         {
-            camera.transform.position = new Vector3(-35.54f, -19.4f, -18);
-            camera.fieldOfView = 159.8f;
+            camera.transform.position = new Vector3(-18, -19.38f, -50);
+            camera.orthographicSize = 100;
         }
         else
         {
-            camera.fieldOfView = 175;
+            camera.transform.position = new Vector3(-34f, -34f, -50);
+            camera.orthographicSize = 900;
         }
     }
 

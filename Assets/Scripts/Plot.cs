@@ -170,6 +170,7 @@ public class Plot : MonoBehaviour {
             BuildingUpgradeCanvas.controller.closeCanvas();
 
             StartCoroutine(plotTimer());
+            SoundController.controller.playTrack("hammer");
         }
     }
 

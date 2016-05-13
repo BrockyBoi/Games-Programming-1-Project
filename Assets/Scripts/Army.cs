@@ -56,6 +56,8 @@ public class Army : MonoBehaviour {
 
     protected needs[] troopNeeds;
 
+    int alarmLevel;
+
     void Awake()
     {
         controller = this;
@@ -85,6 +87,15 @@ public class Army : MonoBehaviour {
 
     }
 
+    public virtual int getDistance()
+    { return 0; }
+
+    public virtual float getResourceBoost()
+    { return 0; }
+
+    public virtual string getResourceType()
+    { return ""; }
+
     public void addAccuracyBoost(float f)
     {
         accuracyBoost += f;
@@ -107,9 +118,14 @@ public class Army : MonoBehaviour {
         recruitTime[4] -= recruitTime[4] * trainingBoost;
     }
 
-    public void addAlarmBoost(float f)
+    public void addAlarmBoost()
     {
+        alarmLevel++;
+    }
 
+    public int getAlarmBoost()
+    {
+        return alarmLevel;
     }
 
 
@@ -282,9 +298,9 @@ public class Army : MonoBehaviour {
         updateArmyStrings();
     }
 
-    public int getHitChance(int num)
+    public float getHitChance(int num)
     {
-        return hitChance[num];
+        return hitChance[num] + (hitChance[num] * accuracyBoost);
     }
 
     protected void updateArmyStrings()

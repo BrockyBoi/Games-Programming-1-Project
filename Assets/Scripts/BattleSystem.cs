@@ -16,14 +16,18 @@ public class BattleSystem : MonoBehaviour {
     //Number of casualities
     int fC1, fC2, sC1, sC2, aC1, aC2, cavC1, cavC2, catC1, catC2;
     //Scripts
-    Army army1;
-    Army a1;
-    Enemy army2, a2;
+    Army army1, a1, army2, a2, invaders;
 
     float marchTime;
     float marchBoost;
-    Slider slider;
+
+    Slider marchingSlider;
     Text marchText;
+
+    Slider returnSlider;
+    Text returnText;
+
+    bool marching;
 
     void Awake()
     {
@@ -34,8 +38,13 @@ public class BattleSystem : MonoBehaviour {
     void Start () {
         a1 = Army.controller;
 
-        slider = BuildingUpgradeCanvas.controller.accessSlider();
-        marchText = slider.GetComponentInChildren<Text>();
+        marchingSlider = BuildingUpgradeCanvas.controller.accessSlider(1);
+        marchText = marchingSlider.GetComponentInChildren<Text>();
+
+        returnSlider = BuildingUpgradeCanvas.controller.accessSlider(2);
+        returnText = returnSlider.GetComponentInChildren<Text>();
+
+
     }
 	
 	// Update is called once per frame
@@ -55,41 +64,70 @@ public class BattleSystem : MonoBehaviour {
 
     public void pressFightButton()
     {
-        switch(a2.distance)
+        if (!marching)
         {
-            case (1):
-                marchTime = 30 - (30 * marchBoost);
-                break;
-            case (2):
-                marchTime = 60 - (60 * marchBoost);
-                break;
-            case (3):
-                marchTime = 150 - (150 * marchBoost);
-                break;
-            default:
-                break;
+            switch (a2.getDistance())
+            {
+                case (1):
+                    marchTime = 30 - (30 * marchBoost);
+                    break;
+                case (2):
+                    marchTime = 60 - (60 * marchBoost);
+                    break;
+                case (3):
+                    marchTime = 150 - (150 * marchBoost);
+                    break;
+                default:
+                    break;
+            }
+
+            StartCoroutine(fight(marchTime, a2));
+
+            StartCoroutine(marchTimer(false));
+
+            marching = true;
+
+            SoundController.controller.playTrack("marching");
         }
-
-        StartCoroutine(fight(marchTime));
-
-        StartCoroutine(marchTimer());
     }
 
-    IEnumerator marchTimer()
+    public bool checkIfMarching()
     {
-        slider.gameObject.SetActive(true);
+        return marching;
+    }
+
+    IEnumerator marchTimer(bool returning)
+    {
+        if (!returning)
+            marchingSlider.gameObject.SetActive(true);
+        else returnSlider.gameObject.SetActive(true);
 
         float time = 0;
-        slider.maxValue = marchTime;
+        marchingSlider.maxValue = marchTime;
+        returnSlider.maxValue = marchTime;
         while(time < marchTime -.05f)
         {
             time += Time.deltaTime;
-            slider.value = time;
-            marchText.text = "Arrival Time: " + (marchTime - time).ToString("F0");
+            if (!returning)
+            {
+                marchingSlider.value = time;
+                marchText.text = "Arrival Time: " + (marchTime - time).ToString("F0");
+            }
+            else
+            {
+                returnSlider.value = time;
+                returnText.text = "Arrival Time: " + (marchTime - time).ToString("F0");
+            }        
             yield return null;
         }
 
-        slider.gameObject.SetActive(false);
+        if (!returning)
+            marchingSlider.gameObject.SetActive(false);
+        else
+        {
+            returnSlider.gameObject.SetActive(false);
+            marching = false;
+        }
 
     }
 
@@ -98,9 +136,24 @@ public class BattleSystem : MonoBehaviour {
         return marchTime;
     }
 
-    IEnumerator fight(float time)
+    public void startFightWithInvader()
     {
-        yield return new WaitForSeconds(time);
+        StartCoroutine(fight(0, Invader.invaderArmy));
+    }
+
+
+    //This fight is for enemies on the map
+    IEnumerator fight(float time, Army army)
+    {
+        //This will only go off if attacked by an invader and if the soldiers are gone
+        if(marching || a1.getTotalStrength() < 1)
+        {
+            ResourceController.controller.subtractMultiple(ResourceController.controller.getFood() / 2,
+                                                           ResourceController.controller.getLogs() / 2,
+                                                           ResourceController.controller.getIron() / 2,
+                                                           ResourceController.controller.getRocks() / 2);
+            yield break;
+        }
 
         fS1 = 0;
         sS1 = 0;
@@ -115,7 +168,7 @@ public class BattleSystem : MonoBehaviour {
         catS2 = 0;
 
         army1 = a1;
-        army2 = a2;
+        army2 = army;
 
         fH = army1.getHitChance(0);
         sH = army1.getHitChance(1);
@@ -168,45 +221,47 @@ public class BattleSystem : MonoBehaviour {
 
 
 
-        for (int i = 0; i < a2.farmerCount(); i++)
+        for (int i = 0; i < army2.farmerCount(); i++)
         {
             float num = Random.Range(0, 100);
             if (fH < num)
                 fS2 += Army.controller.getTroopStrength(0) - Army.controller.getForgeStrength();
         }
-        fP2 = (float)a2.farmerCount() / a2.armyCount();
+        fP2 = (float)army2.farmerCount() / army2.armyCount();
 
-        for (int i = 0; i < a2.soldierCount(); i++)
+        for (int i = 0; i < army2.soldierCount(); i++)
         {
             float num = Random.Range(0, 100);
             if (sH < num)
                 sS2 += Army.controller.getTroopStrength(1) - Army.controller.getForgeStrength();
         }
-        sP2 = (float)a2.soldierCount() / a2.armyCount();
+        sP2 = (float)army2.soldierCount() / army2.armyCount();
 
-        for (int i = 0; i < a2.archerCount(); i++)
+        for (int i = 0; i < army2.archerCount(); i++)
         {
             float num = Random.Range(0, 100);
             if (aH < num)
                 aS2 += Army.controller.getTroopStrength(2) - Army.controller.getForgeStrength();
         }
-        aP2 = (float)a2.archerCount() / a2.armyCount();
+        aP2 = (float)army2.archerCount() / army2.armyCount();
 
-        for (int i = 0; i < a2.cavalryCount(); i++)
+        for (int i = 0; i < army2.cavalryCount(); i++)
         {
             float num = Random.Range(0, 100);
             if (fH < num)
                 cavS2 += Army.controller.getTroopStrength(3) - Army.controller.getForgeStrength();
         }
-        cavP2 = (float)a2.cavalryCount() / a2.armyCount();
+        cavP2 = (float)army2.cavalryCount() / army2.armyCount();
 
-        for (int i = 0; i < a2.catapultCount(); i++)
+        for (int i = 0; i < army2.catapultCount(); i++)
         {
             float num = Random.Range(0, 100);
             if (catH < num)
                 catS2 += Army.controller.getTroopStrength(4) - Army.controller.getForgeStrength();
     }
-        catP2 = (float)a2.catapultCount() / a2.armyCount();
+        catP2 = (float)army2.catapultCount() / army2.armyCount();
+
+        yield return new WaitForSeconds(time);
 
         battle();
     }
@@ -260,8 +315,11 @@ public class BattleSystem : MonoBehaviour {
 
         if (army2.getTotalStrength() < 1)
         {
+            SoundController.controller.playTrack("victory");
             ResourceController.controller.addResourceBoost(army2.getResourceType(), army2.getResourceBoost());
-            enabled = false;
         }
+
+        if (army1.getTotalStrength() > 1)
+            StartCoroutine(marchTimer(true));
     }
 }

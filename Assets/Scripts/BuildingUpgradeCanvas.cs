@@ -19,7 +19,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Canvas buildingListTown;
     public Canvas buildingListCity;
     public Canvas enemyCanvas;
-    SpriteRenderer barracksCanvasSprite;
+    public SpriteRenderer barracksCanvasSprite;
 
     public Text title;
     public Text description;
@@ -33,6 +33,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text cavNeeds;
     public Text catNeeds;
 
+    public Text invaderText;
     public Text enemyFarmers;
     public Text enemySoldiers;
     public Text enemyArchers;
@@ -57,6 +58,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     Enemy selectedEnemy;
 
     public Slider marchSlider;
+    public Slider returnSlider;
     void Awake()
     {
         controller = this;
@@ -66,12 +68,14 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     void Start()
     {
         closeCanvas();
-        barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
+        //barracksCanvasSprite = barracksCanvas.GetComponentInChildren<SpriteRenderer>();
         marchSlider.gameObject.SetActive(false);
+        returnSlider.gameObject.SetActive(false);
+        invaderText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         worldPoint = new Vector3(mousePos.x, mousePos.y, 81.8f);
 
@@ -106,21 +110,25 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
                     buildingListCity.gameObject.SetActive(true);
             }
         }
-        
+
     }
 
-    public Slider accessSlider()
+    public Slider accessSlider(int num)
     {
-        return marchSlider;
+        if (num == 1)
+            return marchSlider;
+        else return returnSlider;
     }
 
     public bool canClick()
     {
-        if ((barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false &&
-             (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false
+        if ((upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false || 
+            (barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false && 
+            (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false
             && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.isActiveAndEnabled) == false
-            && (enemyCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false ||
-            (upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled) == false)
+            && (enemyCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false
+            && (universityCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false) 
+            
         {
             return true;
         }
@@ -156,7 +164,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             cavNeeds.text = Army.controller.getNeedsString(3);
             catNeeds.text = Army.controller.getNeedsString(4);
         }
-        else if(b.tag == "University")
+        else if (b.tag == "University")
         {
             barracksCanvas.gameObject.SetActive(false);
             universityScript = b.GetComponent<University>();
@@ -192,6 +200,34 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public float getUpgradeBoost()
     {
         return upgradeBoost;
+    }
+
+    public void setInvaderText(float time)
+    {
+        invaderText.gameObject.SetActive(true);
+
+        invaderText.text = "Incoming barbarians in " + timeCalculation(time);
+
+        if(time < 1)
+        {
+            invaderText.gameObject.SetActive(false);
+        }
+    }
+
+    public string timeCalculation(float num)
+    {
+        int minuteCounter = 0;
+        float tempTime = num;
+        if (num > 60)
+        {
+            while (tempTime - 60 > 0)
+            {
+                tempTime -= 60;
+                minuteCounter++;
+            }
+        }
+
+        return minuteCounter.ToString() + "m " + tempTime.ToString("F0") + "s";
     }
 
     public void buyFarmer(int num)

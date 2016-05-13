@@ -105,7 +105,8 @@ public class Enemy : Army {
 
     void OnMouseDown()
     {
-        BuildingUpgradeCanvas.controller.setEnemy(this);
+        if(BuildingUpgradeCanvas.controller.canClick())
+            BuildingUpgradeCanvas.controller.setEnemy(this);
     }
 
     public int getLevel()
@@ -113,14 +114,19 @@ public class Enemy : Army {
         return armyLevel;
     }
 
-    public float getResourceBoost()
+    public override float getResourceBoost()
     {
         return resourceBoost;
     }
 
-    public string getResourceType()
+    public override string getResourceType()
     {
         return resourceType;
+    }
+
+    public override int getDistance()
+    {
+        return distance;
     }
 
 

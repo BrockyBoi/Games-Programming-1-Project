@@ -31,8 +31,6 @@ public class University : Building {
         buildingName = "University";
         description = "Universities allows you to research new technologies to speed up productions";
         base.Start();
-        setResearchNeed();
-
 	}
 	
 	// Update is called once per frame
@@ -43,7 +41,6 @@ public class University : Building {
     protected override void upgrade()
     {
         base.upgrade();
-        setResearchNeed();
     }
 
     public void setResearch(string s)
@@ -69,7 +66,7 @@ public class University : Building {
         else if (s == "Alarm")
             checkResearchTime(alarmLevel);
 
-        if (ResourceController.controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching)
+        if (ResourceController.controller.meetsResourceNeeds(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed) && !researching && researchTime != 0)
         {
             researching = true;
             ResourceController.controller.subtractMultiple(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed);
@@ -108,21 +105,24 @@ public class University : Building {
         }
     }
 
-    void setResearchNeed()
+    void setResearchNeed(int num)
     {
-        switch (level)
+        switch (num)
         {
-            case 1:
+            case 0:
                 researchNeeds(1000, 1000, 1000, 1000);
                 break;
-            case 2:
+            case 1:
                 researchNeeds(2500, 2500, 2500, 2500);
                 break;
-            case 3:
+            case 2:
                 researchNeeds(6000, 6000, 6000, 6000);
                 break;
-            case 4:
+            case 3:
                 researchNeeds(12000, 12000, 12000, 12000);
+                break;
+            case 4:
+                researchNeeds(25000, 25000, 25000, 25000);
                 break;
             default:
                 break;
@@ -161,26 +161,35 @@ public class University : Building {
 
     void checkResearchTime(int num)
     {
-        switch(num)
+        if (num <= level)
         {
-            case 0:
-                researchTime = 90;
-                break;
-            case 1:
-                researchTime = 240;
-                break;
-            case 2:
-                researchTime = 600;
-                break;
-            case 3:
-                researchTime = 900;
-                break;
-            case 4:
-                researchTime = 1800;
-                break;
-            default:
-                break;
+            switch (num)
+            {
+                case 0:
+                    researchTime = 90;
+                    setResearchNeed(num);
+                    break;
+                case 1:
+                    researchTime = 240;
+                    setResearchNeed(num);
+                    break;
+                case 2:
+                    researchTime = 600;
+                    setResearchNeed(num);
+                    break;
+                case 3:
+                    researchTime = 900;
+                    setResearchNeed(num);
+                    break;
+                case 4:
+                    researchTime = 1800;
+                    setResearchNeed(num);
+                    break;
+                default:
+                    break;
+            }
         }
+        researchTime = 0;
     }
 
     void addBoost()
@@ -196,10 +205,8 @@ public class University : Building {
         else if (researchName == "Marching")
             BattleSystem.controller.addMarchingBoost(.1f);
         else if (researchName == "Alarm")
-            Army.controller.addAlarmBoost(1);
+            Army.controller.addAlarmBoost();
 
         researching = false;
-
-        Debug.Log(researchName + " " + ResourceController.controller.getBoost("Farm"));
     }
 }

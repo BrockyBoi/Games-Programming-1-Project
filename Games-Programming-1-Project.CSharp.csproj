@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Farm.cs" />
     <Compile Include="Assets\Scripts\Forestry.cs" />
     <Compile Include="Assets\Scripts\Forge.cs" />
+    <Compile Include="Assets\Scripts\Invader.cs" />
     <Compile Include="Assets\Scripts\Plot.cs" />
     <Compile Include="Assets\Scripts\Producer.cs" />
     <Compile Include="Assets\Scripts\Quarry.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Scripts\TownHall.cs" />
     <Compile Include="Assets\Scripts\University.cs" />
     <Compile Include="Assets\Scripts\Workshop.cs" />
+    <Compile Include="Assets\SoundController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Medieval-Fantasy Hex Locations\readme.txt" />
