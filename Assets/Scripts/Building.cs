@@ -54,17 +54,7 @@ public class Building : MonoBehaviour {
 	
 	// Update is called once per frame
 	protected void Update () {
-        //if (isUpgrading)
-        //{
-        //    upgradeTimeLeft -= Time.deltaTime;
-        //    BuildingUpgradeCanvas.controller.upgrading(upgradeTimeLeft);
-        //}
-        //else if(upgradeTimeLeft <= 0)
-        //{
-        //    BuildingUpgradeCanvas.controller.stoppingUpgrade();
-        //}
 
-        //slider.value = upgradeTimeLeft;
     }
 
     IEnumerator upgradeTimer()
@@ -108,6 +98,8 @@ public class Building : MonoBehaviour {
 
             StartCoroutine(upgradeTimer());
             isUpgrading = true;
+
+            BuildingUpgradeCanvas.controller.closeCanvas();
         }
     }
 

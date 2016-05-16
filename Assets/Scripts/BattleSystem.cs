@@ -64,8 +64,9 @@ public class BattleSystem : MonoBehaviour {
 
     public void pressFightButton()
     {
-        if (!marching)
+        if (!marching && a2.getTotalStrength() > 0)
         {
+            BuildingUpgradeCanvas.controller.closeCanvas();
             switch (a2.getDistance())
             {
                 case (1):
@@ -313,11 +314,7 @@ public class BattleSystem : MonoBehaviour {
         if (army1.getTotalStrength() > 1 && army2.getTotalStrength() > 1)
             battle();
 
-        if (army2.getTotalStrength() < 1)
-        {
-            SoundController.controller.playTrack("victory");
-            ResourceController.controller.addResourceBoost(army2.getResourceType(), army2.getResourceBoost());
-        }
+        army2.checkHealth();
 
         if (army1.getTotalStrength() > 1)
             StartCoroutine(marchTimer(true));

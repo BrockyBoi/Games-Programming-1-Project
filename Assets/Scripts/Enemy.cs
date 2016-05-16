@@ -88,20 +88,28 @@ public class Enemy : Army {
                 resourceBoost = 0;
                 break;
         }
-
-        //Debug.Log("Level: " + armyLevel + " Resource Type: " + resourceType);
 	}
 
 	// Update is called once per frame
 	new void Update () {
         base.Update();
+	}
+
+    public override void checkHealth()
+    {
         if (getTotalStrength() < 1)
         {
             BuildingUpgradeCanvas.controller.updateEnemyStrings();
             ResourceController.controller.addResourceBoost(resourceType, resourceBoost);
-            enabled = false; 
+
+            sR.color = new Color((float)100 / 255, (float)100 / 255, (float)100 / 255);
+
+            SoundController.controller.playTrack("victory");
+
+            enabled = false;
+
         }
-	}
+    }
 
     void OnMouseDown()
     {

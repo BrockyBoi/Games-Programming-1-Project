@@ -114,7 +114,9 @@ public class BuildingController : MonoBehaviour {
     void setBarracksLevel(int num)
     {
         if (num > barracksLevel)
-            quarryLevel = num;
+            barracksLevel = num;
+
+        Debug.Log("Barracks Level: " + barracksLevel);
     }
 
     public int getBarracksLevel()
@@ -126,6 +128,8 @@ public class BuildingController : MonoBehaviour {
     {
         if (num > townHallLevel)
             townHallLevel = num;
+
+        Debug.Log("Town Hall Level: " + townHallLevel);
     }
 
     public int getTownHallLevel()

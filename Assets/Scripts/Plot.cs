@@ -139,7 +139,7 @@ public class Plot : MonoBehaviour {
         {
             setBuilding = university;
             b.setNeeds(300, 250, 150, 250, BuildingUpgradeCanvas.controller.universityNeeds);
-            buildTime = 45;
+            buildTime = 1;
         }
         else if (s == "Workshop")
         {

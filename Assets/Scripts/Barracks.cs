@@ -73,10 +73,13 @@ public class Barracks : Building {
 
     IEnumerator farmerTimer()
     {
+        BuildingUpgradeCanvas.controller.Activate(BuildingUpgradeCanvas.controller.farmerTime);
+
         float time = 0;
         while(time < farmerTime)
         {
             time += Time.deltaTime;
+            BuildingUpgradeCanvas.controller.farmerTime.text = BuildingUpgradeCanvas.controller.timeCalculation(farmerTime - time);
             yield return null;
         }
 
@@ -84,6 +87,8 @@ public class Barracks : Building {
         boughtFarmer = false;
         farmerNum = 0;
         farmerTime = 0;
+
+        BuildingUpgradeCanvas.controller.Disable(BuildingUpgradeCanvas.controller.farmerTime);
     }
 
     public void buySoldier(int num)
@@ -113,10 +118,13 @@ public class Barracks : Building {
 
     IEnumerator soldierTimer()
     {
+        BuildingUpgradeCanvas.controller.Activate(BuildingUpgradeCanvas.controller.soldierTime);
+
         float time = 0;
         while (time < soldierTime)
         {
             time += Time.deltaTime;
+            BuildingUpgradeCanvas.controller.soldierTime.text = BuildingUpgradeCanvas.controller.timeCalculation(soldierTime - time);
             yield return null;
         }
 
@@ -124,6 +132,8 @@ public class Barracks : Building {
         boughtSoldier = false;
         soldierNum = 0;
         soldierTime = 0;
+
+        BuildingUpgradeCanvas.controller.Disable(BuildingUpgradeCanvas.controller.soldierTime);
     }
 
     public void buyArcher(int num)
@@ -155,10 +165,13 @@ public class Barracks : Building {
 
     IEnumerator archerTimer()
     {
+        BuildingUpgradeCanvas.controller.Activate(BuildingUpgradeCanvas.controller.archerTime);
+
         float time = 0;
         while (time < archerTime)
         {
             time += Time.deltaTime;
+            BuildingUpgradeCanvas.controller.archerTime.text = BuildingUpgradeCanvas.controller.timeCalculation(archerTime - time);
             yield return null;
         }
 
@@ -166,6 +179,8 @@ public class Barracks : Building {
         boughtArcher = false;
         archerNum = 0;
         archerTime = 0;
+
+        BuildingUpgradeCanvas.controller.Disable(BuildingUpgradeCanvas.controller.archerTime);
     }
 
     public void buyCavalry(int num)
@@ -197,10 +212,15 @@ public class Barracks : Building {
 
     IEnumerator cavalryTimer()
     {
+
+        BuildingUpgradeCanvas.controller.Activate(BuildingUpgradeCanvas.controller.cavalryTime);
+
+
         float time = 0;
         while (time < cavalryTime)
         {
             time += Time.deltaTime;
+            BuildingUpgradeCanvas.controller.cavalryTime.text = BuildingUpgradeCanvas.controller.timeCalculation(cavalryTime - time);
             yield return null;
         }
 
@@ -208,6 +228,8 @@ public class Barracks : Building {
         boughtCavalry = false;
         cavalryNum = 0;
         cavalryTime = 0;
+
+        BuildingUpgradeCanvas.controller.Disable(BuildingUpgradeCanvas.controller.cavalryTime);
     }
 
     public void buyCatapult(int num)
@@ -237,10 +259,13 @@ public class Barracks : Building {
 
     IEnumerator catapultTimer()
     {
+        BuildingUpgradeCanvas.controller.Activate(BuildingUpgradeCanvas.controller.catapultTime);
+
         float time = 0;
         while (time < catapultTime)
         {
             time += Time.deltaTime;
+            BuildingUpgradeCanvas.controller.catapultTime.text = BuildingUpgradeCanvas.controller.timeCalculation(catapultTime - time);
             yield return null;
         }
 
@@ -248,6 +273,8 @@ public class Barracks : Building {
         boughtCatapult = false;
         catapultNum = 0;
         catapultTime = 0;
+
+        BuildingUpgradeCanvas.controller.Disable(BuildingUpgradeCanvas.controller.catapultTime);
     }
 
     protected override void upgrade()

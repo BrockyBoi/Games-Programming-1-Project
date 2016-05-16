@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\ButtonController.cs" />
+    <Compile Include="Assets\Scripts\AchievementSystem.cs" />
     <Compile Include="Assets\Scripts\Army.cs" />
     <Compile Include="Assets\Scripts\Barracks.cs" />
     <Compile Include="Assets\Scripts\BattleSystem.cs" />

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class University : Building {
 
@@ -26,12 +27,18 @@ public class University : Building {
     //Boosts that will only go up by 1
     int alarmLevel;
 
+    Slider researchSlider;
+
     // Use this for initialization
     new void Start () {
         buildingName = "University";
         description = "Universities allows you to research new technologies to speed up productions";
+
         base.Start();
-	}
+
+        researchSlider = transform.GetChild(1).GetComponentInChildren<Slider>();
+        researchSlider.gameObject.SetActive(false);
+    }
 	
 	// Update is called once per frame
 	new void Update () {
@@ -70,8 +77,27 @@ public class University : Building {
         {
             researching = true;
             ResourceController.controller.subtractMultiple(r.foodNeed, r.logNeed, r.ironNeed, r.stoneNeed);
+            StartCoroutine(ResearchTimer());
             Invoke("addBoost", researchTime);
+            BuildingUpgradeCanvas.controller.closeCanvas();
         }
+    }
+
+    IEnumerator ResearchTimer()
+    {
+        float time = 0;
+
+        researchSlider.gameObject.SetActive(true);
+        researchSlider.maxValue = researchTime;
+
+        while(time < researchTime - 1)
+        {
+            time += Time.deltaTime;
+            researchSlider.value = time;
+            yield return null;
+        }
+
+        researchSlider.gameObject.SetActive(false);
     }
     
     void researchNeeds(int f, int l, int s, int i)

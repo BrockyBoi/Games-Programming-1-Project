@@ -96,6 +96,9 @@ public class Army : MonoBehaviour {
     public virtual string getResourceType()
     { return ""; }
 
+    public virtual void checkHealth()
+    {}
+
     public void addAccuracyBoost(float f)
     {
         accuracyBoost += f;
