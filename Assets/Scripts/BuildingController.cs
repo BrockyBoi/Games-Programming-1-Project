@@ -128,8 +128,6 @@ public class BuildingController : MonoBehaviour {
     {
         if (num > townHallLevel)
             townHallLevel = num;
-
-        Debug.Log("Town Hall Level: " + townHallLevel);
     }
 
     public int getTownHallLevel()

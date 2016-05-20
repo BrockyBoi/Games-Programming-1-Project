@@ -47,7 +47,6 @@ public class Building : MonoBehaviour {
 
         personalCanvas = GetComponentInChildren<Canvas>();
         slider = GetComponentInChildren<Slider>();
-        //sliderText = slider.GetComponentInChildren<Text>();
 
         personalCanvas.gameObject.SetActive(false);
     }
@@ -81,6 +80,11 @@ public class Building : MonoBehaviour {
             else if (!townBuilding && CameraPosition.controller.getPosition() == "City")
                 BuildingUpgradeCanvas.controller.setBuilding(this);
         }
+    }
+
+    public void PressDestroy()
+    {
+
     }
 
     public void pressUpgrade()

@@ -20,7 +20,8 @@ public class Plot : MonoBehaviour {
     bool city;
 
     GameObject setBuilding;
-    public bool empty;
+    bool empty;
+    bool canBuild;
 
     float buildTime;
 
@@ -31,14 +32,22 @@ public class Plot : MonoBehaviour {
         public int ironNeed;
         public int stoneNeed;
 
-        public void setNeeds(int f, int w, int i, int s, Text t)
+        public void setNeeds(int f, int w, int i, int s, string preReq, Text t)
         {
             foodNeed = f;
             woodNeed = w;
             ironNeed = i;
             stoneNeed = s;
 
-            t.text = "Food: " + f.ToString() + "\nWood: " + w.ToString() + "\nIron: " + i.ToString() + "\nStone: " + s.ToString();
+            t.text = "Food: " + f.ToString() + "\nWood: " + w.ToString() + "\nIron: " + i.ToString() + "\nStone: " + s.ToString() + "\nBuilding: " + preReq;
+        }
+
+        public void setNeeds(int f, int w, int i, int s)
+        {
+            foodNeed = f;
+            woodNeed = w;
+            ironNeed = i;
+            stoneNeed = s;
         }
     }
     buildingNeeds b;
@@ -91,78 +100,113 @@ public class Plot : MonoBehaviour {
 
     void setTexts()
     {
-        b.setNeeds(200, 150, 50, 150, BuildingUpgradeCanvas.controller.forestryNeeds);
-        b.setNeeds(50, 200, 50, 150, BuildingUpgradeCanvas.controller.farmNeeds);
-        b.setNeeds(100, 200, 100, 200, BuildingUpgradeCanvas.controller.mineNeeds);
-        b.setNeeds(100, 200, 100, 150, BuildingUpgradeCanvas.controller.quarryNeeds);
-        b.setNeeds(250, 250, 250, 250, BuildingUpgradeCanvas.controller.barracksNeeds);
-        b.setNeeds(300, 250, 150, 250, BuildingUpgradeCanvas.controller.universityNeeds);
-        b.setNeeds(250, 250, 300, 300, BuildingUpgradeCanvas.controller.workshopNeeds);
-        b.setNeeds(150, 150, 150, 150, BuildingUpgradeCanvas.controller.cottageNeeds);
-        b.setNeeds(250, 200, 300, 300, BuildingUpgradeCanvas.controller.forgeNeeds);
+        b.setNeeds(200, 150, 50, 150, "Farm", BuildingUpgradeCanvas.controller.forestryNeeds);
+        b.setNeeds(50, 200, 50, 150, "", BuildingUpgradeCanvas.controller.farmNeeds);
+        b.setNeeds(100, 200, 100, 200, "Quarry", BuildingUpgradeCanvas.controller.mineNeeds);
+        b.setNeeds(100, 200, 100, 150, "Forestry", BuildingUpgradeCanvas.controller.quarryNeeds);
+        b.setNeeds(250, 250, 250, 250, "Mine", BuildingUpgradeCanvas.controller.barracksNeeds);
+        b.setNeeds(300, 250, 150, 250, "Barracks", BuildingUpgradeCanvas.controller.universityNeeds);
+        b.setNeeds(250, 250, 300, 300, "Barracks", BuildingUpgradeCanvas.controller.workshopNeeds);
+        b.setNeeds(150, 150, 150, 150, "Mine", BuildingUpgradeCanvas.controller.cottageNeeds);
+        b.setNeeds(250, 200, 300, 300, "Workshop", BuildingUpgradeCanvas.controller.forgeNeeds);
     }
 
     public void build(string s)
     {
         if (s == "Forestry")
         {
-            setBuilding = forestry;
-            //Food, wood, iron, stone
-            b.setNeeds(200, 150, 50, 150,BuildingUpgradeCanvas.controller.forestryNeeds);
-            buildTime = 15;
+            if (BuildingController.controller.getFarmLevel() >= 1)
+            {
+                setBuilding = forestry;
+                //Food, wood, iron, stone
+                b.setNeeds(200, 150, 50, 150);
+                buildTime = 15;
+                canBuild = true;
+            }
         }
         else if (s == "Farm")
         {
             setBuilding = farm;
-            b.setNeeds(50, 200, 50, 150, BuildingUpgradeCanvas.controller.farmNeeds);
+            b.setNeeds(50, 200, 50, 150);
             buildTime = 15;
+            canBuild = true;
+
         }
         else if (s == "Mine")
         {
-            setBuilding = mine;
-            b.setNeeds(100, 200, 100, 200, BuildingUpgradeCanvas.controller.mineNeeds);
-            buildTime = 15;
+            if (BuildingController.controller.getQuarryLevel() >= 1)
+            {
+                setBuilding = mine;
+                b.setNeeds(100, 200, 100, 200);
+                buildTime = 15;
+                canBuild = true;
+            }
         }
         else if (s == "Quarry")
         {
-            setBuilding = quarry;
-            b.setNeeds(100, 200, 100, 150, BuildingUpgradeCanvas.controller.quarryNeeds);
-            buildTime = 15;
+            if (BuildingController.controller.getLumberyardLevel() >= 1)
+            {
+                setBuilding = quarry;
+                b.setNeeds(100, 200, 100, 150);
+                buildTime = 15;
+                canBuild = true;
+            }
         }
         else if (s == "Barracks")
         {
-            setBuilding = barracks;
-            b.setNeeds(250, 250, 250, 250, BuildingUpgradeCanvas.controller.barracksNeeds);
-            buildTime = 1;
+            if (BuildingController.controller.getSmithLevel() >= 1)
+            {
+                setBuilding = barracks;
+                b.setNeeds(250, 250, 250, 250);
+                buildTime = 1;
+                canBuild = true;
+            }
         }
         else if (s == "University")
         {
-            setBuilding = university;
-            b.setNeeds(300, 250, 150, 250, BuildingUpgradeCanvas.controller.universityNeeds);
-            buildTime = 1;
+            if (BuildingController.controller.getBarracksLevel() >= 1)
+            {
+                setBuilding = university;
+                b.setNeeds(300, 250, 150, 250);
+                buildTime = 1;
+                canBuild = true;
+            }
         }
         else if (s == "Workshop")
         {
-            setBuilding = workshop;
-            b.setNeeds(250, 250, 300, 300, BuildingUpgradeCanvas.controller.workshopNeeds);
-            buildTime = 45;
+            if (BuildingController.controller.getBarracksLevel() >= 1)
+            {
+                setBuilding = workshop;
+                b.setNeeds(250, 250, 300, 300);
+                buildTime = 45;
+                canBuild = true;
+            }
         }
         else if (s == "Cottage")
         {
-            setBuilding = cottage;
-            b.setNeeds(150, 150, 150, 150, BuildingUpgradeCanvas.controller.cottageNeeds);
-            buildTime = 30;
+            if (BuildingController.controller.getSmithLevel() >= 1)
+            {
+                setBuilding = cottage;
+                b.setNeeds(150, 150, 150, 150);
+                buildTime = 30;
+                canBuild = true;
+            }
         }
         else if (s == "Forge")
         {
-            setBuilding = forge;
-            b.setNeeds(250, 200, 300, 300, BuildingUpgradeCanvas.controller.forgeNeeds);
-            buildTime = 60;
+            if (BuildingController.controller.getWorkshopLevel() == 1)
+            {
+                setBuilding = forge;
+                b.setNeeds(250, 200, 300, 300);
+                buildTime = 60;
+                canBuild = true;
+            }
         }
 
-        if (ResourceController.controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed) && empty)
+        if (empty && canBuild && ResourceController.controller.meetsResourceNeeds(b.foodNeed,b.woodNeed,b.ironNeed,b.stoneNeed))
         {
             empty = false;
+            canBuild = false;
 
             Invoke("startConstruction", buildTime);
             ResourceController.controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);

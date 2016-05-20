@@ -212,10 +212,10 @@ public class University : Building {
                     setResearchNeed(num);
                     break;
                 default:
+                    researchTime = 0;
                     break;
             }
         }
-        researchTime = 0;
     }
 
     void addBoost()

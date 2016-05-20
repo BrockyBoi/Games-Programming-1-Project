@@ -78,8 +78,6 @@ public class Army : MonoBehaviour {
         troopNeeds = new needs[5] { f,s,a,cav,cat};
 
         updateArmyStrings();
-
-        setArmy(100, 100, 100, 0, 0);
     }
 	
 	// Update is called once per frame
@@ -175,11 +173,6 @@ public class Army : MonoBehaviour {
     public float getTroopTime(int num)
     {
         return recruitTime[num];
-    }
-
-    public void setTroopSize(int num)
-    {
-
     }
 
     public void setFarmerSize(int num)

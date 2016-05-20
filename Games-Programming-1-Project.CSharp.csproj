@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\University.cs" />
     <Compile Include="Assets\Scripts\Workshop.cs" />
     <Compile Include="Assets\SoundController.cs" />
+    <Compile Include="Assets\WeatherController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Medieval-Fantasy Hex Locations\readme.txt" />

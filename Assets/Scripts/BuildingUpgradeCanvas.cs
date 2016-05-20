@@ -174,20 +174,37 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
 
     public bool canClick()
     {
-        Debug.Log(upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled);
+        //Debug.Log(upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled);
 
-        if ((upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled) == false 
-            || (barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false
-            && 
-            (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false
-            && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.isActiveAndEnabled) == false
-            && (enemyCanvas.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false
-            && (universityCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false) 
-            
+        if ((upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled) == false)
         {
             return true;
+        } 
+        if(barracksCanvasSprite.bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled == false)
+        {
+           if((buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false)
+           {
+                if((buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.isActiveAndEnabled) == false)
+                {
+                    if ((enemyCanvas.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false)
+                    {
+                        if ((universityCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false)
+                        {
+                            return true;
+                        }
+                    }
+                }
+           }
         }
-        else return false;
+        //    && (buildingListCity.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListCity.isActiveAndEnabled) == false
+        //    && (buildingListTown.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && buildingListTown.isActiveAndEnabled) == false
+        //    && (enemyCanvas.transform.GetChild(0).GetComponent<SpriteRenderer>().bounds.Contains(worldPoint) && enemyCanvas.isActiveAndEnabled) == false
+        //    && (universityCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false) 
+            
+        //{
+        //    return true;
+        //}
+        return false;
     }
 
     public void build(string s)
@@ -209,7 +226,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         {
 
             Disable(universityCanvas);
-            barracksScript = b.GetComponent<Barracks>();
+            barracksScript = b.gameObject.GetComponent<Barracks>();
 
             Activate(barracksCanvas);
 
@@ -222,7 +239,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         else if (b.tag == "University")
         {
             Disable(barracksCanvas);
-            universityScript = b.GetComponent<University>();
+            universityScript = b.gameObject.GetComponent<University>();
             Activate(universityCanvas);
         }
         else

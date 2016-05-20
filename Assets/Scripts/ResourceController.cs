@@ -53,10 +53,10 @@ public class ResourceController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         InvokeRepeating("incrementResources", productionRate, productionRate);
-        food = 5000;
-        logs = 5000;
-        rocks = 5000;
-        iron = 5000;
+        food = 1000;
+        logs = 1000;
+        rocks = 1000;
+        iron = 1000;
         population = 10;
         updateResourceText();
     }
@@ -209,6 +209,11 @@ public class ResourceController : MonoBehaviour {
     {
         if(population + num < populationCap)
             population += num;
+    }
+
+    public void setPopCap(int num)
+    {
+        populationCap = num;
     }
 
     public void subtractPopulation(int num)

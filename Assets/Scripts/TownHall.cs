@@ -48,26 +48,26 @@ public class TownHall : Building {
     {
         switch(level)
         {
-            //case 1:
-            //    preReq = makeNeedString("Farm", 2, "Smith", 2) + "\n" + makeNeedString("Forestry", 2, "Quarry", 2);
-            //    if (BuildingController.controller.getFarmLevel() == 2 && BuildingController.controller.getSmithLevel() == 2 && BuildingController.controller.getQuarryLevel() == 2 && BuildingController.controller.getLumberyardLevel() == 2)
-            //        return true;
-            //    else return false;
-            //case 2:
-            //    preReq = makeNeedString("Workshop", 2, "Forge", 2);
-            //    if (BuildingController.controller.getWorkshopLevel() == 2 && BuildingController.controller.getForgeLevel() == 2)
-            //        return true;
-            //    else return false;
-            //case 3:
-            //    preReq = makeNeedString("Workshop", 3, "Forge", 3);
-            //    if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getForgeLevel() == 3)
-            //        return true;
-            //    else return false;
-            //case 4:
-            //    preReq = makeNeedString("Workshop", 4, "Forge", 4);
-            //    if (BuildingController.controller.getWorkshopLevel() == 4 && BuildingController.controller.getForgeLevel() == 4)
-            //        return true;
-            //    else return false;
+            case 1:
+                preReq = makeNeedString("Farm", 2, "Smith", 2) + "\n" + makeNeedString("Forestry", 2, "Quarry", 2);
+                if (BuildingController.controller.getFarmLevel() == 2 && BuildingController.controller.getSmithLevel() == 2 && BuildingController.controller.getQuarryLevel() == 2 && BuildingController.controller.getLumberyardLevel() == 2)
+                    return true;
+                else return false;
+            case 2:
+                preReq = makeNeedString("Workshop", 2, "Forge", 2);
+                if (BuildingController.controller.getWorkshopLevel() == 2 && BuildingController.controller.getForgeLevel() == 2)
+                    return true;
+                else return false;
+            case 3:
+                preReq = makeNeedString("Workshop", 3, "Forge", 3);
+                if (BuildingController.controller.getWorkshopLevel() == 3 && BuildingController.controller.getForgeLevel() == 3)
+                    return true;
+                else return false;
+            case 4:
+                preReq = makeNeedString("Workshop", 4, "Forge", 4);
+                if (BuildingController.controller.getWorkshopLevel() == 4 && BuildingController.controller.getForgeLevel() == 4)
+                    return true;
+                else return false;
             default:
                 return true;
         }
