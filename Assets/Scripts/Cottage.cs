@@ -14,7 +14,7 @@ public class Cottage : Building {
         popLevel();
         setControllerPop();
         upgradeParameters();
-        popRate = 45;
+        popRate = 5;
 
         InvokeRepeating("addPopulation", popRate, popRate);
 
@@ -64,9 +64,7 @@ public class Cottage : Building {
     {
         base.upgrade();
 
-        popLevel();
-        setControllerPop();
-        
+        setControllerPop();     
     }
 
     protected override bool buildingPrereqs()
@@ -117,7 +115,19 @@ public class Cottage : Building {
 
     void setControllerPop()
     {
+        popLevel();
+
         ResourceController.controller.setPopCap(populationLevel - lastPopulationLevel + 10);
         ResourceController.controller.addPopulation(populationLevel - lastPopulationLevel);
+    }
+
+    public override void PressDestroy()
+    {
+        popLevel();
+
+        ResourceController.controller.setPopCap(-populationLevel - lastPopulationLevel + 10);
+        ResourceController.controller.addPopulation(-populationLevel - lastPopulationLevel);
+
+        base.PressDestroy();
     }
 }

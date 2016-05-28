@@ -211,9 +211,19 @@ public class ResourceController : MonoBehaviour {
             population += num;
     }
 
+    public void SetPopulation(int num)
+    {
+        population = num;
+    }
+
     public void setPopCap(int num)
     {
         populationCap = num;
+    }
+
+    public int GetPopCap()
+    {
+        return populationCap;
     }
 
     public void subtractPopulation(int num)
@@ -231,6 +241,14 @@ public class ResourceController : MonoBehaviour {
             ironBoost += f;
         else
             rockBoost += f;
+    }
+
+    public void SetMultipleBoosts(float f, float w, float i, float r)
+    {
+        foodBoost = f;
+        logBoost = w;
+        ironBoost = i;
+        rockBoost = r;
     }
 
     public float getBoost(string s)
@@ -252,6 +270,18 @@ public class ResourceController : MonoBehaviour {
         else return false;
     }
 
+    public void AddMultiple(int f, int w, int i, int s)
+    {
+        //addFood(f);
+        //addLogs(w);
+        //addIron(i);
+        //addRocks(s);
+        food += f;
+        logs += w;
+        iron += i;
+        rocks += s;
+    }
+
     public void subtractMultiple(int f, int w, int i, int s)
     {
         subtractFood(f);
@@ -260,23 +290,87 @@ public class ResourceController : MonoBehaviour {
         subtractRocks(s);
     }
 
+    public void SetMultiple(int f, int w, int i, int r)
+    {
+        food = f;
+        logs = w;
+        iron = i;
+        rocks = r;
+    }
+
+    public void SetMultipleCaps(int f, int w, int i, int r)
+    {
+        foodCap = f;
+        logCap = w;
+        ironCap = i;
+        rockCap = r;
+    }
+
     public void addResourceRate(string s, float i)
     {
         if(s == "Farm")
         {
-            foodRate = i;
+            foodRate += i;
         }
         else if(s == "Mine")
         {
-            ironRate = i;
+            ironRate += i;
         }
         else if(s == "Forestry")
         {
-            logRate = i;
+            logRate += i;
         }
         else
         {
-            rockRate = i;
+            rockRate += i;
+        }
+    }
+
+    public float GetResourceRate(string s)
+    {
+        if (s == "Farm")
+        {
+            return foodRate;
+        }
+        else if (s == "Mine")
+        {
+            return ironRate;
+        }
+        else if (s == "Forestry")
+        {
+            return logRate;
+        }
+        else
+        {
+            return rockRate;
+        }
+    }
+
+    public void SetMultipleRates(float f, float w, float i, float r)
+    {
+        foodRate = f;
+        logRate = w;
+        ironRate = i;
+        rockRate = r;
+    }
+
+    public void SubtractResourceRate(string s, float i)
+    {
+        if (s == "Farm")
+        {
+            foodRate -= i;
+        }
+        else if (s == "Mine")
+        {
+            ironRate -= i;
+        }
+        else if (s == "Forestry")
+        {
+            logRate -= i;
+        }
+        else if (s == "Quarry")
+        {
+            rockRate -= i;
         }
     }
 

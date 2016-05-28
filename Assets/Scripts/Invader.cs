@@ -21,7 +21,7 @@ public class Invader : Army {
 	// Use this for initialization
 	new void Start () {
         base.Start();
-        prepareTime = 2;
+        prepareTime = 600;
         StartCoroutine(prepareTimer());
         round = 1;
         increaseArmy();
@@ -56,14 +56,12 @@ public class Invader : Army {
             yield return null;
         }
 
-        Debug.Log("Before");
         setArmy(plannedSoldiers[0],
                 plannedSoldiers[1],
                 plannedSoldiers[2],
                 plannedSoldiers[3],
                 plannedSoldiers[4]);
 
-        Debug.Log("After");
         BattleSystem.controller.startFightWithInvader();
         increaseArmy();
         StartCoroutine(prepareTimer());
@@ -71,7 +69,7 @@ public class Invader : Army {
 
     float getMarchTime()
     {
-        return 10 * 60 + (Army.controller.getAlarmBoost() * 2 * 60);
+        return 10 * 30 + (Army.controller.getAlarmBoost() * 2 * 60);
     }
 
     public override float getResourceBoost()

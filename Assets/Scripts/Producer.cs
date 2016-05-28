@@ -55,6 +55,13 @@ public class Producer : Building
         }
     }
 
+    public override void PressDestroy()
+    {
+        ResourceController.controller.SubtractResourceRate(buildingName, produceAmount);
+        RevertControllerCap();
+        base.PressDestroy();
+    }
+
     protected override void upgrade()
     {
         base.upgrade();
@@ -133,6 +140,20 @@ public class Producer : Building
             ResourceController.controller.setRockCap(ResourceController.controller.getRockCap() + resourceCap - lastResourceCap);
         else
             ResourceController.controller.setFoodCap(ResourceController.controller.getFoodCap() + resourceCap - lastResourceCap);
+    }
+
+    void RevertControllerCap()
+    {
+        getCap();
+
+        if (forestry)
+            ResourceController.controller.setLogCap(ResourceController.controller.getLogCap() - resourceCap);
+        else if (smith)
+            ResourceController.controller.setIronCap(ResourceController.controller.getIronCap() - resourceCap);
+        else if (quarry)
+            ResourceController.controller.setRockCap(ResourceController.controller.getRockCap() - resourceCap);
+        else
+            ResourceController.controller.setFoodCap(ResourceController.controller.getFoodCap() - resourceCap);
     }
 
     protected override void setProduction()

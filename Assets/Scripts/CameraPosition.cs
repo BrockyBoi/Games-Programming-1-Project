@@ -12,7 +12,7 @@ public class CameraPosition : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         camera = GetComponent<Camera>();
-        setCurrentCam("Town");
+        setCurrentCam("City");
         controller = this;
 	}
 	

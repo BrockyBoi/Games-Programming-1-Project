@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BuildingController : MonoBehaviour {
 
@@ -9,9 +10,35 @@ public class BuildingController : MonoBehaviour {
     int townHallLevel, cottageLevel, barracksLevel, forgeLevel, workShopLevel, universityLevel;
     float upgradeBoost;
 
+    public GameObject farm;
+    public GameObject forestry;
+    public GameObject mine;
+    public GameObject quarry;
+    public GameObject barracks;
+    public GameObject forge;
+    public GameObject workshop;
+    public GameObject cottage;
+    public GameObject university;
+
+    Dictionary<string, GameObject> buildingList;
+
+    public GameObject buildingParentObject;
+
     void Awake()
     {
         controller = this;
+
+        buildingList = new Dictionary<string, GameObject>();
+
+        buildingList.Add("Farm", farm);
+        buildingList.Add("Forestry", forestry);
+        buildingList.Add("Mine", mine);
+        buildingList.Add("Quarry", quarry);
+        buildingList.Add("Barracks", barracks);
+        buildingList.Add("Forge", forge);
+        buildingList.Add("Workshop", workshop);
+        buildingList.Add("Cottage", cottage);
+        buildingList.Add("University", university);
     }
 
     // Use this for initialization
@@ -22,6 +49,11 @@ public class BuildingController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
+    }
+
+    public GameObject GetBuildingParent()
+    {
+        return buildingParentObject;
     }
 
     public void setBuildingLevel(string s, int num)
@@ -46,9 +78,21 @@ public class BuildingController : MonoBehaviour {
             setTownHallLevel(num);
     }
 
+    public void SetUpgradeBoost(float f)
+    {
+        upgradeBoost = f;
+    }
     public void addUpgradeBoost(float f)
     {
         upgradeBoost += f;
+    }
+
+    public void BuildBuilding(string name, int level, float posX, float posY)
+    {
+        GameObject building = Instantiate(buildingList[name], new Vector3(posX, posY), Quaternion.identity) as GameObject;
+        building.GetComponent<Building>().SetParameters(level);
+        Debug.Log("hi");
+
     }
 
     public float getUpgradeBoost()

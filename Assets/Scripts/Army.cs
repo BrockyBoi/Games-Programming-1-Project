@@ -60,7 +60,15 @@ public class Army : MonoBehaviour {
 
     void Awake()
     {
-        controller = this;
+        if (controller == null)
+        {
+            controller = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Use this for initialization
@@ -77,6 +85,8 @@ public class Army : MonoBehaviour {
         cat = new needs(500,200,200);
         troopNeeds = new needs[5] { f,s,a,cav,cat};
 
+
+        setArmy(10000, 10000, 10000, 10000, 15000);
         updateArmyStrings();
     }
 	
@@ -108,9 +118,41 @@ public class Army : MonoBehaviour {
         hitChance[4] = 55 + (int)(55 * accuracyBoost);
     }
 
+    public void SetAccuracyBoost(float f)
+    {
+        accuracyBoost = f;
+
+        hitChance[0] = 65 + (int)(65 * accuracyBoost);
+        hitChance[1] = 80 + (int)(80 * accuracyBoost);
+        hitChance[2] = 90 + (int)(90 * accuracyBoost);
+        hitChance[3] = 75 + (int)(75 * accuracyBoost);
+        hitChance[4] = 55 + (int)(55 * accuracyBoost);
+    }
+
+    public float GetAccuracyBoost()
+    {
+        return accuracyBoost;
+    }
+
     public void addTrainingBoost(float f)
     {
         trainingBoost += f;
+
+        recruitTime[0] -= recruitTime[0] * trainingBoost;
+        recruitTime[1] -= recruitTime[1] * trainingBoost;
+        recruitTime[2] -= recruitTime[2] * trainingBoost;
+        recruitTime[3] -= recruitTime[3] * trainingBoost;
+        recruitTime[4] -= recruitTime[4] * trainingBoost;
+    }
+
+    public float GetTrainingBoost()
+    {
+        return trainingBoost;
+    }
+
+    public void SetTrainingBoost(float f)
+    {
+        trainingBoost = f;
 
         recruitTime[0] -= recruitTime[0] * trainingBoost;
         recruitTime[1] -= recruitTime[1] * trainingBoost;
@@ -127,6 +169,11 @@ public class Army : MonoBehaviour {
     public int getAlarmBoost()
     {
         return alarmLevel;
+    }
+
+    public void SetAlarmBoost(int i)
+    {
+        alarmLevel = i;
     }
 
 

@@ -9,7 +9,7 @@ public class TownHall : Building {
 	new void Start () {
         buildingName = "Town Hall";
         base.Start();
-        description = "A town hall is the most vital building of the city.  The only way to get the best structures is a fully leveled Town Hall.";
+        description = "Level up the Town Hall to get more plots in the city and the ability to fully level up buildings";
         production = "";
 
         DisablePlots(0, 11);

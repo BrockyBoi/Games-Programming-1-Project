@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour {
         returnSlider = BuildingUpgradeCanvas.controller.accessSlider(2);
         returnText = returnSlider.GetComponentInChildren<Text>();
 
-
+        marchBoost = .9f;
     }
 	
 	// Update is called once per frame
@@ -57,6 +57,16 @@ public class BattleSystem : MonoBehaviour {
         marchBoost += f;
     }
 
+    public float GetMarchingBoost()
+    {
+        return marchBoost;
+    }
+
+    public void SetMarchingBoost(float f)
+    {
+        marchBoost = f;
+    }
+
     public void setEnemy(Enemy e)
     {
         a2 = e;
@@ -64,7 +74,7 @@ public class BattleSystem : MonoBehaviour {
 
     public void pressFightButton()
     {
-        if (!marching && a2.getTotalStrength() > 0)
+        if (!marching && a2.getTotalStrength() > 0 && a1.getTotalStrength() > 0)
         {
             BuildingUpgradeCanvas.controller.closeCanvas();
             switch (a2.getDistance())
@@ -315,6 +325,8 @@ public class BattleSystem : MonoBehaviour {
             battle();
 
         army2.checkHealth();
+        if(army2.getTotalStrength() < 1)
+            SoundController.controller.playTrack("victory");
 
         if (army1.getTotalStrength() > 1)
             StartCoroutine(marchTimer(true));

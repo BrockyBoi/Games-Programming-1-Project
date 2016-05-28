@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Enemy : Army {
     public Sprite[] farmSprites;
@@ -104,10 +105,16 @@ public class Enemy : Army {
 
             sR.color = new Color((float)100 / 255, (float)100 / 255, (float)100 / 255);
 
-            SoundController.controller.playTrack("victory");
-
             enabled = false;
 
+            if(armyLevel == 7)
+            {
+                SceneManager.LoadScene(2);
+            }
+        }
+        else
+        {
+            sR.color = new Color(1,1,1);
         }
     }
 

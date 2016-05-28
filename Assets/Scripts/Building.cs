@@ -26,8 +26,12 @@ public class Building : MonoBehaviour {
 
     protected bool townBuilding;
 
+    protected Plot designatedPlot;
+
     Canvas personalCanvas;
     Slider slider;
+
+    GameObject parentObject;
     //Text sliderText;
     protected void Awake()
     {
@@ -49,6 +53,8 @@ public class Building : MonoBehaviour {
         slider = GetComponentInChildren<Slider>();
 
         personalCanvas.gameObject.SetActive(false);
+
+        transform.SetParent(BuildingController.controller.GetBuildingParent().transform);
     }
 	
 	// Update is called once per frame
@@ -82,9 +88,68 @@ public class Building : MonoBehaviour {
         }
     }
 
-    public void PressDestroy()
+    public Vector3 GetPosition()
     {
+        return transform.position;
+    }
 
+    public string GetName()
+    {
+        return buildingName;
+    }
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public void SetParameters(int lev)
+    {
+        
+        if (buildingName != "Town Hall")
+        {
+            level = lev;
+            for (int i = 0; i < lev; i++)
+            {
+                upgrade();
+            }
+            float[] minDist = new float[] { 100, 0 };
+            GameObject plotList = GameObject.Find("Plots");
+            for(int i = 0; i < plotList.transform.childCount; i++)
+            {
+                float x = plotList.transform.GetChild(i).transform.position.x - transform.position.x;
+                float y = plotList.transform.GetChild(i).transform.position.y - transform.position.y;
+                float dist = Mathf.Sqrt(x * x + y * y);
+                if(dist < minDist[0])
+                {
+                    minDist[0] = dist;
+                    minDist[1] = i;
+                }
+            }
+            designatedPlot = plotList.transform.GetChild((int)minDist[1]).GetComponent<Plot>();
+        }
+        else
+        {
+            int newLevel = (lev - level);
+            for(int i = 0; i < newLevel; i++)
+            {
+                upgrade();
+            }
+        }
+    }
+
+    public virtual void PressDestroy()
+    {
+        designatedPlot.gameObject.SetActive(true);
+        designatedPlot.Reset();
+        BuildingController.controller.setBuildingLevel(buildingName, 0);
+        Destroy(gameObject);
+    }
+
+    public void SetPlot(Plot plot)
+    {
+        designatedPlot = plot;
+        Debug.Log(plot.name);
     }
 
     public void pressUpgrade()

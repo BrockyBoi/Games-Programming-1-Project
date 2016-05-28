@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class BuildingUpgradeCanvas : MonoBehaviour {
     public Camera cam;
@@ -19,6 +20,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Canvas buildingListTown;
     public Canvas buildingListCity;
     public Canvas enemyCanvas;
+    public Canvas pauseCanvas;
     public SpriteRenderer barracksCanvasSprite;
 
     public Text title;
@@ -58,6 +60,8 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public Text barracksNeeds;
     public Text cottageNeeds;
 
+    public Image workshopImage;
+
     bool running;
     float upgradeBoost;
 
@@ -84,6 +88,9 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         Disable(archerTime);
         Disable(cavalryTime);
         Disable(catapultTime);
+       // Disable(pauseCanvas);
+
+        Debug.Log(GameObject.Find("Buildings").transform.GetChild(0).name);
     }
 
     public void Disable(Text t)
@@ -131,6 +138,11 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         worldPoint = new Vector3(mousePos.x, mousePos.y, mousePos.z);
 
+        if (BuildingController.controller.getWorkshopLevel() > 0)
+        {
+            workshopImage.color = new Color((float)100 / 255, (float)100 / 255, (float)100 / 255);
+        }
+
         if (running)
         {
             title.text = currentBuilding.getTitleText();
@@ -143,6 +155,14 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
             Disable(upgradeCanvas);
             Activate(barracksCanvas);
         }
+
+        if(Input.GetAxis("Cancel") == 1)
+        {
+            Activate(pauseCanvas);
+            //Time.timeScale = 0;
+        }
+
+
     }
 
     public void setPlot(Plot p)
@@ -176,7 +196,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     {
         //Debug.Log(upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled);
 
-        if ((upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled) == false)
+        if ((upgradeCanvas.isActiveAndEnabled || buildingListTown.isActiveAndEnabled || buildingListCity.isActiveAndEnabled || enemyCanvas.isActiveAndEnabled || upgradeCanvas.isActiveAndEnabled || pauseCanvas.isActiveAndEnabled) == false)
         {
             return true;
         } 
@@ -190,7 +210,10 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
                     {
                         if ((universityCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && upgradeCanvas.isActiveAndEnabled) == false)
                         {
-                            return true;
+                            if((pauseCanvas.GetComponentInChildren<SpriteRenderer>().bounds.Contains(worldPoint) && pauseCanvas.isActiveAndEnabled) == false)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -257,6 +280,7 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
         Disable(barracksCanvas);
         Disable(upgradeCanvas);
         Disable(universityCanvas);
+        Disable(pauseCanvas);
     }
 
     public void setResearchButton(string s)
@@ -325,6 +349,16 @@ public class BuildingUpgradeCanvas : MonoBehaviour {
     public void hitUpgrade()
     {
         currentBuilding.pressUpgrade();
+    }
+
+    public void PressDestroy()
+    {
+        currentBuilding.PressDestroy();
+    }
+
+    public void PressMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void pressExit()

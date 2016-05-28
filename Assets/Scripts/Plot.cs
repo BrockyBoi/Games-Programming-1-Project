@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Plot : MonoBehaviour {
-
     public GameObject farm;
     public GameObject forestry;
     public GameObject mine;
@@ -25,6 +24,7 @@ public class Plot : MonoBehaviour {
 
     float buildTime;
 
+    public Sprite defaultSprite;
     struct buildingNeeds
     {
         public int foodNeed;
@@ -120,7 +120,7 @@ public class Plot : MonoBehaviour {
                 setBuilding = forestry;
                 //Food, wood, iron, stone
                 b.setNeeds(200, 150, 50, 150);
-                buildTime = 15;
+                buildTime = 10;
                 canBuild = true;
             }
         }
@@ -128,7 +128,7 @@ public class Plot : MonoBehaviour {
         {
             setBuilding = farm;
             b.setNeeds(50, 200, 50, 150);
-            buildTime = 15;
+            buildTime = 10;
             canBuild = true;
 
         }
@@ -138,7 +138,7 @@ public class Plot : MonoBehaviour {
             {
                 setBuilding = mine;
                 b.setNeeds(100, 200, 100, 200);
-                buildTime = 15;
+                buildTime = 10;
                 canBuild = true;
             }
         }
@@ -148,7 +148,7 @@ public class Plot : MonoBehaviour {
             {
                 setBuilding = quarry;
                 b.setNeeds(100, 200, 100, 150);
-                buildTime = 15;
+                buildTime = 10;
                 canBuild = true;
             }
         }
@@ -158,7 +158,7 @@ public class Plot : MonoBehaviour {
             {
                 setBuilding = barracks;
                 b.setNeeds(250, 250, 250, 250);
-                buildTime = 1;
+                buildTime = 30;
                 canBuild = true;
             }
         }
@@ -168,19 +168,19 @@ public class Plot : MonoBehaviour {
             {
                 setBuilding = university;
                 b.setNeeds(300, 250, 150, 250);
-                buildTime = 1;
+                buildTime = 45;
                 canBuild = true;
             }
         }
         else if (s == "Workshop")
         {
-            if (BuildingController.controller.getBarracksLevel() >= 1)
-            {
+            if (BuildingController.controller.getBarracksLevel() >= 1 && BuildingController.controller.getWorkshopLevel() < 1)
+           {
                 setBuilding = workshop;
                 b.setNeeds(250, 250, 300, 300);
-                buildTime = 45;
+                buildTime = 30;
                 canBuild = true;
-            }
+           }
         }
         else if (s == "Cottage")
         {
@@ -188,13 +188,13 @@ public class Plot : MonoBehaviour {
             {
                 setBuilding = cottage;
                 b.setNeeds(150, 150, 150, 150);
-                buildTime = 30;
+                buildTime = 20;
                 canBuild = true;
             }
         }
         else if (s == "Forge")
         {
-            if (BuildingController.controller.getWorkshopLevel() == 1)
+            if (BuildingController.controller.getWorkshopLevel() >= 1)
             {
                 setBuilding = forge;
                 b.setNeeds(250, 200, 300, 300);
@@ -210,6 +210,7 @@ public class Plot : MonoBehaviour {
 
             Invoke("startConstruction", buildTime);
             ResourceController.controller.subtractMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
+            ResourceController.controller.updateResourceText();
 
             BuildingUpgradeCanvas.controller.closeCanvas();
 
@@ -240,10 +241,36 @@ public class Plot : MonoBehaviour {
         personalCanvas.gameObject.SetActive(false);
     }
 
+    public void CheckEmpty()
+    {
+        if (!empty)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            gameObject.SetActive(true);
+            personalCanvas.gameObject.SetActive(false);
+            spriteRend.sprite = defaultSprite;
+            transform.localScale = new Vector3(50, 50);
+        }
+    }
+
 
     void startConstruction()
     {
-        Instantiate(setBuilding, transform.position, Quaternion.identity);
+        GameObject building = Instantiate(setBuilding, transform.position, Quaternion.identity) as GameObject;
+        building.GetComponent<Building>().SetPlot(this);
         gameObject.SetActive(false);
+    }
+
+    public void Reset()
+    {
+        ResourceController.controller.AddMultiple(b.foodNeed, b.woodNeed, b.ironNeed, b.stoneNeed);
+        ResourceController.controller.updateResourceText();
+        personalCanvas.gameObject.SetActive(false);
+        spriteRend.sprite = defaultSprite;
+        transform.localScale = new Vector3(50,50);
+        empty = true;
     }
 }
